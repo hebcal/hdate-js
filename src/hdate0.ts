@@ -90,8 +90,6 @@ const AVG_HEBYEAR_DAYS: number = 365.24682220597794;
 
 /**
  * @private
- * @param {any} n
- * @param {string} name
  */
 function assertNumber(n: any, name: string) {
   if (typeof n !== 'number' || isNaN(n)) {
@@ -103,11 +101,9 @@ function assertNumber(n: any, name: string) {
  * Converts Hebrew date to R.D. (Rata Die) fixed days.
  * R.D. 1 is the imaginary date Monday, January 1, 1 on the Gregorian
  * Calendar.
- * @private
- * @param {number} year Hebrew year
- * @param {number} month Hebrew month
- * @param {number} day Hebrew date (1-30)
- * @return {number}
+ * @param year Hebrew year
+ * @param month Hebrew month
+ * @param day Hebrew date (1-30)
  */
 export function hebrew2abs(year: number, month: number, day: number): number {
   assertNumber(year, 'year');
@@ -138,8 +134,6 @@ export function hebrew2abs(year: number, month: number, day: number): number {
 
 /**
  * @private
- * @param {number} year
- * @return {number}
  */
 function newYear(year: number): number {
   return EPOCH + elapsedDays(year);
@@ -156,8 +150,7 @@ export type SimpleHebrewDate = {
 
 /**
  * Converts absolute R.D. days to Hebrew date
- * @private
- * @param {number} abs absolute R.D. days
+ * @param abs absolute R.D. days
  * @return {SimpleHebrewDate}
  */
 export function abs2hebrew(abs: number): SimpleHebrewDate {
@@ -184,9 +177,7 @@ export function abs2hebrew(abs: number): SimpleHebrewDate {
 
 /**
  * Returns true if Hebrew year is a leap year
- * @private
- * @param {number} year Hebrew year
- * @return {boolean}
+ * @param year Hebrew year
  */
 export function isLeapYear(year: number): boolean {
   return (1 + year * 7) % 19 < 7;
@@ -194,9 +185,7 @@ export function isLeapYear(year: number): boolean {
 
 /**
  * Number of months in this Hebrew year (either 12 or 13 depending on leap year)
- * @private
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 export function monthsInYear(year: number): number {
   return 12 + +(isLeapYear(year)); // boolean is cast to 1 or 0
@@ -204,10 +193,8 @@ export function monthsInYear(year: number): number {
 
 /**
  * Number of days in Hebrew month in a given year (29 or 30)
- * @private
- * @param {number} month Hebrew month (e.g. months.TISHREI)
- * @param {number} year Hebrew year
- * @return {number}
+ * @param month Hebrew month (e.g. months.TISHREI)
+ * @param year Hebrew year
  */
 export function daysInMonth(month: number, year: number): number {
   switch (month) {
@@ -232,10 +219,8 @@ export function daysInMonth(month: number, year: number): number {
 /**
  * Returns a transliterated string name of Hebrew month in year,
  * for example 'Elul' or 'Cheshvan'.
- * @private
- * @param {number} month Hebrew month (e.g. months.TISHREI)
- * @param {number} year Hebrew year
- * @return {string}
+ * @param month Hebrew month (e.g. months.TISHREI)
+ * @param year Hebrew year
  */
 export function getMonthName(month: number, year: number): string {
   assertNumber(month, 'month');
@@ -249,9 +234,7 @@ export function getMonthName(month: number, year: number): string {
 /**
  * Days from sunday prior to start of Hebrew calendar to mean
  * conjunction of Tishrei in Hebrew YEAR
- * @private
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 export function elapsedDays(year: number): number {
   const n = edCache.get(year);
@@ -267,8 +250,7 @@ export function elapsedDays(year: number): number {
  * Days from sunday prior to start of Hebrew calendar to mean
  * conjunction of Tishrei in Hebrew YEAR
  * @private
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 function elapsedDays0(year: number): number {
   const prevYear: number = year - 1;
@@ -305,9 +287,7 @@ function elapsedDays0(year: number): number {
  * Number of days in the hebrew YEAR.
  * A common Hebrew calendar year can have a length of 353, 354 or 355 days
  * A leap Hebrew calendar year can have a length of 383, 384 or 385 days
- * @private
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 export function daysInYear(year: number): number {
   return elapsedDays(year + 1) - elapsedDays(year);
@@ -315,9 +295,7 @@ export function daysInYear(year: number): number {
 
 /**
  * true if Cheshvan is long in Hebrew year
- * @private
- * @param {number} year Hebrew year
- * @return {boolean}
+ * @param year Hebrew year
  */
 export function longCheshvan(year: number): boolean {
   return daysInYear(year) % 10 === 5;
@@ -325,9 +303,7 @@ export function longCheshvan(year: number): boolean {
 
 /**
  * true if Kislev is short in Hebrew year
- * @private
- * @param {number} year Hebrew year
- * @return {boolean}
+ * @param year Hebrew year
  */
 export function shortKislev(year: number): boolean {
   return daysInYear(year) % 10 === 3;
