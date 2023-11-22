@@ -1,12 +1,12 @@
 const test = require('ava');
 const {abs2hebrew, daysInMonth, daysInYear, elapsedDays, hebrew2abs,
-  isLeapYear, months, getMonthName} = require('../dist/cjs/hdate0');
+  isLeapYear, months, getMonthName, monthFromName} = require('../dist/cjs/hdate');
 
 const NISAN = months.NISAN;
 const IYYAR = months.IYYAR;
 const SIVAN = months.SIVAN;
 const TAMUZ = months.TAMUZ;
-// const AV = months.AV;
+const AV = months.AV;
 const ELUL = months.ELUL;
 const TISHREI = months.TISHREI;
 const CHESHVAN = months.CHESHVAN;
@@ -224,4 +224,41 @@ test('hebrew2abs-1752-reformation', (t) => {
   t.is(hebrew2abs(5513, TISHREI, 6), 639797);
   // 2 September 1752
   t.is(hebrew2abs(5513, TISHREI, 5), 639796);
+});
+
+test('monthFromName', (t) => {
+  const toTest = [
+    NISAN, 'Nisan_nisan_n_N_Nissan_ניסן',
+    IYYAR, 'Iyyar_Iyar_iyyar_iy_אייר',
+    ELUL, 'Elul_elul_אלול',
+    CHESHVAN, 'Cheshvan_cheshvan_חשון',
+    KISLEV, 'Kislev_kislev_כסלו',
+    SIVAN, 'Sivan_sivan_סייון_סיון',
+    SHVAT, 'Shvat_Sh\'vat_Shevat_שבט',
+    TAMUZ, 'Tamuz_Tammuz_תמוז',
+    TISHREI, 'Tishrei_תשרי',
+    TEVET, 'Tevet_טבת',
+    AV, 'Av_אב',
+    ADAR_I, ['Adar I', 'Adar 1', 'AdarI', 'Adar1', 'אדר א', 'אדר 1'],
+    ADAR_II, ['Adar II', 'Adar 2', 'AdarII', 'Adar2', 'אדר', 'אדר ב', 'אדר 2'],
+  ];
+
+  for (let i = 0; i < toTest.length; i += 2) {
+    const monthNum = toTest[i];
+    const samples = toTest[i + 1];
+    const arr = typeof samples == 'string' ? samples.split('_') : samples;
+    for (const input of arr) {
+      t.is(monthFromName(input), monthNum, `${input} => ${monthNum}`);
+    }
+  }
+
+  t.is(monthFromName(7), 7);
+
+  const bad = 'Xyz Ace November Tommy suds January תת אא'.split(' ');
+  for (const sample of bad) {
+    const error = t.throws(() => {
+      monthFromName(sample);
+    }, {instanceOf: RangeError});
+    t.is(error.message, `Unable to parse month name: ${sample}`);
+  }
 });

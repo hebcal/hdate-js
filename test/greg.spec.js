@@ -1,5 +1,5 @@
 const test = require('ava');
-const {greg} = require('../dist/cjs/greg0');
+const {greg} = require('../dist/cjs/greg');
 
 // eslint-disable-next-line require-jsdoc
 function ymd(date) {

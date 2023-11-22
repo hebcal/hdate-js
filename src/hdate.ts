@@ -308,3 +308,131 @@ export function longCheshvan(year: number): boolean {
 export function shortKislev(year: number): boolean {
   return daysInYear(year) % 10 === 3;
 }
+
+/**
+ * Converts Hebrew month string name to numeric
+ * @param {string} monthName monthName
+ * @return {number}
+ */
+export function monthFromName(monthName: string): number {
+  if (typeof monthName === 'number') {
+    if (isNaN(monthName) || monthName < 1 || monthName > 14) {
+      throw new RangeError(`Invalid month name: ${monthName}`);
+    }
+    return monthName;
+  }
+  let c = monthName.trim().toLowerCase();
+  // If Hebrew month starts with a bet (for example `בתמוז`) then ignore it
+  if (c[0] === 'ב') {
+    c = c.substring(1);
+  }
+  /*
+  the Hebrew months are unique to their second letter
+  N         Nisan  (November?)
+  I         Iyyar
+  E        Elul
+  C        Cheshvan
+  K        Kislev
+  1        1Adar
+  2        2Adar
+  Si Sh     Sivan, Shvat
+  Ta Ti Te Tamuz, Tishrei, Tevet
+  Av Ad    Av, Adar
+
+  אב אד אי אל   אב אדר אייר אלול
+  ח            חשון
+  ט            טבת
+  כ            כסלו
+  נ            ניסן
+  ס            סיון
+  ש            שבט
+  תמ תש        תמוז תשרי
+  */
+  switch (c[0]) {
+    case 'n':
+    case 'נ':
+      if (c[1] == 'o') {
+        break; /* this catches "november" */
+      }
+      return months.NISAN;
+    case 'i':
+      return months.IYYAR;
+    case 'e':
+      return months.ELUL;
+    case 'c':
+    case 'ח':
+      return months.CHESHVAN;
+    case 'k':
+    case 'כ':
+      return months.KISLEV;
+    case 's':
+      switch (c[1]) {
+        case 'i':
+          return months.SIVAN;
+        case 'h':
+          return months.SHVAT;
+        default:
+          break;
+      }
+      break;
+    case 't':
+      switch (c[1]) {
+        case 'a':
+          return months.TAMUZ;
+        case 'i':
+          return months.TISHREI;
+        case 'e':
+          return months.TEVET;
+        default:
+          break;
+      }
+      break;
+    case 'a':
+      switch (c[1]) {
+        case 'v':
+          return months.AV;
+        case 'd':
+          if (/(1|[^i]i|a|א)$/i.test(monthName)) {
+            return months.ADAR_I;
+          }
+          return months.ADAR_II; // else assume sheini
+        default:
+          break;
+      }
+      break;
+    case 'ס':
+      return months.SIVAN;
+    case 'ט':
+      return months.TEVET;
+    case 'ש':
+      return months.SHVAT;
+    case 'א':
+      switch (c[1]) {
+        case 'ב':
+          return months.AV;
+        case 'ד':
+          if (/(1|[^i]i|a|א)$/i.test(monthName)) {
+            return months.ADAR_I;
+          }
+          return months.ADAR_II; // else assume sheini
+        case 'י':
+          return months.IYYAR;
+        case 'ל':
+          return months.ELUL;
+        default:
+          break;
+      }
+      break;
+    case 'ת':
+      switch (c[1]) {
+        case 'מ':
+          return months.TAMUZ;
+        case 'ש':
+          return months.TISHREI;
+        default:
+          break;
+      }
+      break;
+  }
+  throw new RangeError(`Unable to parse month name: ${monthName}`);
+}

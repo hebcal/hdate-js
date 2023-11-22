@@ -1,2 +1,2 @@
-export {greg} from './greg0';
-export * from './hdate0';
+export {greg} from './greg';
+export * from './hdate';
