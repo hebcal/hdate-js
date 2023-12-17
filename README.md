@@ -107,6 +107,17 @@ in a leap year, the birthday occurs in Adar I, as expected.</p>
 has his birthday postponed until the first of the following month in
 years where that day does not occur. [Calendrical Calculations p. 111]</p>
 </dd>
+<dt><a href="#gematriya">gematriya(num)</a> ⇒ <code>string</code></dt>
+<dd><p>Converts a numerical value to a string of Hebrew letters.</p>
+<p>When specifying years of the Hebrew calendar in the present millennium,
+we omit the thousands (which is presently 5 [ה]).</p>
+</dd>
+<dt><a href="#gematriyaStrToNum">gematriyaStrToNum(str)</a> ⇒ <code>number</code></dt>
+<dd><p>Converts a string of Hebrew letters to a numerical value.</p>
+<p>Only considers the value of Hebrew letters <code>א</code> through <code>ת</code>.
+Ignores final Hebrew letters such as <code>ך</code> (kaf sofit) or <code>ם</code> (mem sofit)
+and vowels (nekudot).</p>
+</dd>
 </dl>
 
 <a name="greg"></a>
@@ -129,6 +140,24 @@ Hebrew months of the year (NISAN=1, TISHREI=7)
 
 **Kind**: global enum  
 **Read only**: true  
+**Properties**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| NISAN | <code>number</code> | <code>1</code> | Nissan / ניסן |
+| IYYAR | <code>number</code> | <code>2</code> | Iyyar / אייר |
+| SIVAN | <code>number</code> | <code>3</code> | Sivan / סיון |
+| TAMUZ | <code>number</code> | <code>4</code> | Tamuz (sometimes Tammuz) / תמוז |
+| AV | <code>number</code> | <code>5</code> | Av / אב |
+| ELUL | <code>number</code> | <code>6</code> | Elul / אלול |
+| TISHREI | <code>number</code> | <code>7</code> | Tishrei / תִּשְׁרֵי |
+| CHESHVAN | <code>number</code> | <code>8</code> | Cheshvan / חשון |
+| KISLEV | <code>number</code> | <code>9</code> | Kislev / כסלו |
+| TEVET | <code>number</code> | <code>10</code> | Tevet / טבת |
+| SHVAT | <code>number</code> | <code>11</code> | Sh'vat / שבט |
+| ADAR_I | <code>number</code> | <code>12</code> | Adar or Adar Rishon / אדר |
+| ADAR_II | <code>number</code> | <code>13</code> | Adar Sheini (only on leap years) / אדר ב׳ |
+
 <a name="hebrew2abs"></a>
 
 ## hebrew2abs(year, month, day) ⇒ <code>number</code>
@@ -336,3 +365,40 @@ import {getBirthdayOrAnniversary} from '@hebcal/hdate';
 const dt = new Date(2014, 2, 2); // '2014-03-02' == '30 Adar I 5774'
 const anniversary = getBirthdayOrAnniversary(5780, dt); // '3/26/2020' == '1 Nisan 5780'
 ```
+<a name="gematriya"></a>
+
+## gematriya(num) ⇒ <code>string</code>
+Converts a numerical value to a string of Hebrew letters.
+
+When specifying years of the Hebrew calendar in the present millennium,
+we omit the thousands (which is presently 5 [ה]).
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| num | <code>number</code> | 
+
+**Example**  
+```js
+gematriya(5774) // 'תשע״ד' - cropped to 774
+gematriya(25) // 'כ״ה'
+gematriya(60) // 'ס׳'
+gematriya(3761) // 'ג׳תשס״א'
+gematriya(1123) // 'א׳קכ״ג'
+```
+<a name="gematriyaStrToNum"></a>
+
+## gematriyaStrToNum(str) ⇒ <code>number</code>
+Converts a string of Hebrew letters to a numerical value.
+
+Only considers the value of Hebrew letters `א` through `ת`.
+Ignores final Hebrew letters such as `ך` (kaf sofit) or `ם` (mem sofit)
+and vowels (nekudot).
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| str | <code>string</code> | 
+
