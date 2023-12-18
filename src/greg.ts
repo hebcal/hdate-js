@@ -31,27 +31,6 @@ const ABS_2SEP1752 = 639785;
  */
 export namespace greg {
   /**
-   * Long names of the Gregorian months (1='January', 12='December')
-   * @readonly
-   * @type {string[]}
-   */
-  export const monthNames: string[] = [
-    '',
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  /**
    * Returns true if the Gregorian year is a leap year
    * @param {number} year Gregorian year
    * @return {boolean}
