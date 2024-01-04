@@ -1,7 +1,7 @@
 {
   "name": "@hebcal/hdate",
   "version": "0.9.1",
-  "description": "sunrise and sunset via NOAA algorithm with elevation, based on KosherJava",
+  "description": "converts between Hebrew and Gregorian dates using Rata Die (R.D.) algorithm by Dershowitz and Reingold",
   "author": "Michael J. Radwin (https://github.com/mjradwin)",
   "contributors": [
     "Eyal Schachter (https://github.com/Scimonster)",
