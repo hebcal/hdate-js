@@ -1,5 +1,5 @@
 # @hebcal/hdate
-converts between Hebrew and Gregorian dates
+converts between Hebrew and Gregorian dates using Rata Die (R.D.) algorithm by Dershowitz and Reingold
 
 [![Build Status](https://github.com/hebcal/hdate-js/actions/workflows/node.js.yml/badge.svg)](https://github.com/hebcal/hdate-js/actions/workflows/node.js.yml)
 
