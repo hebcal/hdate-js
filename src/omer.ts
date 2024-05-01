@@ -154,7 +154,8 @@ function omerTodayIsHe(omerDay: number): string {
   } else if (omerDay > 9) {
     str += ones[one];
     if (one) {
-      str += ' וְ';
+      str += ' ';
+      str += ten === 3 ? 'וּ' : 'וְ';
     }
   }
   if (omerDay > 2) {
@@ -180,13 +181,19 @@ function omerTodayIsHe(omerDay: number): string {
     if (weeks > 2) {
       str += ones[weeks] + ' ' + shavuot + ' ';
     } else if (weeks === 1) {
-      str += 'שָׁבוּעַ' + ' ' + ones[1] + ' ';
+      str += 'שָׁבֽוּעַ' + ' ' + ones[1] + ' ';
     } else {
       // weeks == 2
       str += shnei + ' ' + shavuot + ' ';
     }
     if (days) {
-      str += 'וְ';
+      if (days === 2 || days === 3) {
+        str += 'וּ';
+      } else if (days === 5) {
+        str += 'וַ';
+      } else {
+        str += 'וְ';
+      }
       if (days > 2) {
         str += ones[days] + ' ' + yamim + ' ';
       } else if (days === 1) {
