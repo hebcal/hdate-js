@@ -2,19 +2,19 @@
  * More minimal HDate
  */
 
-const NISAN: number = 1;
-const IYYAR: number = 2;
+const NISAN = 1;
+const IYYAR = 2;
 // const SIVAN = 3;
-const TAMUZ: number = 4;
+const TAMUZ = 4;
 // const AV = 5;
-const ELUL: number = 6;
-const TISHREI: number = 7;
-const CHESHVAN: number = 8;
-const KISLEV: number = 9;
-const TEVET: number = 10;
+const ELUL = 6;
+const TISHREI = 7;
+const CHESHVAN = 8;
+const KISLEV = 9;
+const TEVET = 10;
 // const SHVAT = 11;
-const ADAR_I: number = 12;
-const ADAR_II: number = 13;
+const ADAR_I = 12;
+const ADAR_II = 13;
 
 /**
  * Hebrew months of the year (NISAN=1, TISHREI=7)
@@ -62,7 +62,7 @@ const monthNames0: string[] = [
   'Cheshvan',
   'Kislev',
   'Tevet',
-  'Sh\'vat',
+  "Sh'vat",
 ];
 
 /**
@@ -71,22 +71,15 @@ const monthNames0: string[] = [
  * @private
  */
 const monthNames: string[][] = [
-  monthNames0.concat([
-    'Adar',
-    'Nisan',
-  ]),
-  monthNames0.concat([
-    'Adar I',
-    'Adar II',
-    'Nisan',
-  ]),
+  monthNames0.concat(['Adar', 'Nisan']),
+  monthNames0.concat(['Adar I', 'Adar II', 'Nisan']),
 ];
 
 const edCache: Map<number, number> = new Map<number, number>();
 
-const EPOCH: number = -1373428;
+const EPOCH = -1373428;
 // Avg year length in the cycle (19 solar years with 235 lunar months)
-const AVG_HEBYEAR_DAYS: number = 365.24682220597794;
+const AVG_HEBYEAR_DAYS = 365.24682220597794;
 
 /**
  * @private
@@ -191,7 +184,7 @@ export function isLeapYear(year: number): boolean {
  * @return {number}
  */
 export function monthsInYear(year: number): number {
-  return 12 + +(isLeapYear(year)); // boolean is cast to 1 or 0
+  return 12 + +isLeapYear(year); // boolean is cast to 1 or 0
 }
 
 /**
@@ -211,9 +204,11 @@ export function daysInMonth(month: number, year: number): number {
     default:
       break;
   }
-  if ((month === ADAR_I && !isLeapYear(year)) ||
-      (month === CHESHVAN && !longCheshvan(year)) ||
-      (month === KISLEV && shortKislev(year))) {
+  if (
+    (month === ADAR_I && !isLeapYear(year)) ||
+    (month === CHESHVAN && !longCheshvan(year)) ||
+    (month === KISLEV && shortKislev(year))
+  ) {
     return 29;
   } else {
     return 30;
@@ -259,26 +254,30 @@ export function elapsedDays(year: number): number {
  */
 function elapsedDays0(year: number): number {
   const prevYear: number = year - 1;
-  const mElapsed: number = 235 * Math.floor(prevYear / 19) + // Months in complete 19 year lunar (Metonic) cycles so far
-      12 * (prevYear % 19) + // Regular months in this cycle
-      Math.floor(((prevYear % 19) * 7 + 1) / 19); // Leap months this cycle
+  const mElapsed: number =
+    235 * Math.floor(prevYear / 19) + // Months in complete 19 year lunar (Metonic) cycles so far
+    12 * (prevYear % 19) + // Regular months in this cycle
+    Math.floor(((prevYear % 19) * 7 + 1) / 19); // Leap months this cycle
 
   const pElapsed: number = 204 + 793 * (mElapsed % 1080);
 
-  const hElapsed: number = 5 +
-      12 * mElapsed +
-      793 * Math.floor(mElapsed / 1080) +
-      Math.floor(pElapsed / 1080);
+  const hElapsed: number =
+    5 +
+    12 * mElapsed +
+    793 * Math.floor(mElapsed / 1080) +
+    Math.floor(pElapsed / 1080);
 
   const parts: number = (pElapsed % 1080) + 1080 * (hElapsed % 24);
 
   const day: number = 1 + 29 * mElapsed + Math.floor(hElapsed / 24);
-  let altDay: number = day
+  let altDay: number = day;
 
-  if (parts >= 19440 ||
-      (2 === day % 7 && parts >= 9924 && !isLeapYear(year)) ||
-      (1 === day % 7 && parts >= 16789 && isLeapYear(prevYear))) {
-        altDay++;
+  if (
+    parts >= 19440 ||
+    (2 === day % 7 && parts >= 9924 && !isLeapYear(year)) ||
+    (1 === day % 7 && parts >= 16789 && isLeapYear(prevYear))
+  ) {
+    altDay++;
   }
 
   if (altDay % 7 === 0 || altDay % 7 === 3 || altDay % 7 === 5) {
@@ -359,7 +358,7 @@ export function monthFromName(monthName: string): number {
   switch (c[0]) {
     case 'n':
     case 'נ':
-      if (c[1] == 'o') {
+      if (c[1] === 'o') {
         break; /* this catches "november" */
       }
       return months.NISAN;

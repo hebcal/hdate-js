@@ -1,5 +1,13 @@
-import {hebrew2abs, abs2hebrew, isLeapYear, months, monthsInYear,
-  shortKislev, longCheshvan, SimpleHebrewDate} from './hdate';
+import {
+  hebrew2abs,
+  abs2hebrew,
+  isLeapYear,
+  months,
+  monthsInYear,
+  shortKislev,
+  longCheshvan,
+  SimpleHebrewDate,
+} from './hdate';
 import {greg} from './greg';
 
 const NISAN = months.NISAN;
@@ -11,21 +19,26 @@ const ADAR_I = months.ADAR_I;
 const ADAR_II = months.ADAR_II;
 
 /**
- * Returns true if the object is a Javascript Date
+ * Returns true if the object is a SimpleHebrewDate
  * @private
  * @param {Object} obj
  */
 function isSimpleHebrewDate(obj: any): boolean {
-  return typeof obj === 'object' && obj !== null &&
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
     typeof obj.yy === 'number' &&
     typeof obj.mm === 'number' &&
-    typeof obj.dd === 'number';
+    typeof obj.dd === 'number'
+  );
 }
 
 /**
  * @private
  */
-function toSimpleHebrewDate(obj: Date | SimpleHebrewDate | number): SimpleHebrewDate {
+function toSimpleHebrewDate(
+  obj: Date | SimpleHebrewDate | number
+): SimpleHebrewDate {
   if (isSimpleHebrewDate(obj)) {
     return obj as SimpleHebrewDate;
   } else if (typeof obj === 'number') {
@@ -71,7 +84,10 @@ function toSimpleHebrewDate(obj: Date | SimpleHebrewDate | number): SimpleHebrew
  * @param {Date | SimpleHebrewDate | number} date Gregorian or Hebrew date of death
  * @return {Date} anniversary occurring in `hyear`
  */
-export function getYahrzeit(hyear: number, date: Date | SimpleHebrewDate | number): Date | undefined {
+export function getYahrzeit(
+  hyear: number,
+  date: Date | SimpleHebrewDate | number
+): Date | undefined {
   const hd = getYahrzeitHD(hyear, date);
   if (typeof hd === 'undefined') {
     return hd;
@@ -79,25 +95,36 @@ export function getYahrzeit(hyear: number, date: Date | SimpleHebrewDate | numbe
   return greg.abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
 
-export function getYahrzeitHD(hyear: number, date: Date | SimpleHebrewDate | number): SimpleHebrewDate | undefined {
+export function getYahrzeitHD(
+  hyear: number,
+  date: Date | SimpleHebrewDate | number
+): SimpleHebrewDate | undefined {
   let hDeath = toSimpleHebrewDate(date);
   if (hyear <= hDeath.yy) {
     // Hebrew year ${hyear} occurs on or before original date in ${hDeath.yy}
     return undefined;
   }
 
-  if (hDeath.mm == CHESHVAN && hDeath.dd == 30 && !longCheshvan(hDeath.yy + 1)) {
+  if (
+    hDeath.mm === CHESHVAN &&
+    hDeath.dd === 30 &&
+    !longCheshvan(hDeath.yy + 1)
+  ) {
     // If it's Heshvan 30 it depends on the first anniversary;
     // if that was not Heshvan 30, use the day before Kislev 1.
     hDeath = abs2hebrew(hebrew2abs(hyear, KISLEV, 1) - 1);
-  } else if (hDeath.mm == KISLEV && hDeath.dd == 30 && shortKislev(hDeath.yy + 1)) {
+  } else if (
+    hDeath.mm === KISLEV &&
+    hDeath.dd === 30 &&
+    shortKislev(hDeath.yy + 1)
+  ) {
     // If it's Kislev 30 it depends on the first anniversary;
     // if that was not Kislev 30, use the day before Teveth 1.
     hDeath = abs2hebrew(hebrew2abs(hyear, TEVET, 1) - 1);
-  } else if (hDeath.mm == ADAR_II) {
+  } else if (hDeath.mm === ADAR_II) {
     // If it's Adar II, use the same day in last month of year (Adar or Adar II).
     hDeath.mm = monthsInYear(hyear);
-  } else if (hDeath.mm == ADAR_I && hDeath.dd == 30 && !isLeapYear(hyear)) {
+  } else if (hDeath.mm === ADAR_I && hDeath.dd === 30 && !isLeapYear(hyear)) {
     // If it's the 30th in Adar I and year is not a leap year
     // (so Adar has only 29 days), use the last day in Shevat.
     hDeath.dd = 30;
@@ -106,10 +133,10 @@ export function getYahrzeitHD(hyear: number, date: Date | SimpleHebrewDate | num
   // In all other cases, use the normal anniversary of the date of death.
 
   // advance day to rosh chodesh if needed
-  if (hDeath.mm == CHESHVAN && hDeath.dd == 30 && !longCheshvan(hyear)) {
+  if (hDeath.mm === CHESHVAN && hDeath.dd === 30 && !longCheshvan(hyear)) {
     hDeath.mm = KISLEV;
     hDeath.dd = 1;
-  } else if (hDeath.mm == KISLEV && hDeath.dd == 30 && shortKislev(hyear)) {
+  } else if (hDeath.mm === KISLEV && hDeath.dd === 30 && shortKislev(hyear)) {
     hDeath.mm = TEVET;
     hDeath.dd = 1;
   }
@@ -143,7 +170,10 @@ export function getYahrzeitHD(hyear: number, date: Date | SimpleHebrewDate | num
  * @param {Date | SimpleHebrewDate | number} date Gregorian or Hebrew date of event
  * @return {Date} anniversary occurring in `hyear`
  */
-export function getBirthdayOrAnniversary(hyear: number, date: Date | SimpleHebrewDate): Date | undefined {
+export function getBirthdayOrAnniversary(
+  hyear: number,
+  date: Date | SimpleHebrewDate
+): Date | undefined {
   const hd = getBirthdayHD(hyear, date);
   if (typeof hd === 'undefined') {
     return hd;
@@ -151,7 +181,10 @@ export function getBirthdayOrAnniversary(hyear: number, date: Date | SimpleHebre
   return greg.abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
 
-export function getBirthdayHD(hyear: number, date: Date | SimpleHebrewDate): SimpleHebrewDate | undefined {
+export function getBirthdayHD(
+  hyear: number,
+  date: Date | SimpleHebrewDate
+): SimpleHebrewDate | undefined {
   const orig = toSimpleHebrewDate(date);
   const origYear = orig.yy;
   if (hyear === origYear) {
@@ -164,15 +197,20 @@ export function getBirthdayHD(hyear: number, date: Date | SimpleHebrewDate): Sim
   let month = orig.mm;
   let day = orig.dd;
 
-  if ((month == ADAR_I && !isOrigLeap) || (month == ADAR_II && isOrigLeap)) {
+  if ((month === ADAR_I && !isOrigLeap) || (month === ADAR_II && isOrigLeap)) {
     month = monthsInYear(hyear);
-  } else if (month == CHESHVAN && day == 30 && !longCheshvan(hyear)) {
+  } else if (month === CHESHVAN && day === 30 && !longCheshvan(hyear)) {
     month = KISLEV;
     day = 1;
-  } else if (month == KISLEV && day == 30 && shortKislev(hyear)) {
+  } else if (month === KISLEV && day === 30 && shortKislev(hyear)) {
     month = TEVET;
     day = 1;
-  } else if (month == ADAR_I && day == 30 && isOrigLeap && !isLeapYear(hyear)) {
+  } else if (
+    month === ADAR_I &&
+    day === 30 &&
+    isOrigLeap &&
+    !isLeapYear(hyear)
+  ) {
     month = NISAN;
     day = 1;
   }
