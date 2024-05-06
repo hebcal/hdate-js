@@ -144,13 +144,18 @@ const shneiYamim = shnei + ' ' + yamim;
 const shavuot = 'שָׁבוּעוֹת';
 const yom = 'יוֹם';
 const yomEchad = yom + ' ' + ones[1];
+const asar = 'עָשָׂר';
 
 function omerTodayIsHe(omerDay: number): string {
   const ten: number = Math.floor(omerDay / 10);
   const one: number = omerDay % 10;
   let str = 'הַיּוֹם ';
-  if (10 < omerDay && omerDay < 20) {
-    str += ones[one] + ' עָשָׂר';
+  if (omerDay === 11) {
+    str += 'אַחַד ' + asar;
+  } else if (omerDay === 12) {
+    str += 'שְׁנֵים ' + asar;
+  } else if (12 < omerDay && omerDay < 20) {
+    str += ones[one] + ' ' + asar;
   } else if (omerDay > 9) {
     str += ones[one];
     if (one) {
