@@ -118,6 +118,19 @@ we omit the thousands (which is presently 5 [ה]).</p>
 Ignores final Hebrew letters such as <code>ך</code> (kaf sofit) or <code>ם</code> (mem sofit)
 and vowels (nekudot).</p>
 </dd>
+<dt><a href="#omerSefira">omerSefira(omerDay, lang)</a> ⇒</dt>
+<dd><p>Returns the sefira. For example, on day 8
+ חֶֽסֶד שֶׁבִּגְבוּרָה
+ Chesed shebiGevurah
+ Lovingkindness within Might</p>
+</dd>
+<dt><a href="#omerTodayIs">omerTodayIs(omerDay, lang)</a> ⇒</dt>
+<dd><p>Returns a sentence with that evening&#39;s omer count</p>
+</dd>
+<dt><a href="#omerEmoji">omerEmoji(omerDay)</a> ⇒</dt>
+<dd><p>Returns an emoji number symbol with a circle, for example <code>㊲</code>
+ from the “Enclosed CJK Letters and Months” block of the Unicode standard</p>
+</dd>
 </dl>
 
 <a name="greg"></a>
@@ -395,3 +408,45 @@ and vowels (nekudot).
 | --- | --- |
 | str | <code>string</code> | 
 
+<a name="omerSefira"></a>
+
+## omerSefira(omerDay, lang) ⇒
+Returns the sefira. For example, on day 8
+ חֶֽסֶד שֶׁבִּגְבוּרָה
+ Chesed shebiGevurah
+ Lovingkindness within Might
+
+**Kind**: global function  
+**Returns**: a string such as `Lovingkindness within Might` or `חֶֽסֶד שֶׁבִּגְבוּרָה`  
+
+| Param | Description |
+| --- | --- |
+| omerDay | the day of the omer, 1-49 inclusive |
+| lang | `en` (English), `he` (Hebrew with nikud), or `translit` (Hebrew in Sephardic transliteration) |
+
+<a name="omerTodayIs"></a>
+
+## omerTodayIs(omerDay, lang) ⇒
+Returns a sentence with that evening's omer count
+
+**Kind**: global function  
+**Returns**: a string such as `Today is 10 days, which is 1 week and 3 days of the Omer`
+ or `הַיוֹם עֲשָׂרָה יָמִים, שְׁהֵם שָׁבוּעַ אֶחָד וְשְׁלוֹשָׁה יָמִים לָעוֹמֶר`  
+
+| Param | Description |
+| --- | --- |
+| omerDay | the day of the omer, 1-49 inclusive |
+| lang | `en` (English), `he` (Hebrew with nikud) |
+
+<a name="omerEmoji"></a>
+
+## omerEmoji(omerDay) ⇒
+Returns an emoji number symbol with a circle, for example `㊲`
+ from the “Enclosed CJK Letters and Months” block of the Unicode standard
+
+**Kind**: global function  
+**Returns**: a single Unicode character from `①` through `㊾`  
+
+| Param | Description |
+| --- | --- |
+| omerDay | the day of the omer, 1-49 inclusive |
