@@ -127,6 +127,15 @@ export function hebrew2abs(year: number, month: number, day: number): number {
 }
 
 /**
+ * Converts Hebrew date to R.D. (Rata Die) fixed days.
+ * R.D. 1 is the imaginary date Monday, January 1, 1 on the Gregorian
+ * Calendar.
+ */
+export function hd2abs(hdate: SimpleHebrewDate): number {
+  return hebrew2abs(hdate.yy, hdate.mm, hdate.dd);
+}
+
+/**
  * @private
  */
 function newYear(year: number): number {
