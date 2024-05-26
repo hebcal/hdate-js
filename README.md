@@ -251,7 +251,7 @@ Create a Hebrew date. There are 3 basic forms for the `HDate()` constructor.
 
 **Example**  
 ```js
-import {HDate, months} from '@hebcal/core';
+import {HDate, months} from '@hebcal/hdate';
 
 const hd1 = new HDate();
 const hd2 = new HDate(new Date(2008, 10, 13));
@@ -339,7 +339,7 @@ including ordinal e.g. `'15th of Cheshvan, 5769'`.
 
 **Example**  
 ```js
-import {HDate, months} from '@hebcal/core';
+import {HDate, months} from '@hebcal/hdate';
 
 const hd = new HDate(15, months.CHESHVAN, 5769);
 console.log(hd.render('en')); // '15th of Cheshvan, 5769'
@@ -358,7 +358,7 @@ Renders this Hebrew date in Hebrew gematriya, regardless of locale.
 
 **Example**  
 ```js
-import {HDate, months} from '@hebcal/core';
+import {HDate, months} from '@hebcal/hdate';
 const hd = new HDate(15, months.CHESHVAN, 5769);
 console.log(hd.renderGematriya()); // 'ט״ו חֶשְׁוָן תשס״ט'
 ```
@@ -507,7 +507,7 @@ Note, short forms are case sensitive.
 
 **Example**  
 ```js
-import {HDate, months} from '@hebcal/core';
+import {HDate, months} from '@hebcal/hdate';
 
 const hd1 = new HDate(15, months.CHESHVAN, 5769);
 const hd2 = hd1.add(1, 'weeks'); // 7 Kislev 5769
@@ -532,7 +532,7 @@ The result is zero if the two dates are identical.
 
 **Example**  
 ```js
-import {HDate, months} from '@hebcal/core';
+import {HDate, months} from '@hebcal/hdate';
 
 const hd1 = new HDate(25, months.KISLEV, 5770);
 const hd2 = new HDate(15, months.CHESHVAN, 5769);

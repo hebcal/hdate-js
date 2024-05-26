@@ -70,7 +70,7 @@ export class HDate {
    *    be a number between 1-30, Hebrew month can be a number or string, and
    *    Hebrew year is always a number.
    * @example
-   * import {HDate, months} from '@hebcal/core';
+   * import {HDate, months} from '@hebcal/hdate';
    *
    * const hd1 = new HDate();
    * const hd2 = new HDate(new Date(2008, 10, 13));
@@ -231,7 +231,7 @@ export class HDate {
    * Renders this Hebrew date as a translated or transliterated string,
    * including ordinal e.g. `'15th of Cheshvan, 5769'`.
    * @example
-   * import {HDate, months} from '@hebcal/core';
+   * import {HDate, months} from '@hebcal/hdate';
    *
    * const hd = new HDate(15, months.CHESHVAN, 5769);
    * console.log(hd.render('en')); // '15th of Cheshvan, 5769'
@@ -259,7 +259,7 @@ export class HDate {
   /**
    * Renders this Hebrew date in Hebrew gematriya, regardless of locale.
    * @example
-   * import {HDate, months} from '@hebcal/core';
+   * import {HDate, months} from '@hebcal/hdate';
    * const hd = new HDate(15, months.CHESHVAN, 5769);
    * console.log(hd.renderGematriya()); // 'ט״ו חֶשְׁוָן תשס״ט'
    * @param {boolean} [suppressNikud]
@@ -410,7 +410,7 @@ export class HDate {
    * | `month` | `M` | months |
    * | `year` | `y` | years |
    * @example
-   * import {HDate, months} from '@hebcal/core';
+   * import {HDate, months} from '@hebcal/hdate';
    *
    * const hd1 = new HDate(15, months.CHESHVAN, 5769);
    * const hd2 = hd1.add(1, 'weeks'); // 7 Kislev 5769
@@ -432,7 +432,7 @@ export class HDate {
    *
    * The result is zero if the two dates are identical.
    * @example
-   * import {HDate, months} from '@hebcal/core';
+   * import {HDate, months} from '@hebcal/hdate';
    *
    * const hd1 = new HDate(25, months.KISLEV, 5770);
    * const hd2 = new HDate(15, months.CHESHVAN, 5769);
