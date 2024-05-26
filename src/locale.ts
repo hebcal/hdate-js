@@ -145,7 +145,7 @@ export class Locale {
    * will be represented by the corresponding translation in the specified locale.
    * @param {string} locale Locale name (i.e: `'he'`, `'fr'`)
    */
-  static useLocale(locale: string): void {
+  static useLocale(locale: string): StringArrayMap {
     const locale0 = locale.toLowerCase();
     const obj = locales.get(locale0);
     if (!obj) {
@@ -153,6 +153,7 @@ export class Locale {
     }
     activeName = alias[locale0] || locale0;
     activeLocale = obj;
+    return activeLocale;
   }
 
   /**
