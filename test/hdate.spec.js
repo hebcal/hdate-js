@@ -1,6 +1,7 @@
 const test = require('ava');
-const {abs2hebrew, daysInMonth, daysInYear, elapsedDays, hebrew2abs,
-  isLeapYear, months, getMonthName, monthFromName} = require('../dist/cjs/hdate');
+const {months} = require('../dist/cjs/hdate-base');
+const {HDate} = require('../dist/cjs/hdate');
+const {isoDateString} = require('../dist/cjs/dateFormat');
 
 const NISAN = months.NISAN;
 const IYYAR = months.IYYAR;
@@ -16,214 +17,197 @@ const SHVAT = months.SHVAT;
 const ADAR_I = months.ADAR_I;
 const ADAR_II = months.ADAR_II;
 
-test('elapsedDays', (t) => {
-  t.is(elapsedDays(5780), 2110760);
-  t.is(elapsedDays(5708), 2084447);
-  t.is(elapsedDays(3762), 1373677);
-  t.is(elapsedDays(3671), 1340455);
-  t.is(elapsedDays(1234), 450344);
-  t.is(elapsedDays(123), 44563);
-  t.is(elapsedDays(2), 356);
-  t.is(elapsedDays(1), 1);
-  t.is(elapsedDays(5762), 2104174);
-  t.is(elapsedDays(5763), 2104528);
-  t.is(elapsedDays(5764), 2104913);
-  t.is(elapsedDays(5765), 2105268);
-  t.is(elapsedDays(5766), 2105651);
-});
-
-test('isLeapYear', (t) => {
-  t.is(isLeapYear(5779), true);
-  t.is(isLeapYear(5782), true);
-  t.is(isLeapYear(5784), true);
-  t.is(isLeapYear(5780), false);
-  t.is(isLeapYear(5781), false);
-  t.is(isLeapYear(5783), false);
-  t.is(isLeapYear(5778), false);
-  t.is(isLeapYear(5749), true);
-  t.is(isLeapYear(5511), false);
-  t.is(isLeapYear(5252), true);
-  t.is(isLeapYear(4528), true);
-  t.is(isLeapYear(4527), false);
-});
-
-test('daysInYear', (t) => {
-  t.is(daysInYear(5779), 385);
-  t.is(daysInYear(5780), 355);
-  t.is(daysInYear(5781), 353);
-  t.is(daysInYear(5782), 384);
-  t.is(daysInYear(5783), 355);
-  t.is(daysInYear(5784), 383);
-  t.is(daysInYear(5785), 355);
-  t.is(daysInYear(5786), 354);
-  t.is(daysInYear(5787), 385);
-  t.is(daysInYear(5788), 355);
-  t.is(daysInYear(5789), 354);
-  t.is(daysInYear(3762), 383);
-  t.is(daysInYear(3671), 354);
-  t.is(daysInYear(1234), 353);
-  t.is(daysInYear(123), 355);
-  t.is(daysInYear(2), 355);
-  t.is(daysInYear(1), 355);
-
-  t.is(daysInYear(5761), 353);
-  t.is(daysInYear(5762), 354);
-  t.is(daysInYear(5763), 385);
-  t.is(daysInYear(5764), 355);
-  t.is(daysInYear(5765), 383);
-  t.is(daysInYear(5766), 354);
-});
-
-test('daysInYear2', (t) => {
-  const actual = {};
-  for (let year = 1; year <= 9999; year++) {
-    const days = daysInYear(year);
-    if (actual[days]) {
-      actual[days]++;
-    } else {
-      actual[days] = 1;
-    }
-  }
-  const expected = {
-    '353': 1004,
-    '354': 2431,
-    '355': 2881,
-    '383': 1547,
-    '384': 524,
-    '385': 1612,
-  };
-  t.deepEqual(actual, expected);
-});
-
 test('daysInMonth', (t) => {
-  t.is(daysInMonth(IYYAR, 5780), 29);
-  t.is(daysInMonth(SIVAN, 5780), 30);
-  t.is(daysInMonth(CHESHVAN, 5782), 29);
-  t.is(daysInMonth(CHESHVAN, 5783), 30);
-  t.is(daysInMonth(KISLEV, 5783), 30);
-  t.is(daysInMonth(KISLEV, 5784), 29);
-
-  t.is(daysInMonth(TISHREI, 5765), 30);
-  t.is(daysInMonth(CHESHVAN, 5765), 29);
-  t.is(daysInMonth(KISLEV, 5765), 29);
-  t.is(daysInMonth(TEVET, 5765), 29);
+  t.is(HDate.daysInMonth(IYYAR, 5780), 29);
+  t.is(HDate.daysInMonth(SIVAN, 5780), 30);
+  t.is(HDate.daysInMonth(CHESHVAN, 5782), 29);
+  t.is(HDate.daysInMonth(CHESHVAN, 5783), 30);
+  t.is(HDate.daysInMonth(KISLEV, 5783), 30);
+  t.is(HDate.daysInMonth(KISLEV, 5784), 29);
 });
 
-test('hebrew2abs', (t) => {
-  t.is(hebrew2abs(5769, CHESHVAN, 15), 733359);
-  t.is(hebrew2abs(5708, IYYAR, 6), 711262);
-  t.is(hebrew2abs(3762, TISHREI, 1), 249);
-  t.is(hebrew2abs(3761, NISAN, 1), 72);
-  t.is(hebrew2abs(3761, TEVET, 18), 1);
-  t.is(hebrew2abs(3761, TEVET, 17), 0);
-  t.is(hebrew2abs(3761, TEVET, 16), -1);
-  t.is(hebrew2abs(3761, TEVET, 1), -16);
-  t.is(hebrew2abs(5765, TISHREI, 1), 731840);
-  t.is(hebrew2abs(5765, SHVAT, 1), 731957);
-  t.is(hebrew2abs(5765, ADAR_I, 1), 731987);
-  t.is(hebrew2abs(5765, ADAR_II, 22), 732038);
-  t.is(hebrew2abs(5765, ADAR_II, 1), 732017);
-  t.is(hebrew2abs(5765, NISAN, 1), 732046);
+test('ctor-mdy', (t) => {
+  let d = new HDate(29, CHESHVAN, 5769);
+  let dt = d.greg(); // 2008-11-27
+  t.is(d.getMonth(), CHESHVAN);
+  t.is(d.getDate(), 29);
+  t.is(d.getFullYear(), 5769);
+  t.is(d.prev().getMonth(), CHESHVAN);
+  t.is(d.next().getMonth(), KISLEV);
+  t.is(d.abs(), 733373);
+  t.is(dt.getMonth(), 10);
+  t.is(dt.getDate(), 27);
+  t.is(dt.getFullYear(), 2008);
+
+  d = new HDate(4, TAMUZ, 5536);
+  dt = d.greg(); // 1776-06-21
+  t.is(d.getMonth(), TAMUZ);
+  t.is(d.getDate(), 4);
+  t.is(d.getFullYear(), 5536);
+  t.is(d.abs(), 648478);
+  t.is(dt.getMonth(), 5);
+  t.is(dt.getDate(), 21);
+  t.is(dt.getFullYear(), 1776);
+
+  d = new HDate(3, TISHREI, 1003);
+  t.is(d.getMonth(), TISHREI);
+  t.is(d.getDate(), 3);
+  t.is(d.getFullYear(), 1003);
+  t.is(d.abs(), -1007451);
 });
 
-test('abs2hebrew', (t) => {
-  t.deepEqual(abs2hebrew(733359), {yy: 5769, mm: CHESHVAN, dd: 15});
-  t.deepEqual(abs2hebrew(711262), {yy: 5708, mm: IYYAR, dd: 6});
-  t.deepEqual(abs2hebrew(249), {yy: 3762, mm: TISHREI, dd: 1});
-  t.deepEqual(abs2hebrew(1), {yy: 3761, mm: TEVET, dd: 18});
-  t.deepEqual(abs2hebrew(0), {yy: 3761, mm: TEVET, dd: 17});
-  t.deepEqual(abs2hebrew(-16), {yy: 3761, mm: TEVET, dd: 1});
-  t.deepEqual(abs2hebrew(736685), {yy: 5778, mm: 10, dd: 4});
-  t.deepEqual(abs2hebrew(737485), {yy: 5780, mm: 12, dd: 5});
-  t.deepEqual(abs2hebrew(737885), {dd: 23, mm: 1, yy: 5781});
-  t.deepEqual(abs2hebrew(738285), {dd: 9, mm: 2, yy: 5782});
-  t.deepEqual(abs2hebrew(732038), {yy: 5765, mm: ADAR_II, dd: 22});
-  for (let i = 73668; i <= 943620; i += 365) {
-    abs2hebrew(i);
-  }
-  t.deepEqual(abs2hebrew(-1373427), {yy: 1, mm: TISHREI, dd: 1});
+test('ctor-abs', (t) => {
+  let d = new HDate(733359);
+  t.is(d.getMonth(), CHESHVAN);
+  t.is(d.getDate(), 15);
+  t.is(d.getFullYear(), 5769);
+  t.is(d.abs(), 733359);
+
+  d = new HDate(295059);
+  t.is(d.getMonth(), CHESHVAN);
+  t.is(d.getDate(), 7);
+  t.is(d.getFullYear(), 4569);
+  t.is(d.abs(), 295059);
+
+  d = new HDate(1);
+  t.is(d.getMonth(), TEVET);
+  t.is(d.getDate(), 18);
+  t.is(d.getFullYear(), 3761);
+  t.is(d.abs(), 1);
 });
 
-test('abs2hebrew-88ce', (t) => {
-  const h2 = abs2hebrew(32141);
-  t.is(h2.yy, 3849);
-  t.is(h2.mm, SHVAT);
-  t.is(h2.dd, 1);
-
-  const h3 = abs2hebrew(32142);
-  t.is(h3.yy, 3849);
-  t.is(h3.mm, SHVAT);
-  t.is(h3.dd, 2);
+test('prev-next', (t) => {
+  const hd = new HDate(765432);
+  t.is(hd.prev().abs(), 765431);
+  t.is(hd.next().abs(), 765433);
+  const hd2 = new HDate(new Date(1751, 0, 1));
+  t.is(hd2.prev().abs(), 639174);
+  t.is(hd2.next().abs(), 639176);
 });
 
-test('throws-abs2hebrew', (t) => {
+test('ctor-jsdate', (t) => {
+  const d = new HDate(new Date(1751, 0, 1));
+  t.is(d.getMonth(), TEVET);
+  t.is(d.getDate(), 4);
+  t.is(d.getFullYear(), 5511);
+  t.is(d.abs(), 639175);
+});
+
+test('ctor-copy', (t) => {
+  const d1 = new HDate(new Date(1751, 0, 1));
+  const d2 = new HDate(d1);
+  t.is(d1.isSameDate(d2), true);
+  t.is(d1.isSameDate(new Date(1751, 0, 1)), false);
+  t.is(d1.abs(), d2.abs());
+
+  const d3 = new HDate(29, 'Cheshvan', 5769);
+  const d4 = new HDate(d3);
+  t.is(d3.isSameDate(d4), true);
+  t.is(d3.abs(), d4.abs());
+
+  t.is(d3.isSameDate(d1), false);
+  t.is(d3.isSameDate({}), false);
+  t.is(d3.isSameDate([]), false);
+  t.is(d3.isSameDate('bogus'), false);
+  t.is(d3.isSameDate(3.14159), false);
+
+  const d5 = new HDate(733359);
+  const d6 = new HDate(d5);
+  t.is(d5.isSameDate(d6), true);
+  t.is(d5.abs(), d6.abs());
+});
+
+test('throws-ctor-string', (t) => {
   const error = t.throws(() => {
-    abs2hebrew(NaN);
+    new HDate('17 Cheshvan 5759');
   }, {instanceOf: TypeError});
-  t.is(error.message, 'invalid parameter \'abs\' not a number: NaN');
-  const error2 = t.throws(() => {
-    abs2hebrew('bogus');
-  }, {instanceOf: TypeError});
-  t.is(error2.message, 'invalid parameter \'abs\' not a number: bogus');
+  t.is(error.message, 'HDate called with bad argument: 17 Cheshvan 5759');
 });
 
-test('throws-abs2hebrew-before-epoch', (t) => {
+test('throws-ctor-2', (t) => {
   const error = t.throws(() => {
-    abs2hebrew(-1373429);
-  }, {instanceOf: RangeError});
-  t.is(error.message, 'abs2hebrew: -1373429 is before epoch');
-});
-
-test('throws-hebrew2abs', (t) => {
-  const error = t.throws(() => {
-    hebrew2abs(0, NISAN, 15);
-  }, {instanceOf: RangeError});
-  t.is(error.message, 'hebrew2abs: invalid year 0');
-});
-
-
-test('getMonthName', (t) => {
-  // leap year
-  t.is(getMonthName(ADAR_I, 5763), 'Adar I');
-  t.is(getMonthName(ADAR_II, 5763), 'Adar II');
-  t.is(getMonthName(14, 5763), 'Nisan');
-  // not a leap year
-  t.is(getMonthName(ADAR_I, 5764), 'Adar');
-  t.is(getMonthName(ADAR_II, 5764), 'Nisan');
-  // not boundary conditions
-  t.is(getMonthName(TAMUZ, 5780), 'Tamuz');
-  t.is(getMonthName(NISAN, 5763), 'Nisan');
-  t.is(getMonthName(ELUL, 5763), 'Elul');
-  t.is(getMonthName(TISHREI, 5763), 'Tishrei');
-});
-
-test('throws-getMonthName', (t) => {
-  const error = t.throws(() => {
-    getMonthName(NaN, 5780);
+    new HDate(17, 'Cheshvan');
   }, {instanceOf: TypeError});
-  t.is(error.message, 'invalid parameter \'month\' not a number: NaN');
-  const error2 = t.throws(() => {
-    getMonthName('bogus', 5780);
+  t.is(error.message, 'HDate constructor requires 0, 1 or 3 arguments');
+});
+
+test('throws-ctor-4', (t) => {
+  const error = t.throws(() => {
+    new HDate(1, 2, 3, 4);
   }, {instanceOf: TypeError});
-  t.is(error2.message, 'invalid parameter \'month\' not a number: bogus');
+  t.is(error.message, 'HDate constructor requires 0, 1 or 3 arguments');
+});
+
+test('throws-ctor-NaN', (t) => {
+  const error = t.throws(() => {
+    new HDate(NaN, 'Sivan', 5780);
+  }, {instanceOf: TypeError});
+  t.is(error.message, 'HDate called with bad day argument: NaN');
   const error3 = t.throws(() => {
-    getMonthName(20, 5780);
+    new HDate(17, 'Sivan', NaN);
   }, {instanceOf: TypeError});
-  t.is(error3.message, 'bad month argument 20');
+  t.is(error3.message, 'HDate called with bad year argument: NaN');
+  const error2 = t.throws(() => {
+    new HDate(17, NaN, 5780);
+  }, {instanceOf: RangeError});
+  t.is(error2.message, 'Invalid month number: NaN');
 });
 
-test('abs2hebrew-1752-reformation', (t) => {
-  // 14 September 1752
-  t.deepEqual(abs2hebrew(639797), {yy: 5513, mm: TISHREI, dd: 6});
-  // 2 September 1752
-  t.deepEqual(abs2hebrew(639796), {yy: 5513, mm: TISHREI, dd: 5});
+
+test('toString', (t) => {
+  const d = new HDate(new Date(1751, 0, 1));
+  t.is(d.toString(), '4 Tevet 5511');
 });
 
-test('hebrew2abs-1752-reformation', (t) => {
-  // 14 September 1752
-  t.is(hebrew2abs(5513, TISHREI, 6), 639797);
-  // 2 September 1752
-  t.is(hebrew2abs(5513, TISHREI, 5), 639796);
+test('renderGematriya', (t) => {
+  t.is(new HDate(17, 'Tamuz', 5748).renderGematriya(), 'י״ז תַּמּוּז תשמ״ח');
+  t.is(new HDate(20, 'Tishrei', 5780).renderGematriya(), 'כ׳ תִּשְׁרֵי תש״פ');
+  t.is(new HDate(26, 'Tevet', 8008).renderGematriya(), 'כ״ו טֵבֵת ח׳ח׳');
+});
+
+test('renderGematriya-suppressNikud', (t) => {
+  t.is(new HDate(17, 'Tamuz', 5748).renderGematriya(false), 'י״ז תַּמּוּז תשמ״ח');
+  t.is(new HDate(17, 'Tamuz', 5748).renderGematriya(true), 'י״ז תמוז תשמ״ח');
+});
+
+test('render', (t) => {
+  const hd = new HDate(15, months.CHESHVAN, 5769);
+  t.is(hd.render(''), '15th of Cheshvan, 5769');
+  t.is(hd.render('en'), '15th of Cheshvan, 5769');
+  t.is(hd.render('s'), '15th of Cheshvan, 5769');
+  t.is(hd.render('ashkenazi'), '15th of Cheshvan, 5769');
+  t.is(hd.render('he'), '15 חֶשְׁוָן, 5769');
+
+  t.is(hd.render('en', true), '15th of Cheshvan, 5769');
+  t.is(hd.render('ashkenazi', true), '15th of Cheshvan, 5769');
+  t.is(hd.render('he', true), '15 חֶשְׁוָן, 5769');
+
+  t.is(hd.render('en', false), '15th of Cheshvan');
+  t.is(hd.render('ashkenazi', false), '15th of Cheshvan');
+  t.is(hd.render('he', false), '15 חֶשְׁוָן');
+});
+
+test('render-shvat', (t) => {
+  const hd = new HDate(15, months.SHVAT, 5789);
+  t.is(hd.render(''), '15th of Sh’vat, 5789');
+  t.is(hd.render('en'), '15th of Sh’vat, 5789');
+  t.is(hd.render('s'), '15th of Sh’vat, 5789');
+  t.is(hd.render('ashkenazi'), '15th of Sh’vat, 5789');
+
+  t.is(hd.render('en', true), '15th of Sh’vat, 5789');
+  t.is(hd.render('ashkenazi', true), '15th of Sh’vat, 5789');
+
+  t.is(hd.render('en', false), '15th of Sh’vat');
+  t.is(hd.render('ashkenazi', false), '15th of Sh’vat');
+});
+
+
+test('render-tevet-ashkenazi', (t) => {
+  const hd = new HDate(3, months.TEVET, 5769);
+  t.is(hd.render('en', false), '3rd of Tevet');
+  t.is(hd.render('s', false), '3rd of Tevet');
+  t.is(hd.render('ashkenazi', false), '3rd of Teves');
+  t.is(hd.render('a', false), '3rd of Teves');
 });
 
 test('monthFromName', (t) => {
@@ -248,17 +232,294 @@ test('monthFromName', (t) => {
     const samples = toTest[i + 1];
     const arr = typeof samples == 'string' ? samples.split('_') : samples;
     for (const input of arr) {
-      t.is(monthFromName(input), monthNum, `${input} => ${monthNum}`);
+      t.is(HDate.monthFromName(input), monthNum, `${input} => ${monthNum}`);
     }
   }
 
-  t.is(monthFromName(7), 7);
+  t.is(HDate.monthFromName(7), 7);
 
   const bad = 'Xyz Ace November Tommy suds January תת אא'.split(' ');
   for (const sample of bad) {
     const error = t.throws(() => {
-      monthFromName(sample);
+      HDate.monthFromName(sample);
     }, {instanceOf: RangeError});
     t.is(error.message, `Unable to parse month name: ${sample}`);
   }
+});
+
+test('getMonthName-throws', (t) => {
+  const error = t.throws(() => {
+    HDate.getMonthName(0, 5780);
+  }, {instanceOf: TypeError});
+  t.is(error.message, `bad month argument 0`);
+});
+
+test('month14-rollover', (t) => {
+  t.is(new HDate(17, 14, 5779).toString(), '17 Nisan 5780');
+  t.is(new HDate(17, 14, 5780).toString(), '17 Iyyar 5781');
+});
+
+test('month-rollunder', (t) => {
+  t.is(new HDate(17, 0, 5779).toString(), '17 Adar 5778');
+  t.is(new HDate(17, 0, 5780).toString(), '17 Adar I 5779');
+
+  t.is(new HDate(17, -3, 5779).toString(), '17 Tevet 5778');
+  t.is(new HDate(17, -3, 5780).toString(), '17 Kislev 5779');
+});
+
+test('day-rollover-rollunder', (t) => {
+  t.is(new HDate(33, ELUL, 5779).toString(), '4 Tishrei 5780');
+  t.is(new HDate(-3, TISHREI, 5779).toString(), '27 Elul 5778');
+});
+
+test('adar2-nonleap', (t) => {
+  const hd = new HDate(17, ADAR_II, 5780);
+  t.is(hd.getMonth(), ADAR_I);
+});
+
+// eslint-disable-next-line require-jsdoc
+function hd2iso(hd) {
+  return isoDateString(hd.greg());
+}
+
+test('before', (t) => {
+  const hd = new HDate(new Date('Wednesday February 19, 2014'));
+  t.is(hd2iso(hd.before(6)), '2014-02-15');
+});
+
+test('onOrBefore', (t) => {
+  t.is(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).onOrBefore(6)), '2014-02-15');
+  t.is(hd2iso(new HDate(new Date('Saturday February 22, 2014')).onOrBefore(6)), '2014-02-22');
+  t.is(hd2iso(new HDate(new Date('Sunday February 23, 2014')).onOrBefore(6)), '2014-02-22');
+});
+
+test('nearest', (t) => {
+  t.is(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).nearest(6)), '2014-02-22');
+  t.is(hd2iso(new HDate(new Date('Tuesday February 18, 2014')).nearest(6)), '2014-02-15');
+});
+
+test('onOrAfter', (t) => {
+  t.is(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).onOrAfter(6)), '2014-02-22');
+  t.is(hd2iso(new HDate(new Date('Saturday February 22, 2014')).onOrAfter(6)), '2014-02-22');
+  t.is(hd2iso(new HDate(new Date('Sunday February 23, 2014')).onOrAfter(6)), '2014-03-01');
+});
+
+test('after', (t) => {
+  t.is(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).after(6)), '2014-02-22');
+  t.is(hd2iso(new HDate(new Date('Saturday February 22, 2014')).after(6)), '2014-03-01');
+  t.is(hd2iso(new HDate(new Date('Sunday February 23, 2014')).after(6)), '2014-03-01');
+});
+
+test('isHDate', (t) => {
+  t.is(HDate.isHDate('foo'), false);
+  t.is(HDate.isHDate(null), false);
+  t.is(HDate.isHDate(undefined), false);
+  t.is(HDate.isHDate({}), false);
+  t.is(HDate.isHDate(new HDate()), true);
+  t.is(HDate.isHDate(new Date()), false);
+  t.is(HDate.isHDate(new HDate(12345)), true);
+});
+
+test('getDay', (t) => {
+  t.is(new HDate(15, CHESHVAN, 5769).getDay(), 4);
+  t.is(new HDate(6, IYYAR, 5708).getDay(), 6);
+  t.is(new HDate(7, IYYAR, 5708).getDay(), 0);
+  t.is(new HDate(1, TISHREI, 3762).getDay(), 4);
+  t.is(new HDate(1, NISAN, 3761).getDay(), 2);
+  t.is(new HDate(18, TEVET, 3761).getDay(), 1);
+  t.is(new HDate(17, TEVET, 3761).getDay(), 0);
+  t.is(new HDate(16, TEVET, 3761).getDay(), 6);
+  t.is(new HDate(1, TEVET, 3761).getDay(), 5);
+  t.is(new HDate(29, SIVAN, 3333).getDay(), 2);
+  t.is(new HDate(28, SIVAN, 3333).getDay(), 1);
+  t.is(new HDate(27, SIVAN, 3333).getDay(), 0);
+  t.is(new HDate(26, SIVAN, 3333).getDay(), 6);
+  t.is(new HDate(25, SIVAN, 3333).getDay(), 5);
+  t.is(new HDate(24, SIVAN, 3333).getDay(), 4);
+  t.is(new HDate(23, SIVAN, 3333).getDay(), 3);
+});
+
+test('add', (t) => {
+  const cheshvan29 = new HDate(29, CHESHVAN, 5769);
+  let hd = cheshvan29.add(1, 'd');
+  t.is(hd.getMonth(), KISLEV);
+  t.is(hd.getDate(), 1);
+  t.is(hd.getFullYear(), 5769);
+
+  hd = cheshvan29.add(10, 'days');
+  t.is(hd.getMonth(), KISLEV);
+  t.is(hd.getDate(), 10);
+  t.is(hd.getFullYear(), 5769);
+
+  hd = cheshvan29.add(1, 'weeks');
+  t.is(hd.getMonth(), KISLEV);
+  t.is(hd.getDate(), 7);
+  t.is(hd.getFullYear(), 5769);
+
+  hd = cheshvan29.add(-3, 'Days');
+  t.is(hd.getMonth(), CHESHVAN);
+  t.is(hd.getDate(), 26);
+  t.is(hd.getFullYear(), 5769);
+
+  hd = cheshvan29.add(-3, 'Day');
+  t.is(hd.getMonth(), CHESHVAN);
+  t.is(hd.getDate(), 26);
+  t.is(hd.getFullYear(), 5769);
+
+  hd = cheshvan29.subtract(3, 'M');
+  t.is(hd.getMonth(), AV);
+  t.is(hd.getDate(), 30);
+  t.is(hd.getFullYear(), 5768);
+
+  hd = cheshvan29.add(0, 'y');
+  t.is(hd.getMonth(), CHESHVAN);
+  t.is(hd.getDate(), 29);
+  t.is(hd.getFullYear(), 5769);
+
+  const adarIIleap = new HDate(14, ADAR_II, 5763);
+  hd = adarIIleap.add(1, 'years');
+  t.is(hd.getMonth(), ADAR_I);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5764);
+
+  hd = adarIIleap.add(2, 'year');
+  t.is(hd.getMonth(), ADAR_II);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5765);
+
+  hd = adarIIleap.add(19, 'y');
+  t.is(hd.getMonth(), ADAR_II);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5782);
+
+  hd = adarIIleap.add(52, 'WEEKS');
+  t.is(hd.getMonth(), ADAR_I);
+  t.is(hd.getDate(), 23);
+  t.is(hd.getFullYear(), 5764);
+
+  const adarNonLeap = new HDate(14, ADAR_I, 5764);
+  t.is(adarNonLeap.getMonth(), ADAR_I);
+  t.is(adarNonLeap.getDate(), 14);
+  t.is(adarNonLeap.getFullYear(), 5764);
+
+  hd = adarNonLeap.add(-3, 'months');
+  t.is(hd.getMonth(), KISLEV);
+  t.is(hd.getDate(), 15);
+  t.is(hd.getFullYear(), 5764);
+
+  hd = adarNonLeap.add(-1, 'months');
+  t.is(hd.getMonth(), SHVAT);
+  t.is(hd.getDate(), 15);
+  t.is(hd.getFullYear(), 5764);
+
+  hd = adarNonLeap.add(-6, 'months');
+  t.is(hd.getMonth(), ELUL);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5763);
+
+  hd = adarNonLeap.add(1, 'months');
+  t.is(hd.getMonth(), NISAN);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5764);
+
+  hd = adarNonLeap.add(2, 'month');
+  t.is(hd.getMonth(), IYYAR);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5764);
+
+  hd = adarNonLeap.add(15, 'month');
+  t.is(hd.getMonth(), IYYAR);
+  t.is(hd.getDate(), 14);
+  t.is(hd.getFullYear(), 5765);
+});
+
+test('deltaDays', (t) => {
+  const hd1 = new HDate(25, KISLEV, 5770);
+  const hd2 = new HDate(15, CHESHVAN, 5769);
+  t.is(hd1.deltaDays(hd2), 394);
+  t.is(hd2.deltaDays(hd1), -394);
+  t.is(hd1.deltaDays(hd1), 0);
+
+  const hd3 = new HDate(10, TISHREI, 5770);
+  const hd4 = new HDate(9, AV, 5769);
+  t.is(hd3.deltaDays(hd4), 60);
+  t.is(hd4.deltaDays(hd3), -60);
+});
+
+test('throws-invalid-units', (t) => {
+  const error = t.throws(() => {
+    const hd = new HDate(29, CHESHVAN, 5769);
+    hd.add(1, 'foobar');
+  }, {instanceOf: TypeError});
+  t.is(error.message, 'Invalid units \'foobar\'');
+});
+
+test('throws-invalid-deltaDays', (t) => {
+  const error = t.throws(() => {
+    const hd = new HDate(29, CHESHVAN, 5769);
+    hd.deltaDays(1234);
+  }, {instanceOf: TypeError});
+  t.is(error.message, 'Bad argument: 1234');
+});
+
+test('fromGematriyaString', (t) => {
+  t.is(HDate.fromGematriyaString('כ״ז בְּתַמּוּז תשפ״ג').toString(), '27 Tamuz 5783');
+  t.is(HDate.fromGematriyaString('כ׳ סיון תש״ד').toString(), '20 Sivan 5704');
+  t.is(HDate.fromGematriyaString('ה׳ אִיָיר תש״ח').toString(), '5 Iyyar 5708');
+  t.is(HDate.fromGematriyaString('ה׳ אִיָיר תש״ח', 6000).toString(), '5 Iyyar 6708');
+  t.is(HDate.fromGematriyaString('ה׳ אִיָיר ח׳תשס״ה', 4000).toString(), '5 Iyyar 8765');
+  t.is(HDate.fromGematriyaString('ה׳ אִיָיר ח׳תשס״ה').toString(), '5 Iyyar 8765');
+});
+
+test('fromGematriyaString Adar I', (t) => {
+  t.is(HDate.fromGematriyaString(' ה באדר א תשי"ט ').toString(), '5 Adar I 5719');
+});
+
+test('fromGematriyaString whitespace', (t) => {
+  t.is(HDate.fromGematriyaString(' ה׳     אִיָיר   תש״ח').toString(), '5 Iyyar 5708');
+  t.is(HDate.fromGematriyaString('ה  באדר   א תשי"ט ').toString(), '5 Adar I 5719');
+});
+
+test('HDate-rollover-leap', (t) => {
+  const hd = new HDate(30, IYYAR, 5784);
+  t.is(hd.getFullYear(), 5784);
+  t.is(hd.getMonth(), SIVAN);
+  t.is(hd.getDate(), 1);
+
+  const hd2 = new HDate(30, ADAR_I, 5784);
+  t.is(hd2.getFullYear(), 5784);
+  t.is(hd2.getMonth(), ADAR_I);
+  t.is(hd2.getDate(), 30);
+
+  const hd3 = new HDate(36, ADAR_I, 5784);
+  t.is(hd3.getFullYear(), 5784);
+  t.is(hd3.getMonth(), ADAR_II);
+  t.is(hd3.getDate(), 6);
+
+  const hd4 = new HDate(36, ADAR_II, 5784);
+  t.is(hd4.getFullYear(), 5784);
+  t.is(hd4.getMonth(), NISAN);
+  t.is(hd4.getDate(), 7);
+});
+
+test('HDate-rollover-nonleap', (t) => {
+  const hd = new HDate(30, IYYAR, 5783);
+  t.is(hd.getFullYear(), 5783);
+  t.is(hd.getMonth(), SIVAN);
+  t.is(hd.getDate(), 1);
+
+  const hd0 = new HDate(30, ADAR_I, 5783);
+  t.is(hd0.getFullYear(), 5783);
+  t.is(hd0.getMonth(), NISAN);
+  t.is(hd0.getDate(), 1);
+
+  const hd2 = new HDate(30, ADAR_II, 5783);
+  t.is(hd2.getFullYear(), 5783);
+  t.is(hd2.getMonth(), NISAN);
+  t.is(hd2.getDate(), 1);
+
+  const hd3 = new HDate(36, ADAR_II, 5783);
+  t.is(hd3.getFullYear(), 5783);
+  t.is(hd3.getMonth(), NISAN);
+  t.is(hd3.getDate(), 7);
 });

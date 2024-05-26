@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 const test = require('ava');
-const {months} = require('../dist/cjs/hdate');
+const {months} = require('../dist/cjs/hdate-base');
 const {getYahrzeit, getBirthdayOrAnniversary,
   getYahrzeitHD, getBirthdayHD} = require('../dist/cjs/anniversary');
 

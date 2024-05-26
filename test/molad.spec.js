@@ -1,6 +1,6 @@
 const test = require('ava');
 const {molad} = require('../dist/cjs/molad');
-const {months} = require('../dist/cjs/hdate');
+const {months} = require('../dist/cjs/hdate-base');
 
 test('Molad', t => {
   const items = [
