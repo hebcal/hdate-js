@@ -33,6 +33,9 @@ holidays. <code>@hebcal/hdate</code> supports four locales by default</p>
 <li><code>he-x-NoNikud</code> - Hebrew without nikud (e.g. &quot;שבת&quot;)</li>
 </ul>
 </dd>
+<dt><a href="#Sedra">Sedra</a></dt>
+<dd><p>Represents Parashah HaShavua for an entire Hebrew year</p>
+</dd>
 </dl>
 
 ## Members
@@ -40,6 +43,10 @@ holidays. <code>@hebcal/hdate</code> supports four locales by default</p>
 <dl>
 <dt><a href="#greg">greg</a></dt>
 <dd><p>Gregorian date helper functions.</p>
+</dd>
+<dt><a href="#parshiot">parshiot</a> : <code>Array.&lt;string&gt;</code></dt>
+<dd><p>The 54 parshiyot of the Torah as transilterated strings
+parshiot[0] == &#39;Bereshit&#39;, parshiot[1] == &#39;Noach&#39;, parshiot[52] == &quot;Ha&#39;azinu&quot;.</p>
 </dd>
 </dl>
 
@@ -846,12 +853,124 @@ Removes nekudot from Hebrew string
 | --- | --- |
 | str | <code>string</code> | 
 
+<a name="Sedra"></a>
+
+## Sedra
+Represents Parashah HaShavua for an entire Hebrew year
+
+**Kind**: global class  
+
+* [Sedra](#Sedra)
+    * [new Sedra(hyear, il)](#new_Sedra_new)
+    * [.get(hd)](#Sedra+get) ⇒ <code>Array.&lt;string&gt;</code>
+    * [.getString(hd, [locale])](#Sedra+getString) ⇒ <code>string</code>
+    * [.isParsha(hd)](#Sedra+isParsha) ⇒ <code>boolean</code>
+    * [.find(parsha)](#Sedra+find) ⇒ [<code>HDate</code>](#HDate) \| <code>null</code>
+    * [.getSedraArray()](#Sedra+getSedraArray) ⇒ <code>Array.&lt;NumberOrString&gt;</code>
+    * [.getFirstSaturday()](#Sedra+getFirstSaturday) ⇒ <code>number</code>
+    * [.getYear()](#Sedra+getYear) ⇒ <code>number</code>
+    * [.lookup(hd)](#Sedra+lookup) ⇒ <code>SedraResult</code>
+
+<a name="new_Sedra_new"></a>
+
+### new Sedra(hyear, il)
+Caculates the Parashah HaShavua for an entire Hebrew year
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| hyear | <code>number</code> | Hebrew year (e.g. 5749) |
+| il | <code>boolean</code> | Use Israel sedra schedule (false for Diaspora) |
+
+<a name="Sedra+get"></a>
+
+### sedra.get(hd) ⇒ <code>Array.&lt;string&gt;</code>
+Returns the parsha (or parshiyot) read on Hebrew date
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| hd | [<code>HDate</code>](#HDate) \| <code>number</code> | Hebrew date or R.D. days |
+
+<a name="Sedra+getString"></a>
+
+### sedra.getString(hd, [locale]) ⇒ <code>string</code>
+Looks up parsha for the date, then returns a translated or transliterated string
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| hd | [<code>HDate</code>](#HDate) \| <code>number</code> | Hebrew date or R.D. days |
+| [locale] | <code>string</code> | Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale |
+
+<a name="Sedra+isParsha"></a>
+
+### sedra.isParsha(hd) ⇒ <code>boolean</code>
+Checks to see if this day would be a regular parasha HaShavua
+Torah reading or special holiday reading
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| hd | [<code>HDate</code>](#HDate) \| <code>number</code> | Hebrew date or R.D. days |
+
+<a name="Sedra+find"></a>
+
+### sedra.find(parsha) ⇒ [<code>HDate</code>](#HDate) \| <code>null</code>
+Returns the date that a parsha occurs
+or `null` if the parsha doesn't occur this year
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+
+| Param | Type |
+| --- | --- |
+| parsha | <code>number</code> \| <code>string</code> \| <code>Array.&lt;string&gt;</code> | 
+
+<a name="Sedra+getSedraArray"></a>
+
+### sedra.getSedraArray() ⇒ <code>Array.&lt;NumberOrString&gt;</code>
+Returns the underlying annual sedra schedule.
+Used by `@hebcal/triennial`
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+<a name="Sedra+getFirstSaturday"></a>
+
+### sedra.getFirstSaturday() ⇒ <code>number</code>
+R.D. date of the first Saturday on or after Rosh Hashana
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+<a name="Sedra+getYear"></a>
+
+### sedra.getYear() ⇒ <code>number</code>
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+<a name="Sedra+lookup"></a>
+
+### sedra.lookup(hd) ⇒ <code>SedraResult</code>
+Returns an object describing the parsha on the first Saturday on or after `hd`
+
+**Kind**: instance method of [<code>Sedra</code>](#Sedra)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| hd | [<code>HDate</code>](#HDate) \| <code>number</code> | Hebrew date or R.D. days |
+
 <a name="greg"></a>
 
 ## greg
 Gregorian date helper functions.
 
 **Kind**: global variable  
+<a name="parshiot"></a>
+
+## parshiot : <code>Array.&lt;string&gt;</code>
+The 54 parshiyot of the Torah as transilterated strings
+parshiot[0] == 'Bereshit', parshiot[1] == 'Noach', parshiot[52] == "Ha'azinu".
+
+**Kind**: global variable  
+**Read only**: true  
 <a name="months"></a>
 
 ## months : <code>enum</code>
