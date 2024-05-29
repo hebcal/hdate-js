@@ -1,4 +1,3 @@
-import { error } from 'console';
 import {
   abs2hebrew, daysInMonth, daysInYear, elapsedDays, hebrew2abs,
   isLeapYear, months, getMonthName, monthFromName
