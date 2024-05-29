@@ -1,8 +1,7 @@
-const test = require('ava');
-const {molad} = require('../dist/cjs/molad');
-const {months} = require('../dist/cjs/hdate-base');
+import {molad} from '../src/molad';
+import {months} from '../src/hdate-base';
 
-test('Molad', t => {
+test('Molad', () => {
   const items = [
     [months.CHESHVAN, 3, 14, 42, 14],
     [months.KISLEV, 5, 3, 26, 15],
@@ -20,11 +19,11 @@ test('Molad', t => {
   for (const item of items) {
     const [month, dow, hour, minutes, chalakim] = item;
     const m = molad(5769, month);
-    t.is(m.dayOfWeek, dow);
-    t.is(m.hour, hour);
-    t.is(m.minutes, minutes);
-    t.is(m.chalakim, chalakim);
-    t.is(m.year, 5769);
-    t.is(m.month, month);
+    expect(m.dayOfWeek).toBe(dow);
+    expect(m.hour).toBe(hour);
+    expect(m.minutes).toBe(minutes);
+    expect(m.chalakim).toBe(chalakim);
+    expect(m.year).toBe(5769);
+    expect(m.month).toBe(month);
   }
 });

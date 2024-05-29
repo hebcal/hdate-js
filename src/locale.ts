@@ -96,9 +96,9 @@ export class Locale {
    * Adds a translation to `locale`, replacing any previous translation.
    * @param {string} locale Locale name (i.e: `'he'`, `'fr'`).
    * @param {string} id Message ID to translate
-   * @param {string} translation Translation text
+   * @param {string | string[]} translation Translation text
    */
-  static addTranslation(locale: string, id: string, translation: string): void {
+  static addTranslation(locale: string, id: string, translation: string | string[]): void {
     if (typeof locale !== 'string') {
       throw new TypeError(`Invalid locale name: ${locale}`);
     }

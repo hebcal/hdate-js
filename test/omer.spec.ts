@@ -1,51 +1,37 @@
-const test = require('ava');
-const {omerSefira, omerTodayIs, omerEmoji} = require('../dist/cjs/omer');
+import {omerSefira, omerTodayIs, omerEmoji} from '../src/omer';
 
-test('sefira', t => {
-  t.is(omerSefira(46, 'en'), 'Eternity within Majesty');
-  t.is(omerSefira(46, 'he'), 'נֶּֽצַח שֶׁבְּמַּלְכוּת');
-  t.is(omerSefira(46, 'translit'), "Netzach sheb'Malkhut");
+test('sefira', () => {
+  expect(omerSefira(46, 'en')).toBe('Eternity within Majesty');
+  expect(omerSefira(46, 'he')).toBe('נֶּֽצַח שֶׁבְּמַּלְכוּת');
+  expect(omerSefira(46, 'translit')).toBe("Netzach sheb'Malkhut");
 });
 
-test('omerTodayIsEn', t => {
-  t.is(omerTodayIs(1, 'en'), 'Today is 1 day of the Omer');
-  t.is(omerTodayIs(2, 'en'), 'Today is 2 days of the Omer');
-  t.is(omerTodayIs(7, 'en'), 'Today is 7 days, which is 1 week of the Omer');
-  t.is(
-    omerTodayIs(8, 'en'),
-    'Today is 8 days, which is 1 week and 1 day of the Omer'
-  );
-  t.is(
-    omerTodayIs(13, 'en'),
-    'Today is 13 days, which is 1 week and 6 days of the Omer'
-  );
-  t.is(omerTodayIs(14, 'en'), 'Today is 14 days, which is 2 weeks of the Omer');
-  t.is(
-    omerTodayIs(41, 'en'),
-    'Today is 41 days, which is 5 weeks and 6 days of the Omer'
-  );
-  t.is(
-    omerTodayIs(46, 'en'),
-    'Today is 46 days, which is 6 weeks and 4 days of the Omer'
-  );
+test('omerTodayIsEn', () => {
+  expect(omerTodayIs(1, 'en')).toBe('Today is 1 day of the Omer');
+  expect(omerTodayIs(2, 'en')).toBe('Today is 2 days of the Omer');
+  expect(omerTodayIs(7, 'en'))
+    .toBe('Today is 7 days, which is 1 week of the Omer');
+  expect(omerTodayIs(8, 'en'))
+    .toBe('Today is 8 days, which is 1 week and 1 day of the Omer');
+  expect(omerTodayIs(13, 'en'))
+    .toBe('Today is 13 days, which is 1 week and 6 days of the Omer');
+  expect(omerTodayIs(14, 'en'))
+    .toBe('Today is 14 days, which is 2 weeks of the Omer');
+  expect(omerTodayIs(41, 'en'))
+    .toBe('Today is 41 days, which is 5 weeks and 6 days of the Omer');
+  expect(omerTodayIs(46, 'en'))
+    .toBe('Today is 46 days, which is 6 weeks and 4 days of the Omer');
 });
 
-test('throws-invalid-day', t => {
-  const error = t.throws(
-    () => {
-      console.log(omerTodayIs(123, 'he'));
-    },
-    {instanceOf: RangeError}
-  );
-  t.is(error.message, 'Invalid Omer day 123');
+test('throws-invalid-day', () => {
+  expect(() => {
+    console.log(omerTodayIs(123, 'he'));
+  }).toThrow('Invalid Omer day 123');
 });
 
-test('omerTodayIsHe', t => {
-  const actual = [];
-  for (let i = 1; i <= 49; i++) {
-    actual.push(omerTodayIs(i, 'he'));
-  }
+test('omerTodayIsHe', () => {
   const expected = [
+    '',
     'הַיּוֹם יוֹם אֶחָד לָעֽוֹמֶר',
     'הַיּוֹם שְׁנֵי יָמִים לָעֽוֹמֶר',
     'הַיּוֹם שְׁלוֹשָׁה יָמִים לָעֽוֹמֶר',
@@ -96,16 +82,15 @@ test('omerTodayIsHe', t => {
     'הַיּוֹם שְׁמוֹנָה וְאַרְבָּעִים יוֹם, שְׁהֵם שִׁשָּׁה שָׁבוּעוֹת וְשִׁשָּׁה יָמִים לָעֽוֹמֶר',
     'הַיּוֹם תִּשְׁעָה וְאַרְבָּעִים יוֹם, שְׁהֵם שִׁבְעָה שָׁבוּעוֹת לָעֽוֹמֶר',
   ];
-  t.deepEqual(actual, expected);
+  for (let i = 1; i <= 49; i++) {
+    const str = omerTodayIs(i, 'he');
+    expect(str).toBe(expected[i]);
+  }
 });
 
-test('emoji', t => {
-  const actual = [];
-  for (let i = 1; i <= 49; i++) {
-    const str = omerEmoji(i);
-    actual.push(str);
-  }
+test('emoji', () => {
   const expected = [
+    '',
     '①',
     '②',
     '③',
@@ -156,5 +141,8 @@ test('emoji', t => {
     '㊽',
     '㊾',
   ];
-  t.deepEqual(actual, expected);
+  for (let i = 1; i <= 49; i++) {
+    const str = omerEmoji(i);
+    expect(str).toBe(expected[i]);
+  }
 });

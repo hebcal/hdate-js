@@ -1,19 +1,18 @@
-const test = require('ava');
-const {months} = require('../dist/cjs/hdate-base');
-const {Sedra} = require('../dist/cjs/sedra');
-const {HDate} = require('../dist/cjs/hdate');
-const {isoDateString} = require('../dist/cjs/dateFormat');
+import {months} from '../src/hdate-base';
+import {Sedra} from '../src/sedra';
+import {HDate} from '../src/hdate';
+import {isoDateString} from '../src/dateFormat';
 
 /**
  * @private
  * @param {HDate} hd
  * @return {string}
  */
-function dt(hd) {
+function dt(hd: HDate): string {
   return isoDateString(hd.greg());
 }
 
-test('diaspora-5701', (t) => {
+test('diaspora-5701', () => {
   const hyear = 5701;
   const sedra = new Sedra(hyear, false);
   const startAbs = HDate.hebrew2abs(hyear, months.TISHREI, 1);
@@ -78,10 +77,10 @@ test('diaspora-5701', (t) => {
     '1941-09-13': ['Ki Tavo'],
     '1941-09-20': ['Nitzavim'],
   };
-  t.deepEqual(result, expected);
+  expect(result).toEqual(expected);
 });
 
-test('diaspora-5779', (t) => {
+test('diaspora-5779', () => {
   const hyear = 5779;
   const sedra = new Sedra(hyear, false);
   const startAbs = HDate.hebrew2abs(hyear, months.TISHREI, 1);
@@ -150,10 +149,10 @@ test('diaspora-5779', (t) => {
     '2019-09-21': ['Ki Tavo'],
     '2019-09-28': ['Nitzavim'],
   };
-  t.deepEqual(result, expected);
+  expect(result).toEqual(expected);
 });
 
-test('israel-5745', (t) => {
+test('israel-5745', () => {
   const hyear = 5745;
   const sedra = new Sedra(hyear, true);
   const startAbs = HDate.hebrew2abs(hyear, months.TISHREI, 1);
@@ -218,10 +217,10 @@ test('israel-5745', (t) => {
     '1985-09-07': ['Ki Tavo'],
     '1985-09-14': ['Nitzavim'],
   };
-  t.deepEqual(result, expected);
+  expect(result).toEqual(expected);
 });
 
-test('israel-5779', (t) => {
+test('israel-5779', () => {
   const hyear = 5779;
   const sedra = new Sedra(hyear, true);
   const startAbs = HDate.hebrew2abs(hyear, months.TISHREI, 1);
@@ -290,10 +289,10 @@ test('israel-5779', (t) => {
     '2019-09-21': ['Ki Tavo'],
     '2019-09-28': ['Nitzavim'],
   };
-  t.deepEqual(result, expected);
+  expect(result).toEqual(expected);
 });
 
-test('diaspora-bce', (t) => {
+test('diaspora-bce', () => {
   const hyear = 3333;
   const sedra = new Sedra(hyear, false);
   const startAbs = HDate.hebrew2abs(hyear, months.TISHREI, 1);
@@ -362,10 +361,10 @@ test('diaspora-bce', (t) => {
     '-000427-09-15': ['Ki Tavo'],
     '-000427-09-22': ['Nitzavim'],
   };
-  t.deepEqual(result, expected);
+  expect(result).toEqual(expected);
 });
 
-test('israel-bce', (t) => {
+test('israel-bce', () => {
   const hyear = 3333;
   const sedra = new Sedra(hyear, true);
   const startAbs = HDate.hebrew2abs(hyear, months.TISHREI, 1);
@@ -434,5 +433,5 @@ test('israel-bce', (t) => {
     '-000427-09-15': ['Ki Tavo'],
     '-000427-09-22': ['Nitzavim'],
   };
-  t.deepEqual(result, expected);
+  expect(result).toEqual(expected);
 });

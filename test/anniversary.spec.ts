@@ -1,12 +1,13 @@
 /* eslint-disable max-len */
-const test = require('ava');
-const {months} = require('../dist/cjs/hdate-base');
-const {getYahrzeit, getBirthdayOrAnniversary,
-  getYahrzeitHD, getBirthdayHD} = require('../dist/cjs/anniversary');
+import {months} from '../src/hdate-base';
+import {
+  getYahrzeit, getBirthdayOrAnniversary,
+  getYahrzeitHD, getBirthdayHD
+} from '../src/anniversary';
 
-test('yahrzeit', (t) => {
+test('yahrzeit', () => {
   // Gregorian YYYY, MM, DD
-  const items = [
+  const items: [number, number, number, string, string][] = [
     [2017, 1, 13, 'General',
       '1/2/2018 12/23/2018 1/12/2020 12/30/2020 12/19/2021 1/8/2023 12/27/2023 1/15/2025 1/4/2026 12/25/2026 1/14/2028 1/2/2029 12/21/2029 1/10/2031 12/30/2031 12/17/2032 1/6/2034 12/27/2034 1/15/2036 1/2/2037 12/23/2037 1/11/2039 1/1/2040 12/19/2040 1/7/2042 12/28/2042',
     ],
@@ -36,14 +37,15 @@ test('yahrzeit', (t) => {
     for (let i = 0; i < 25; i++) {
       const hyear = i + 5778;
       const yahrzeit = getYahrzeit(hyear, gd);
-      const dateStr = yahrzeit.toLocaleDateString('en-US');
-      t.is(dateStr, expected[i], `${name} ${i} ${hyear}`);
+      expect(yahrzeit).toBeDefined();
+      const dateStr = (yahrzeit as Date).toLocaleDateString('en-US');
+      expect(dateStr).toBe(expected[i]);
     }
   }
 });
 
-test('birthday', (t) => {
-  const items = [
+test('birthday', () => {
+  const items: [number, number, number, string, string][] = [
     [1948, 3, 11, 'Adar1-30',
       '3/23/1993 3/13/1994 3/2/1995 3/21/1996 3/9/1997 3/28/1998 3/18/1999 3/7/2000 3/25/2001 3/14/2002 3/4/2003 3/23/2004 3/11/2005 3/30/2006 3/20/2007 3/7/2008 3/26/2009 3/16/2010 3/6/2011 3/24/2012 3/12/2013',
     ],
@@ -70,32 +72,37 @@ test('birthday', (t) => {
     for (let i = 0; i < 21; i++) {
       const hyear = i + 5753;
       const birthday = getBirthdayOrAnniversary(hyear, gd);
-      const dateStr = birthday.toLocaleDateString('en-US');
-      t.is(dateStr, expected[i], `${name} ${i} ${hyear}`);
+      expect(birthday).toBeDefined();
+      const dateStr = (birthday as Date).toLocaleDateString('en-US');
+      expect(dateStr).toBe(expected[i]);
     }
   }
 });
 
-test('before-original', (t) => {
+test('before-original', () => {
   let dt = getYahrzeit(5769, new Date(2008, 10, 13));
-  t.is(dt, undefined, 'Hebrew year 5769 occurs on or before original date in 5769');
+  expect(dt).toBe(undefined); // 'Hebrew year 5769 occurs on or before original date in 5769');
 
   dt = getYahrzeit(5770, new Date(2008, 10, 13));
-  t.is(dt.getFullYear(), 2009);
+  expect(dt).toBeDefined();
+  expect((dt as Date).getFullYear()).toBe(2009);
 
   dt = getBirthdayOrAnniversary(5778, new Date(2018, 11, 13));
-  t.is(dt, undefined, 'Hebrew year 5778 occurs before original date in 5779');
+  expect(dt).toBe(undefined); // 'Hebrew year 5778 occurs before original date in 5779');
 
   dt = getBirthdayOrAnniversary(5780, new Date(2018, 11, 13));
-  t.is(dt.getFullYear(), 2020);
+  expect(dt).toBeDefined();
+  expect((dt as Date).getFullYear()).toBe(2020);
 });
 
-test('ctor-hdate', (t) => {
+test('ctor-hdate', () => {
   const niftar = {dd: 15, mm: months.CHESHVAN, yy: 5769};
   const yahrzeit = getYahrzeitHD(5782, niftar);
-  t.deepEqual(yahrzeit, {dd: 15, mm: 8, yy: 5782}, '15 Cheshvan 5782');
+  expect(yahrzeit).toBeDefined();
+  expect(yahrzeit).toEqual({dd: 15, mm: 8, yy: 5782});
 
   const birth = {dd: 23, mm: months.SIVAN, yy: 5735};
   const anniversary = getBirthdayHD(5782, birth);
-  t.deepEqual(anniversary, {dd: 23, mm: 3, yy: 5782}, '23 Sivan 5782');
+  expect(anniversary).toBeDefined();
+  expect(anniversary).toEqual({dd: 23, mm: 3, yy: 5782});
 });

@@ -86,7 +86,7 @@ export class HDate {
    * @param {number|string} [month] - Hebrew month of year (1=NISAN, 7=TISHREI)
    * @param {number} [year] - Hebrew year
    */
-  constructor(day: number|Date|HDate|SimpleHebrewDate|undefined, month?: number|string, year?: number) {
+  constructor(day?: number|Date|HDate|SimpleHebrewDate|undefined, month?: number|string, year?: number) {
     if (arguments.length === 2 || arguments.length > 3) {
       throw new TypeError('HDate constructor requires 0, 1 or 3 arguments');
     }

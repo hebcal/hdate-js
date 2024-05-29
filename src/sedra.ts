@@ -119,7 +119,7 @@ export class Sedra {
    * @param {string} [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale
    * @return {string}
    */
-  getString(hd: HDate | number, locale: string): string {
+  getString(hd: HDate | number, locale?: string): string {
     const parsha = this.get(hd);
     const locale0 = locale || Locale.getLocaleName();
     let name = Locale.gettext(parsha[0], locale0);
