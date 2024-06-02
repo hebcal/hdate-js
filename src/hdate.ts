@@ -51,9 +51,13 @@ const UNITS_YEAR = 'year';
 
 /** Represents a Hebrew date */
 export class HDate {
+  /** Hebrew year, 1-9999 */
   yy: number;
+  /** Hebrew month of year (1=NISAN, 7=TISHREI) */
   mm: number;
+  /** Hebrew day within the month (1-30) */
   dd: number;
+  /** absolute Rata Die (R.D.) days */
   rd?: number;
 
   /**

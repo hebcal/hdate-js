@@ -7,8 +7,7 @@ test('getLocaleNames', () => {
 });
 
 test('gettext-he', () => {
-  expect(Locale.gettext('Yom Kippur', 'he')).toBe('יוֹם כִּפּוּר');
-  expect(Locale.gettext('Lech-Lecha', 'he')).toBe('לֶךְ־לְךָ');
+  expect(Locale.gettext('Elul', 'he')).toBe('אֱלוּל');
 });
 
 test('hebrewStripNikkud', () => {
@@ -47,14 +46,11 @@ test('useLocale-ordinal', () => {
 });
 
 test('lookupTranslation-he-x-NoNikud', () => {
-  expect(Locale.lookupTranslation('Yom Kippur', 'he-x-NoNikud')).toBe('יום כפור');
-  expect(Locale.lookupTranslation('Lech-Lecha', 'he-x-NoNikud')).toBe('לך־לך');
+  expect(Locale.lookupTranslation('Adar II', 'he-x-NoNikud')).toBe('אדר ב׳');
   expect(Locale.lookupTranslation('Foobar', 'he-x-NoNikud')).toBe(undefined);
 });
 
 test('gettext-ashkenazi', () => {
-  expect(Locale.gettext('Sukkot', 'a')).toBe('Sukkos');
-  expect(Locale.gettext('Asara B\'Tevet', 'a')).toBe('Asara B’Teves');
   expect(Locale.gettext('Tevet', 'a')).toBe('Teves');
   expect(Locale.gettext('Tevet', 'ashkenazi')).toBe('Teves');
 });

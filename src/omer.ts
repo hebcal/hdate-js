@@ -88,17 +88,12 @@ export function omerSefira(omerDay: number, lang: OmerLang): string {
  * @returns a string such as `Today is 10 days, which is 1 week and 3 days of the Omer`
  *  or `הַיוֹם עֲשָׂרָה יָמִים, שְׁהֵם שָׁבוּעַ אֶחָד וְשְׁלוֹשָׁה יָמִים לָעוֹמֶר`
  */
-export function omerTodayIs(
-  omerDay: number,
-  lang: OmerLang
-): string | undefined {
+export function omerTodayIs(omerDay: number, lang: OmerLang): string {
   checkDay(omerDay);
-  if (lang === 'en') {
-    return omerTodayIsEn(omerDay);
-  } else if (lang === 'he') {
+  if (lang === 'he') {
     return omerTodayIsHe(omerDay);
   } else {
-    return undefined;
+    return omerTodayIsEn(omerDay);
   }
 }
 
@@ -221,13 +216,15 @@ function omerTodayIsHe(omerDay: number): string {
  */
 export function omerEmoji(omerDay: number): string {
   checkDay(omerDay);
+  let codePoint: number;
   if (omerDay <= 20) {
-    return String.fromCodePoint(9312 + omerDay - 1);
+    codePoint = 9312 + omerDay - 1;
   } else if (omerDay <= 35) {
     // between 21 and 35 inclusive
-    return String.fromCodePoint(12881 + omerDay - 21);
+    codePoint = 12881 + omerDay - 21;
   } else {
     // between 36 and 49 inclusive
-    return String.fromCodePoint(12977 + omerDay - 36);
+    codePoint = 12977 + omerDay - 36;
   }
+  return String.fromCodePoint(codePoint);
 }
