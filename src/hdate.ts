@@ -27,7 +27,7 @@ import {
   months,
   monthsInYear, shortKislev,
 } from './hdate-base';
-import {greg} from './greg';
+import { abs2greg, greg2abs, isDate } from './greg';
 import {gematriya, gematriyaStrToNum,} from './gematriya';  
 import {Locale} from './locale';
 
@@ -111,7 +111,7 @@ export class HDate {
       }
       // 1 argument
       const abs0 = (typeof day === 'number' && !isNaN(day)) ? day :
-        greg.isDate(day) ? greg.greg2abs(day as Date) :
+        isDate(day) ? greg2abs(day as Date) :
         isSimpleHebrewDate(day) ? day : null;
       if (abs0 === null) {
         throw new TypeError(`HDate called with bad argument: ${day}`);
@@ -181,7 +181,7 @@ export class HDate {
    * Converts to Gregorian date
    */
   greg(): Date {
-    return greg.abs2greg(this.abs());
+    return abs2greg(this.abs());
   }
 
   /**

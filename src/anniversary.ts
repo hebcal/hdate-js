@@ -8,7 +8,7 @@ import {
   longCheshvan,
   SimpleHebrewDate,
 } from './hdate-base';
-import {greg} from './greg';
+import { abs2greg, greg2abs, isDate } from './greg';
 
 const NISAN = months.NISAN;
 const CHESHVAN = months.CHESHVAN;
@@ -42,8 +42,8 @@ function toSimpleHebrewDate(
     return obj as SimpleHebrewDate;
   } else if (typeof obj === 'number') {
     return abs2hebrew(obj);
-  } else if (greg.isDate(obj)) {
-    const abs = greg.greg2abs(obj as Date);
+  } else if (isDate(obj)) {
+    const abs = greg2abs(obj as Date);
     return abs2hebrew(abs);
   } else {
     throw new TypeError(`Argument not a Date: ${obj}`);
@@ -91,7 +91,7 @@ export function getYahrzeit(
   if (typeof hd === 'undefined') {
     return hd;
   }
-  return greg.abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
+  return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
 
 export function getYahrzeitHD(
@@ -177,7 +177,7 @@ export function getBirthdayOrAnniversary(
   if (typeof hd === 'undefined') {
     return hd;
   }
-  return greg.abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
+  return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
 
 export function getBirthdayHD(

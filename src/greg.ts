@@ -40,15 +40,15 @@ const ABS_14SEP1752 = 639797;
 const ABS_2SEP1752 = 639785;
 */
 
-/**
- * Gregorian date helper functions.
+/*
+ * Formerly in namespace, now top-level
  */
-export namespace greg {
+
   /**
    * Returns true if the Gregorian year is a leap year
    * @param year Gregorian year
    */
-  export function isLeapYear(year: number): boolean {
+  export function isGregLeapYear(year: number): boolean {
     return !(year % 4) && (!!(year % 100) || !(year % 400));
   }
 
@@ -57,9 +57,9 @@ export namespace greg {
    * @param month Gregorian month (1=January, 12=December)
    * @param year Gregorian year
    */
-  export function daysInMonth(month: number, year: number): number {
+  export function daysInGregMonth(month: number, year: number): number {
     // 1 based months
-    return monthLengths[+isLeapYear(year)][month];
+    return monthLengths[+isGregLeapYear(year)][month];
   }
 
   /**
@@ -84,7 +84,7 @@ export namespace greg {
       quotient(py, 100) +
       quotient(py, 400) +
       quotient(367 * month - 362, 12) +
-      (month <= 2 ? 0 : isLeapYear(year) ? -1 : -2) +
+      (month <= 2 ? 0 : isGregLeapYear(year) ? -1 : -2) +
       day
     );
   }
@@ -131,7 +131,7 @@ export namespace greg {
     const year: number = yearFromFixed(abs);
     const priorDays: number = abs - toFixed(year, 1, 1);
     const correction: number =
-      abs < toFixed(year, 3, 1) ? 0 : isLeapYear(year) ? 1 : 2;
+      abs < toFixed(year, 3, 1) ? 0 : isGregLeapYear(year) ? 1 : 2;
     const month: number = quotient(12 * (priorDays + correction) + 373, 367);
     const day: number = abs - toFixed(year, month, 1) + 1;
     const dt: Date = new Date(year, month - 1, day);
@@ -140,4 +140,3 @@ export namespace greg {
     }
     return dt;
   }
-}

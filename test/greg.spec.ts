@@ -1,4 +1,4 @@
-import {greg} from '../src/greg';
+import {greg} from '../src/gregNamespace';
 
 function ymd(date: Date) {
   return {yy: date.getFullYear(), mm: date.getMonth() + 1, dd: date.getDate()};
