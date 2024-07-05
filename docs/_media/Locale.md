@@ -47,7 +47,7 @@ parsed data from a `.po` file.
 
 #### Defined in
 
-[locale.ts:83](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L83)
+[locale.ts:83](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L83)
 
 ***
 
@@ -77,7 +77,7 @@ Translation text
 
 #### Defined in
 
-[locale.ts:99](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L99)
+[locale.ts:99](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L99)
 
 ***
 
@@ -103,7 +103,7 @@ parsed data from a `.po` file.
 
 #### Defined in
 
-[locale.ts:126](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L126)
+[locale.ts:126](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L126)
 
 ***
 
@@ -119,7 +119,7 @@ Returns the name of the active locale (i.e. 'he', 'ashkenazi', 'fr')
 
 #### Defined in
 
-[locale.ts:160](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L160)
+[locale.ts:160](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L160)
 
 ***
 
@@ -135,7 +135,7 @@ Returns the names of registered locales
 
 #### Defined in
 
-[locale.ts:167](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L167)
+[locale.ts:167](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L167)
 
 ***
 
@@ -161,7 +161,7 @@ Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
 
 #### Defined in
 
-[locale.ts:70](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L70)
+[locale.ts:70](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L70)
 
 ***
 
@@ -181,7 +181,7 @@ Removes nekudot from Hebrew string
 
 #### Defined in
 
-[locale.ts:211](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L211)
+[locale.ts:211](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L211)
 
 ***
 
@@ -208,7 +208,7 @@ Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
 
 #### Defined in
 
-[locale.ts:56](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L56)
+[locale.ts:56](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L56)
 
 ***
 
@@ -232,7 +232,7 @@ Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
 
 #### Defined in
 
-[locale.ts:176](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L176)
+[locale.ts:176](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L176)
 
 ***
 
@@ -256,4 +256,4 @@ Locale name (i.e: `'he'`, `'fr'`)
 
 #### Defined in
 
-[locale.ts:146](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L146)
+[locale.ts:146](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L146)

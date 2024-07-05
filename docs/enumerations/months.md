@@ -18,7 +18,7 @@ Adar or Adar Rishon / אדר
 
 #### Defined in
 
-[hdate-base.ts:48](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L48)
+[hdate-base.ts:48](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L48)
 
 ***
 
@@ -30,7 +30,7 @@ Adar Sheini (only on leap years) / אדר ב׳
 
 #### Defined in
 
-[hdate-base.ts:50](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L50)
+[hdate-base.ts:50](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L50)
 
 ***
 
@@ -42,7 +42,7 @@ Av / אב
 
 #### Defined in
 
-[hdate-base.ts:34](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L34)
+[hdate-base.ts:34](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L34)
 
 ***
 
@@ -54,7 +54,7 @@ Cheshvan / חשון
 
 #### Defined in
 
-[hdate-base.ts:40](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L40)
+[hdate-base.ts:40](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L40)
 
 ***
 
@@ -66,7 +66,7 @@ Elul / אלול
 
 #### Defined in
 
-[hdate-base.ts:36](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L36)
+[hdate-base.ts:36](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L36)
 
 ***
 
@@ -78,7 +78,7 @@ Iyyar / אייר
 
 #### Defined in
 
-[hdate-base.ts:28](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L28)
+[hdate-base.ts:28](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L28)
 
 ***
 
@@ -90,7 +90,7 @@ Kislev / כסלו
 
 #### Defined in
 
-[hdate-base.ts:42](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L42)
+[hdate-base.ts:42](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L42)
 
 ***
 
@@ -102,7 +102,7 @@ Nissan / ניסן
 
 #### Defined in
 
-[hdate-base.ts:26](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L26)
+[hdate-base.ts:26](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L26)
 
 ***
 
@@ -114,7 +114,7 @@ Sh'vat / שבט
 
 #### Defined in
 
-[hdate-base.ts:46](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L46)
+[hdate-base.ts:46](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L46)
 
 ***
 
@@ -126,7 +126,7 @@ Sivan / סיון
 
 #### Defined in
 
-[hdate-base.ts:30](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L30)
+[hdate-base.ts:30](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L30)
 
 ***
 
@@ -138,7 +138,7 @@ Tamuz (sometimes Tammuz) / תמוז
 
 #### Defined in
 
-[hdate-base.ts:32](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L32)
+[hdate-base.ts:32](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L32)
 
 ***
 
@@ -150,7 +150,7 @@ Tevet / טבת
 
 #### Defined in
 
-[hdate-base.ts:44](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L44)
+[hdate-base.ts:44](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L44)
 
 ***
 
@@ -162,4 +162,4 @@ Tishrei / תִּשְׁרֵי
 
 #### Defined in
 
-[hdate-base.ts:38](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L38)
+[hdate-base.ts:38](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L38)

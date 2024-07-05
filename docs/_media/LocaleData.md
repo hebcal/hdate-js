@@ -18,7 +18,7 @@
 
 #### Defined in
 
-[locale.ts:15](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L15)
+[locale.ts:15](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L15)
 
 ***
 
@@ -28,4 +28,4 @@
 
 #### Defined in
 
-[locale.ts:14](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/locale.ts#L14)
+[locale.ts:14](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/locale.ts#L14)

@@ -64,7 +64,7 @@ const hd6 = new HDate(5, monthName, 5773);
 
 #### Defined in
 
-[hdate.ts:89](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L89)
+[hdate.ts:89](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L89)
 
 ## Properties
 
@@ -76,7 +76,7 @@ Hebrew day within the month (1-30)
 
 #### Defined in
 
-[hdate.ts:55](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L55)
+[hdate.ts:55](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L55)
 
 ***
 
@@ -88,7 +88,7 @@ Hebrew month of year (1=NISAN, 7=TISHREI)
 
 #### Defined in
 
-[hdate.ts:53](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L53)
+[hdate.ts:53](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L53)
 
 ***
 
@@ -100,7 +100,7 @@ absolute Rata Die (R.D.) days
 
 #### Defined in
 
-[hdate.ts:57](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L57)
+[hdate.ts:57](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L57)
 
 ***
 
@@ -112,7 +112,7 @@ Hebrew year, 1-9999
 
 #### Defined in
 
-[hdate.ts:51](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L51)
+[hdate.ts:51](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L51)
 
 ## Methods
 
@@ -131,7 +131,7 @@ https://en.wikipedia.org/wiki/Rata_Die#Dershowitz_and_Reingold
 
 #### Defined in
 
-[hdate.ts:193](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L193)
+[hdate.ts:193](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L193)
 
 ***
 
@@ -163,7 +163,7 @@ Note, short forms are case sensitive.
 
 #### Defined in
 
-[hdate.ts:351](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L351)
+[hdate.ts:351](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L351)
 
 ***
 
@@ -194,7 +194,7 @@ new HDate(new Date('Sunday February 23, 2014')).after(6).greg() // Sat Mar 01 20
 
 #### Defined in
 
-[hdate.ts:320](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L320)
+[hdate.ts:320](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L320)
 
 ***
 
@@ -223,7 +223,7 @@ new HDate(new Date('Wednesday February 19, 2014')).before(6).greg() // Sat Feb 1
 
 #### Defined in
 
-[hdate.ts:269](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L269)
+[hdate.ts:269](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L269)
 
 ***
 
@@ -239,7 +239,7 @@ Number of days in the month of this Hebrew date
 
 #### Defined in
 
-[hdate.ts:162](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L162)
+[hdate.ts:162](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L162)
 
 ***
 
@@ -277,7 +277,7 @@ const days = hd1.deltaDays(hd2); // 394
 
 #### Defined in
 
-[hdate.ts:415](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L415)
+[hdate.ts:415](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L415)
 
 ***
 
@@ -293,7 +293,7 @@ Gets the day within the month (1-30)
 
 #### Defined in
 
-[hdate.ts:169](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L169)
+[hdate.ts:169](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L169)
 
 ***
 
@@ -309,7 +309,7 @@ Gets the day of the week. 0=Sunday, 6=Saturday
 
 #### Defined in
 
-[hdate.ts:176](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L176)
+[hdate.ts:176](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L176)
 
 ***
 
@@ -325,7 +325,7 @@ Gets the Hebrew year of this Hebrew date
 
 #### Defined in
 
-[hdate.ts:133](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L133)
+[hdate.ts:133](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L133)
 
 ***
 
@@ -341,7 +341,7 @@ Gets the Hebrew month (1=NISAN, 7=TISHREI) of this Hebrew date
 
 #### Defined in
 
-[hdate.ts:147](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L147)
+[hdate.ts:147](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L147)
 
 ***
 
@@ -357,7 +357,7 @@ Returns a transliterated Hebrew month name, e.g. `'Elul'` or `'Cheshvan'`.
 
 #### Defined in
 
-[hdate.ts:215](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L215)
+[hdate.ts:215](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L215)
 
 ***
 
@@ -373,7 +373,7 @@ The Tishrei-based month of the date. 1 is Tishrei, 7 is Nisan, 13 is Elul in a l
 
 #### Defined in
 
-[hdate.ts:154](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L154)
+[hdate.ts:154](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L154)
 
 ***
 
@@ -389,7 +389,7 @@ Converts to Gregorian date
 
 #### Defined in
 
-[hdate.ts:183](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L183)
+[hdate.ts:183](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L183)
 
 ***
 
@@ -405,7 +405,7 @@ Tests if this date occurs during a leap year
 
 #### Defined in
 
-[hdate.ts:140](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L140)
+[hdate.ts:140](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L140)
 
 ***
 
@@ -427,7 +427,7 @@ Hebrew date to compare
 
 #### Defined in
 
-[hdate.ts:426](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L426)
+[hdate.ts:426](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L426)
 
 ***
 
@@ -457,7 +457,7 @@ new HDate(new Date('Tuesday February 18, 2014')).nearest(6).greg() // Sat Feb 15
 
 #### Defined in
 
-[hdate.ts:294](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L294)
+[hdate.ts:294](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L294)
 
 ***
 
@@ -473,7 +473,7 @@ Returns the next Hebrew date
 
 #### Defined in
 
-[hdate.ts:327](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L327)
+[hdate.ts:327](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L327)
 
 ***
 
@@ -504,7 +504,7 @@ new HDate(new Date('Sunday February 23, 2014')).onOrAfter(6).greg() // Sat Mar 0
 
 #### Defined in
 
-[hdate.ts:307](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L307)
+[hdate.ts:307](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L307)
 
 ***
 
@@ -535,7 +535,7 @@ new HDate(new Date('Sunday February 23, 2014')).onOrBefore(6).greg() // Sat Feb 
 
 #### Defined in
 
-[hdate.ts:282](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L282)
+[hdate.ts:282](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L282)
 
 ***
 
@@ -551,7 +551,7 @@ Returns the previous Hebrew date
 
 #### Defined in
 
-[hdate.ts:334](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L334)
+[hdate.ts:334](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L334)
 
 ***
 
@@ -588,7 +588,7 @@ console.log(hd.render('he')); // '15 חֶשְׁוָן, 5769'
 
 #### Defined in
 
-[hdate.ts:231](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L231)
+[hdate.ts:231](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L231)
 
 ***
 
@@ -616,7 +616,7 @@ console.log(hd.renderGematriya()); // 'ט״ו חֶשְׁוָן תשס״ט'
 
 #### Defined in
 
-[hdate.ts:254](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L254)
+[hdate.ts:254](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L254)
 
 ***
 
@@ -658,7 +658,7 @@ const hd3 = hd1.add(-3, 'M'); // 30 Av 5768
 
 #### Defined in
 
-[hdate.ts:395](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L395)
+[hdate.ts:395](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L395)
 
 ***
 
@@ -672,7 +672,7 @@ const hd3 = hd1.add(-3, 'M'); // 30 Av 5768
 
 #### Defined in
 
-[hdate.ts:435](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L435)
+[hdate.ts:435](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L435)
 
 ***
 
@@ -697,7 +697,7 @@ date d, and applying it to d+7 gives the DAYNAME following absolute date d.
 
 #### Defined in
 
-[hdate.ts:537](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L537)
+[hdate.ts:537](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L537)
 
 ***
 
@@ -723,7 +723,7 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:463](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L463)
+[hdate.ts:463](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L463)
 
 ***
 
@@ -745,7 +745,7 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:497](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L497)
+[hdate.ts:497](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L497)
 
 ***
 
@@ -775,7 +775,7 @@ HDate.fromGematriyaString('כ״ז בְּתַמּוּז תשפ״ג') // 27 Tamuz 
 
 #### Defined in
 
-[hdate.ts:560](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L560)
+[hdate.ts:560](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L560)
 
 ***
 
@@ -802,7 +802,7 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:473](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L473)
+[hdate.ts:473](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L473)
 
 ***
 
@@ -834,7 +834,7 @@ Hebrew date (1-30)
 
 #### Defined in
 
-[hdate.ts:208](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L208)
+[hdate.ts:208](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L208)
 
 ***
 
@@ -854,7 +854,7 @@ Tests if the object is an instance of `HDate`
 
 #### Defined in
 
-[hdate.ts:544](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L544)
+[hdate.ts:544](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L544)
 
 ***
 
@@ -876,7 +876,7 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:446](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L446)
+[hdate.ts:446](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L446)
 
 ***
 
@@ -898,7 +898,7 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:505](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L505)
+[hdate.ts:505](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L505)
 
 ***
 
@@ -918,7 +918,7 @@ Converts Hebrew month string name to numeric
 
 #### Defined in
 
-[hdate.ts:520](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L520)
+[hdate.ts:520](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L520)
 
 ***
 
@@ -940,7 +940,7 @@ A number, or Hebrew month name string
 
 #### Defined in
 
-[hdate.ts:481](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L481)
+[hdate.ts:481](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L481)
 
 ***
 
@@ -962,7 +962,7 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:454](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L454)
+[hdate.ts:454](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L454)
 
 ***
 
@@ -984,4 +984,4 @@ Hebrew year
 
 #### Defined in
 
-[hdate.ts:513](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate.ts#L513)
+[hdate.ts:513](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate.ts#L513)

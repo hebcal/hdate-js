@@ -59,4 +59,4 @@ const anniversary = getYahrzeit(5780, dt); // '2/25/2020' == '30 Sh\'vat 5780'
 
 ## Defined in
 
-[anniversary.ts:86](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/anniversary.ts#L86)
+[anniversary.ts:86](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/anniversary.ts#L86)

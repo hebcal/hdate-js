@@ -29,4 +29,4 @@ a string such as `Today is 10 days, which is 1 week and 3 days of the Omer`
 
 ## Defined in
 
-[omer.ts:91](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/omer.ts#L91)
+[omer.ts:91](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/omer.ts#L91)

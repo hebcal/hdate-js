@@ -21,4 +21,4 @@ Similar to `string.padStart(2, '0')`.
 
 ## Defined in
 
-[dateFormat.ts:77](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/dateFormat.ts#L77)
+[dateFormat.ts:77](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/dateFormat.ts#L77)

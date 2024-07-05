@@ -22,4 +22,4 @@ Calculates the molad for a Hebrew month
 
 ## Defined in
 
-[molad.ts:24](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/molad.ts#L24)
+[molad.ts:24](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/molad.ts#L24)

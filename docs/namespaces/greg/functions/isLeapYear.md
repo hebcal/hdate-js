@@ -22,4 +22,4 @@ Gregorian year
 
 ## Defined in
 
-[greg.ts:51](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/greg.ts#L51)
+[greg.ts:51](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/greg.ts#L51)

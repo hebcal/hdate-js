@@ -22,4 +22,4 @@ Hebrew year
 
 ## Defined in
 
-[hdate-base.ts:191](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/hdate-base.ts#L191)
+[hdate-base.ts:191](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/hdate-base.ts#L191)

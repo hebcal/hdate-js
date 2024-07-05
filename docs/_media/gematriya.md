@@ -33,4 +33,4 @@ gematriya(1123) // 'א׳קכ״ג'
 
 ## Defined in
 
-[gematriya.ts:68](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/gematriya.ts#L68)
+[gematriya.ts:68](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/gematriya.ts#L68)

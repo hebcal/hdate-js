@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[anniversary.ts:183](https://github.com/hebcal/hdate-js/blob/285f3b584b6b2fae587a29ebff92389be73806cb/src/anniversary.ts#L183)
+[anniversary.ts:183](https://github.com/hebcal/hdate-js/blob/0598d33c365bb80f37dc49c0f800617668c63a8d/src/anniversary.ts#L183)
