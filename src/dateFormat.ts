@@ -2,8 +2,6 @@ const _formatters = new Map();
 
 /**
  * @private
- * @param {string} tzid
- * @return {Intl.DateTimeFormat}
  */
 function getFormatter(tzid: string): Intl.DateTimeFormat {
   const fmt = _formatters.get(tzid);
@@ -28,9 +26,6 @@ const dateFormatRegex = /^(\d+).(\d+).(\d+),?\s+(\d+).(\d+).(\d+)/;
  * Returns a string similar to `Date.toISOString()` but in the
  * timezone `tzid`. Contrary to the typical meaning of `Z` at the end
  * of the string, this is not actually a UTC date. 
- * @param {string} tzid
- * @param {Date} date
- * @return {string}
  */
 export function getPseudoISO(tzid: string, date: Date): string {
   const str = getFormatter(tzid).format(date);
@@ -48,9 +43,6 @@ export function getPseudoISO(tzid: string, date: Date): string {
 
 /**
  * Returns number of minutes `tzid` is offset from UTC on date `date`.
- * @param {string} tzid
- * @param {Date} date
- * @return {number}
  */
 export function getTimezoneOffset(tzid: string, date: Date): number {
   const utcStr = getPseudoISO('UTC', date);
@@ -64,8 +56,6 @@ export function getTimezoneOffset(tzid: string, date: Date): number {
  * Similar to `string.padStart(4, '0')` but will also format
  * negative numbers similar to how the JavaScript date formats
  * negative year numbers (e.g. `-37` is formatted as `-000037`).
- * @param {number} number
- * @return {string}
  */
 export function pad4(number: number): string {
   if (number < 0) {
@@ -83,8 +73,6 @@ export function pad4(number: number): string {
 /**
  * Formats a number with leading zeros so the resulting string is 2 digits long.
  * Similar to `string.padStart(2, '0')`.
- * @param {number} number
- * @return {string}
  */
 export function pad2(number: number): string {
   if (number < 10) {
@@ -95,9 +83,6 @@ export function pad2(number: number): string {
 
 /**
  * Returns YYYY-MM-DD in the local timezone
- * @private
- * @param {Date} dt
- * @return {string}
  */
 export function isoDateString(dt: Date): string {
   return (

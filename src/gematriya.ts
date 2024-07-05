@@ -33,7 +33,7 @@ for (const [key, val] of Object.entries(alefbet)) {
 }
 
 function num2digits(num: number): number[] {
-  const digits = [];
+  const digits: number[] = [];
   while (num > 0) {
     if (num === 15 || num === 16) {
       digits.push(9);
@@ -64,8 +64,6 @@ function num2digits(num: number): number[] {
  * gematriya(60) // 'ס׳'
  * gematriya(3761) // 'ג׳תשס״א'
  * gematriya(1123) // 'א׳קכ״ג'
- * @param {number} num
- * @return {string}
  */
 export function gematriya(num: number | string): string {
   const num0 = <string>num;
@@ -101,9 +99,6 @@ export function gematriya(num: number | string): string {
  * Only considers the value of Hebrew letters `א` through `ת`.
  * Ignores final Hebrew letters such as `ך` (kaf sofit) or `ם` (mem sofit)
  * and vowels (nekudot).
- *
- * @param {string} str
- * @return {number}
  */
 export function gematriyaStrToNum(str: string): number {
   let num = 0;

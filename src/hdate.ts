@@ -31,10 +31,6 @@ import {greg} from './greg';
 import {gematriya, gematriyaStrToNum,} from './gematriya';  
 import {Locale} from './locale';
 
-function throwTypeError(msg: string): void {
-  throw new TypeError(msg);
-}
-
 // eslint-disable-next-line require-jsdoc
 function mod(x: number, y: number): number {
   return x - y * Math.floor(x / y);
@@ -83,12 +79,12 @@ export class HDate {
    * const hd5 = new HDate(733359); // ==> 15 Cheshvan 5769
    * const monthName = 'אייר';
    * const hd6 = new HDate(5, monthName, 5773);
-   * @param {number|Date|HDate} [day] - Day of month (1-30) if a `number`.
+   * @param [day] - Day of month (1-30) if a `number`.
    *   If a `Date` is specified, represents the Hebrew date corresponding to the
    *   Gregorian date using local time.
    *   If an `HDate` is specified, clones a copy of the given Hebrew date.
-   * @param {number|string} [month] - Hebrew month of year (1=NISAN, 7=TISHREI)
-   * @param {number} [year] - Hebrew year
+   * @param [month] - Hebrew month of year (1=NISAN, 7=TISHREI)
+   * @param [year] - Hebrew year
    */
   constructor(day?: number|Date|HDate|SimpleHebrewDate|undefined, month?: number|string, year?: number) {
     if (arguments.length === 2 || arguments.length > 3) {
@@ -133,7 +129,6 @@ export class HDate {
 
   /**
    * Gets the Hebrew year of this Hebrew date
-   * @return {number}
    */
   getFullYear(): number {
     return this.yy;
@@ -141,7 +136,6 @@ export class HDate {
 
   /**
    * Tests if this date occurs during a leap year
-   * @return {boolean}
    */
   isLeapYear(): boolean {
     return isLeapYear(this.yy);
@@ -149,7 +143,6 @@ export class HDate {
 
   /**
    * Gets the Hebrew month (1=NISAN, 7=TISHREI) of this Hebrew date
-   * @return {number}
    */
   getMonth(): number {
     return this.mm;
@@ -157,7 +150,6 @@ export class HDate {
 
   /**
    * The Tishrei-based month of the date. 1 is Tishrei, 7 is Nisan, 13 is Elul in a leap year
-   * @return {number}
    */
   getTishreiMonth(): number {
     const nummonths = monthsInYear(this.getFullYear());
@@ -166,7 +158,6 @@ export class HDate {
 
   /**
    * Number of days in the month of this Hebrew date
-   * @return {number}
    */
   daysInMonth(): number {
     return daysInMonth(this.getMonth(), this.getFullYear());
@@ -174,7 +165,6 @@ export class HDate {
 
   /**
    * Gets the day within the month (1-30)
-   * @return {number}
    */
   getDate(): number {
     return this.dd;
@@ -182,7 +172,6 @@ export class HDate {
 
   /**
    * Gets the day of the week. 0=Sunday, 6=Saturday
-   * @return {number}
    */
   getDay(): number {
     return mod(this.abs(), 7);
@@ -190,7 +179,6 @@ export class HDate {
 
   /**
    * Converts to Gregorian date
-   * @return {Date}
    */
   greg(): Date {
     return greg.abs2greg(this.abs());
@@ -201,7 +189,6 @@ export class HDate {
    * R.D. 1 == Monday, January 1, 1 (Gregorian)
    * Note also that R.D. = Julian Date − 1,721,424.5
    * https://en.wikipedia.org/wiki/Rata_Die#Dershowitz_and_Reingold
-   * @return {number}
    */
   abs(): number {
     if (typeof this.rd !== 'number') {
@@ -214,10 +201,9 @@ export class HDate {
    * Converts Hebrew date to R.D. (Rata Die) fixed days.
    * R.D. 1 is the imaginary date Monday, January 1, 1 on the Gregorian
    * Calendar.
-   * @param {number} year Hebrew year
-   * @param {number} month Hebrew month
-   * @param {number} day Hebrew date (1-30)
-   * @return {number}
+   * @param year Hebrew year
+   * @param month Hebrew month
+   * @param day Hebrew date (1-30)
    */
   static hebrew2abs(year: number, month: number, day: number): number {
     return hebrew2abs(year, month, day);
@@ -225,7 +211,6 @@ export class HDate {
 
   /**
    * Returns a transliterated Hebrew month name, e.g. `'Elul'` or `'Cheshvan'`.
-   * @return {string}
    */
   getMonthName(): string {
     return getMonthName(this.getMonth(), this.getFullYear());
@@ -240,9 +225,8 @@ export class HDate {
    * const hd = new HDate(15, months.CHESHVAN, 5769);
    * console.log(hd.render('en')); // '15th of Cheshvan, 5769'
    * console.log(hd.render('he')); // '15 חֶשְׁוָן, 5769'
-   * @param {string} [locale] Optional locale name (defaults to active locale).
-   * @param {boolean} [showYear=true] Display year (defaults to true).
-   * @return {string}
+   * @param [locale] Optional locale name (defaults to active locale).
+   * @param [showYear=true] Display year (defaults to true).
    */
   render(locale?: string, showYear: boolean=true): string {
     const locale0 = locale || Locale.getLocaleName();
@@ -266,8 +250,6 @@ export class HDate {
    * import {HDate, months} from '@hebcal/hdate';
    * const hd = new HDate(15, months.CHESHVAN, 5769);
    * console.log(hd.renderGematriya()); // 'ט״ו חֶשְׁוָן תשס״ט'
-   * @param {boolean} [suppressNikud]
-   * @return {string}
    */
   renderGematriya(suppressNikud: boolean=false): string {
     const d = this.getDate();
@@ -282,8 +264,7 @@ export class HDate {
    * Sunday=0, Saturday=6
    * @example
    * new HDate(new Date('Wednesday February 19, 2014')).before(6).greg() // Sat Feb 15 2014
-   * @param {number} dow day of week
-   * @return {HDate}
+   * @param dow day of week
    */
   before(dow: number): HDate {
     return onOrBefore(dow, this, -1);
@@ -296,8 +277,7 @@ export class HDate {
    * new HDate(new Date('Wednesday February 19, 2014')).onOrBefore(6).greg() // Sat Feb 15 2014
    * new HDate(new Date('Saturday February 22, 2014')).onOrBefore(6).greg() // Sat Feb 22 2014
    * new HDate(new Date('Sunday February 23, 2014')).onOrBefore(6).greg() // Sat Feb 22 2014
-   * @param {number} dow day of week
-   * @return {HDate}
+   * @param dow day of week
    */
   onOrBefore(dow: number): HDate {
     return onOrBefore(dow, this, 0);
@@ -309,8 +289,7 @@ export class HDate {
    * @example
    * new HDate(new Date('Wednesday February 19, 2014')).nearest(6).greg() // Sat Feb 22 2014
    * new HDate(new Date('Tuesday February 18, 2014')).nearest(6).greg() // Sat Feb 15 2014
-   * @param {number} dow day of week
-   * @return {HDate}
+   * @param dow day of week
    */
   nearest(dow: number): HDate {
     return onOrBefore(dow, this, 3);
@@ -323,8 +302,7 @@ export class HDate {
    * new HDate(new Date('Wednesday February 19, 2014')).onOrAfter(6).greg() // Sat Feb 22 2014
    * new HDate(new Date('Saturday February 22, 2014')).onOrAfter(6).greg() // Sat Feb 22 2014
    * new HDate(new Date('Sunday February 23, 2014')).onOrAfter(6).greg() // Sat Mar 01 2014
-   * @param {number} dow day of week
-   * @return {HDate}
+   * @param dow day of week
    */
   onOrAfter(dow: number): HDate {
     return onOrBefore(dow, this, 6);
@@ -337,8 +315,7 @@ export class HDate {
    * new HDate(new Date('Wednesday February 19, 2014')).after(6).greg() // Sat Feb 22 2014
    * new HDate(new Date('Saturday February 22, 2014')).after(6).greg() // Sat Mar 01 2014
    * new HDate(new Date('Sunday February 23, 2014')).after(6).greg() // Sat Mar 01 2014
-   * @param {number} dow day of week
-   * @return {HDate}
+   * @param dow day of week
    */
   after(dow: number): HDate {
     return onOrBefore(dow, this, 7);
@@ -346,7 +323,6 @@ export class HDate {
 
   /**
    * Returns the next Hebrew date
-   * @return {HDate}
    */
   next(): HDate {
     return new HDate(this.abs() + 1);
@@ -354,7 +330,6 @@ export class HDate {
 
   /**
    * Returns the previous Hebrew date
-   * @return {HDate}
    */
   prev(): HDate {
     return new HDate(this.abs() - 1);
@@ -372,9 +347,6 @@ export class HDate {
    * | `week` | `w` | weeks |
    * | `month` | `M` | months |
    * | `year` | `y` | years |
-   * @param {number} amount
-   * @param {string} [units]
-   * @return {HDate}
    */
   add(amount: number | string, units: string='d'): HDate {
     amount = typeof amount === 'string' ? parseInt(amount, 10) : amount as number;
@@ -419,9 +391,6 @@ export class HDate {
    * const hd1 = new HDate(15, months.CHESHVAN, 5769);
    * const hd2 = hd1.add(1, 'weeks'); // 7 Kislev 5769
    * const hd3 = hd1.add(-3, 'M'); // 30 Av 5768
-   * @param {number} amount
-   * @param {string} [units]
-   * @return {HDate}
    */
   subtract(amount: number, units: string='d'): HDate {
     return this.add(amount * -1, units);
@@ -441,8 +410,7 @@ export class HDate {
    * const hd1 = new HDate(25, months.KISLEV, 5770);
    * const hd2 = new HDate(15, months.CHESHVAN, 5769);
    * const days = hd1.deltaDays(hd2); // 394
-   * @param {HDate} other Hebrew date to compare
-   * @return {number}
+   * @param other Hebrew date to compare
    */
   deltaDays(other: HDate): number {
     if (!HDate.isHDate(other)) {
@@ -453,8 +421,7 @@ export class HDate {
 
   /**
    * Compares this date to another date, returning `true` if the dates match.
-   * @param {HDate} other Hebrew date to compare
-   * @return {boolean}
+   * @param other Hebrew date to compare
    */
   isSameDate(other: HDate): boolean {
     if (HDate.isHDate(other)) {
@@ -465,7 +432,6 @@ export class HDate {
     return false;
   }
 
-  /** @return {string} */
   toString(): string {
     const day = this.getDate();
     const fullYear = this.getFullYear();
@@ -475,8 +441,7 @@ export class HDate {
 
   /**
    * Returns true if Hebrew year is a leap year
-   * @param {number} year Hebrew year
-   * @return {boolean}
+   * @param year Hebrew year
    */
   static isLeapYear(year: number): boolean {
     return isLeapYear(year);
@@ -484,8 +449,7 @@ export class HDate {
 
   /**
    * Number of months in this Hebrew year (either 12 or 13 depending on leap year)
-   * @param {number} year Hebrew year
-   * @return {number}
+   * @param year Hebrew year
    */
   static monthsInYear(year: number): number {
     return monthsInYear(year);
@@ -493,9 +457,8 @@ export class HDate {
 
   /**
    * Number of days in Hebrew month in a given year (29 or 30)
-   * @param {number} month Hebrew month (e.g. months.TISHREI)
-   * @param {number} year Hebrew year
-   * @return {number}
+   * @param month Hebrew month (e.g. months.TISHREI)
+   * @param year Hebrew year
    */
   static daysInMonth(month: number, year: number): number {
     return daysInMonth(month, year);
@@ -504,9 +467,8 @@ export class HDate {
   /**
    * Returns a transliterated string name of Hebrew month in year,
    * for example 'Elul' or 'Cheshvan'.
-   * @param {number} month Hebrew month (e.g. months.TISHREI)
-   * @param {number} year Hebrew year
-   * @return {string}
+   * @param month Hebrew month (e.g. months.TISHREI)
+   * @param year Hebrew year
    */
   static getMonthName(month: number, year: number): string {
     return getMonthName(month, year);
@@ -514,8 +476,7 @@ export class HDate {
 
   /**
    * Returns the Hebrew month number (NISAN=1, TISHREI=7)
-   * @param {number|string} month A number, or Hebrew month name string
-   * @return {number}
+   * @param month A number, or Hebrew month name string
    */
   static monthNum(month: number|string): number {
     if (typeof month === 'number') {
@@ -531,8 +492,7 @@ export class HDate {
 
   /**
    * Number of days in the hebrew YEAR
-   * @param {number} year Hebrew year
-   * @return {number}
+   * @param year Hebrew year
    */
   static daysInYear(year: number): number {
     return daysInYear(year);
@@ -540,8 +500,7 @@ export class HDate {
 
   /**
    * true if Cheshvan is long in Hebrew year
-   * @param {number} year Hebrew year
-   * @return {boolean}
+   * @param year Hebrew year
    */
   static longCheshvan(year: number): boolean {
     return longCheshvan(year);
@@ -549,8 +508,7 @@ export class HDate {
 
   /**
    * true if Kislev is short in Hebrew year
-   * @param {number} year Hebrew year
-   * @return {boolean}
+   * @param year Hebrew year
    */
   static shortKislev(year: number): boolean {
     return shortKislev(year);
@@ -558,8 +516,6 @@ export class HDate {
 
   /**
    * Converts Hebrew month string name to numeric
-   * @param {string|number} monthName monthName
-   * @return {number}
    */
   static monthFromName(monthName: string|number): number {
     if (typeof monthName === 'number') {
@@ -577,9 +533,6 @@ export class HDate {
    * absolute day d. Similarly, applying it to d+3 gives the DAYNAME nearest to
    * absolute date d, applying it to d-1 gives the DAYNAME previous to absolute
    * date d, and applying it to d+7 gives the DAYNAME following absolute date d.
-   * @param {number} dayOfWeek
-   * @param {number} absdate
-   * @return {number}
    */
   static dayOnOrBefore(dayOfWeek: number, absdate: number): number {
     return absdate - ((absdate - dayOfWeek) % 7);
@@ -587,8 +540,6 @@ export class HDate {
 
   /**
    * Tests if the object is an instance of `HDate`
-   * @param {any} obj
-   * @return {boolean}
    */
   static isHDate(obj: any): boolean {
     return obj !== null && typeof obj === 'object' &&
@@ -605,9 +556,6 @@ export class HDate {
    *  HDate.fromGematriyaString('כ״ז בְּתַמּוּז תשפ״ג') // 27 Tamuz 5783
    *  HDate.fromGematriyaString('כ׳ סיון תש״ד') // 20 Sivan 5704
    *  HDate.fromGematriyaString('ה׳ אִיָיר תש״ח') // 5 Iyyar 5708
-   * @param {string} str
-   * @param {number} currentThousands
-   * @return {HDate}
    */
   static fromGematriyaString(str: string, currentThousands: number=5000): HDate {
     const parts = str.split(' ').filter((x) => x.length !== 0);
@@ -668,8 +616,7 @@ function getDayOfTranslation(locale: string): string {
 /**
  * Sets the day of the month of the date. Returns the object it was called upon
  * @private
- * @param {number|string} month A number, or Hebrew month name string
- * @return {HDate}
+ * @param month A number, or Hebrew month name string
  */
 function setMonth(hd: HDate, month: number | string): HDate {
   hd.mm = HDate.monthNum(month);

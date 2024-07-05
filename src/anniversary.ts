@@ -21,7 +21,6 @@ const ADAR_II = months.ADAR_II;
 /**
  * Returns true if the object is a SimpleHebrewDate
  * @private
- * @param {Object} obj
  */
 function isSimpleHebrewDate(obj: any): boolean {
   return (
@@ -80,9 +79,9 @@ function toSimpleHebrewDate(
  * import {getYahrzeit} from '@hebcal/hdate';
  * const dt = new Date(2014, 2, 2); // '2014-03-02' == '30 Adar I 5774'
  * const anniversary = getYahrzeit(5780, dt); // '2/25/2020' == '30 Sh\'vat 5780'
- * @param {number} hyear Hebrew year
- * @param {Date | SimpleHebrewDate | number} date Gregorian or Hebrew date of death
- * @return {Date} anniversary occurring in `hyear`
+ * @param hyear Hebrew year
+ * @param date Gregorian or Hebrew date of death
+ * @returns anniversary occurring in `hyear`
  */
 export function getYahrzeit(
   hyear: number,
@@ -166,9 +165,9 @@ export function getYahrzeitHD(
  * import {getBirthdayOrAnniversary} from '@hebcal/hdate';
  * const dt = new Date(2014, 2, 2); // '2014-03-02' == '30 Adar I 5774'
  * const anniversary = getBirthdayOrAnniversary(5780, dt); // '3/26/2020' == '1 Nisan 5780'
- * @param {number} hyear Hebrew year
- * @param {Date | SimpleHebrewDate | number} date Gregorian or Hebrew date of event
- * @return {Date} anniversary occurring in `hyear`
+ * @param hyear Hebrew year
+ * @param date Gregorian or Hebrew date of event
+ * @returns anniversary occurring in `hyear`
  */
 export function getBirthdayOrAnniversary(
   hyear: number,

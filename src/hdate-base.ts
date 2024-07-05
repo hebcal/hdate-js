@@ -94,10 +94,9 @@ function assertNumber(n: any, name: string) {
  * Converts Hebrew date to R.D. (Rata Die) fixed days.
  * R.D. 1 is the imaginary date Monday, January 1, 1 on the Gregorian
  * Calendar.
- * @param {number} year Hebrew year
- * @param {number} month Hebrew month
- * @param {number} day Hebrew date (1-30)
- * @return {number}
+ * @param year Hebrew year
+ * @param month Hebrew month
+ * @param day Hebrew date (1-30)
  */
 export function hebrew2abs(year: number, month: number, day: number): number {
   assertNumber(year, 'year');
@@ -153,8 +152,7 @@ export type SimpleHebrewDate = {
 
 /**
  * Converts absolute R.D. days to Hebrew date
- * @param {number} abs absolute R.D. days
- * @return {SimpleHebrewDate}
+ * @param abs absolute R.D. days
  */
 export function abs2hebrew(abs: number): SimpleHebrewDate {
   assertNumber(abs, 'abs');
@@ -180,8 +178,7 @@ export function abs2hebrew(abs: number): SimpleHebrewDate {
 
 /**
  * Returns true if Hebrew year is a leap year
- * @param {number} year Hebrew year
- * @return {boolean}
+ * @param year Hebrew year
  */
 export function isLeapYear(year: number): boolean {
   return (1 + year * 7) % 19 < 7;
@@ -189,8 +186,7 @@ export function isLeapYear(year: number): boolean {
 
 /**
  * Number of months in this Hebrew year (either 12 or 13 depending on leap year)
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 export function monthsInYear(year: number): number {
   return 12 + +isLeapYear(year); // boolean is cast to 1 or 0
@@ -198,9 +194,8 @@ export function monthsInYear(year: number): number {
 
 /**
  * Number of days in Hebrew month in a given year (29 or 30)
- * @param {number} month Hebrew month (e.g. months.TISHREI)
- * @param {number} year Hebrew year
- * @return {number}
+ * @param month Hebrew month (e.g. months.TISHREI)
+ * @param year Hebrew year
  */
 export function daysInMonth(month: number, year: number): number {
   switch (month) {
@@ -227,8 +222,8 @@ export function daysInMonth(month: number, year: number): number {
 /**
  * Returns a transliterated string name of Hebrew month in year,
  * for example 'Elul' or 'Cheshvan'.
- * @param {number} month Hebrew month (e.g. months.TISHREI)
- * @param {number} year Hebrew year
+ * @param month Hebrew month (e.g. months.TISHREI)
+ * @param year Hebrew year
  */
 export function getMonthName(month: number, year: number): string {
   assertNumber(month, 'month');
@@ -242,8 +237,7 @@ export function getMonthName(month: number, year: number): string {
 /**
  * Days from sunday prior to start of Hebrew calendar to mean
  * conjunction of Tishrei in Hebrew YEAR
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 export function elapsedDays(year: number): number {
   const n = edCache.get(year);
@@ -300,8 +294,7 @@ function elapsedDays0(year: number): number {
  * Number of days in the hebrew YEAR.
  * A common Hebrew calendar year can have a length of 353, 354 or 355 days
  * A leap Hebrew calendar year can have a length of 383, 384 or 385 days
- * @param {number} year Hebrew year
- * @return {number}
+ * @param year Hebrew year
  */
 export function daysInYear(year: number): number {
   return elapsedDays(year + 1) - elapsedDays(year);
@@ -309,8 +302,7 @@ export function daysInYear(year: number): number {
 
 /**
  * true if Cheshvan is long in Hebrew year
- * @param {number} year Hebrew year
- * @return {boolean}
+ * @param year Hebrew year
  */
 export function longCheshvan(year: number): boolean {
   return daysInYear(year) % 10 === 5;
@@ -318,8 +310,7 @@ export function longCheshvan(year: number): boolean {
 
 /**
  * true if Kislev is short in Hebrew year
- * @param {number} year Hebrew year
- * @return {boolean}
+ * @param year Hebrew year
  */
 export function shortKislev(year: number): boolean {
   return daysInYear(year) % 10 === 3;
@@ -327,8 +318,7 @@ export function shortKislev(year: number): boolean {
 
 /**
  * Converts Hebrew month string name to numeric
- * @param {string} monthName monthName
- * @return {number}
+ * @param monthName monthName
  */
 export function monthFromName(monthName: string): number {
   if (typeof monthName === 'number') {

@@ -50,9 +50,8 @@ export class Locale {
   /**
    * Returns translation only if `locale` offers a non-empty translation for `id`.
    * Otherwise, returns `undefined`.
-   * @param {string} id Message ID to translate
-   * @param {string} [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
-   * @return {string}
+   * @param id Message ID to translate
+   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
    */
   static lookupTranslation(id: string, locale?: string): string | undefined {
     const loc = (typeof locale === 'string' && locales.get(locale.toLowerCase())) || activeLocale;
@@ -65,9 +64,8 @@ export class Locale {
 
   /**
    * By default, if no translation was found, returns `id`.
-   * @param {string} id Message ID to translate
-   * @param {string} [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
-   * @return {string}
+   * @param id Message ID to translate
+   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
    */
   static gettext(id: string, locale?: string): string {
     const text = this.lookupTranslation(id, locale);
@@ -79,8 +77,8 @@ export class Locale {
 
   /**
    * Register locale translations.
-   * @param {string} locale Locale name (i.e.: `'he'`, `'fr'`)
-   * @param {LocaleData} data parsed data from a `.po` file.
+   * @param locale Locale name (i.e.: `'he'`, `'fr'`)
+   * @param data parsed data from a `.po` file.
    */
   static addLocale(locale: string, data: LocaleData): void {
     if (typeof locale !== 'string') {
@@ -94,9 +92,9 @@ export class Locale {
 
   /**
    * Adds a translation to `locale`, replacing any previous translation.
-   * @param {string} locale Locale name (i.e: `'he'`, `'fr'`).
-   * @param {string} id Message ID to translate
-   * @param {string | string[]} translation Translation text
+   * @param locale Locale name (i.e: `'he'`, `'fr'`).
+   * @param id Message ID to translate
+   * @param translation Translation text
    */
   static addTranslation(locale: string, id: string, translation: string | string[]): void {
     if (typeof locale !== 'string') {
@@ -122,8 +120,8 @@ export class Locale {
   }
   /**
    * Adds multiple translations to `locale`, replacing any previous translations.
-   * @param {string} locale Locale name (i.e: `'he'`, `'fr'`).
-   * @param {LocaleData} data parsed data from a `.po` file.
+   * @param locale Locale name (i.e: `'he'`, `'fr'`).
+   * @param data parsed data from a `.po` file.
    */
   static addTranslations(locale: string, data: LocaleData) {
     if (typeof locale !== 'string') {
@@ -143,7 +141,7 @@ export class Locale {
    * Activates a locale. Throws an error if the locale has not been previously added.
    * After setting the locale to be used, all strings marked for translations
    * will be represented by the corresponding translation in the specified locale.
-   * @param {string} locale Locale name (i.e: `'he'`, `'fr'`)
+   * @param locale Locale name (i.e: `'he'`, `'fr'`)
    */
   static useLocale(locale: string): StringArrayMap {
     const locale0 = locale.toLowerCase();
@@ -158,7 +156,6 @@ export class Locale {
 
   /**
    * Returns the name of the active locale (i.e. 'he', 'ashkenazi', 'fr')
-   * @return {string}
    */
   static getLocaleName(): string {
     return activeName;
@@ -166,7 +163,6 @@ export class Locale {
 
   /**
    * Returns the names of registered locales
-   * @return {string[]}
    */
   static getLocaleNames(): string[] {
     const keys = Array.from(locales.keys());
@@ -174,9 +170,8 @@ export class Locale {
   }
 
   /**
-   * @param {number} n
-   * @param {string} [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
-   * @return {string}
+   * Renders a number in ordinal, such as 1st, 2nd or 3rd
+   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
    */
   static ordinal(n: number, locale?: string): string {
     const locale1 = locale?.toLowerCase();
@@ -204,12 +199,7 @@ export class Locale {
     }
   }
 
-  /**
-   * @private
-   * @param {number} n
-   * @return {string}
-   */
-  static getEnOrdinal(n: number): string {
+  private static getEnOrdinal(n: number): string {
     const s = ['th', 'st', 'nd', 'rd'];
     const v = n % 100;
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
@@ -217,8 +207,6 @@ export class Locale {
 
   /**
    * Removes nekudot from Hebrew string
-   * @param {string} str
-   * @return {string}
    */
   static hebrewStripNikkud(str: string): string {
     return str.replace(/[\u0590-\u05bd]/g, '').replace(/[\u05bf-\u05c7]/g, '');

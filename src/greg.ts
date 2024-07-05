@@ -46,8 +46,7 @@ const ABS_2SEP1752 = 639785;
 export namespace greg {
   /**
    * Returns true if the Gregorian year is a leap year
-   * @param {number} year Gregorian year
-   * @return {boolean}
+   * @param year Gregorian year
    */
   export function isLeapYear(year: number): boolean {
     return !(year % 4) && (!!(year % 100) || !(year % 400));
@@ -55,9 +54,8 @@ export namespace greg {
 
   /**
    * Number of days in the Gregorian month for given year
-   * @param {number} month Gregorian month (1=January, 12=December)
-   * @param {number} year Gregorian year
-   * @return {number}
+   * @param month Gregorian month (1=January, 12=December)
+   * @param year Gregorian year
    */
   export function daysInMonth(month: number, year: number): number {
     // 1 based months
@@ -66,8 +64,6 @@ export namespace greg {
 
   /**
    * Returns true if the object is a Javascript Date
-   * @param {Object} obj
-   * @return {boolean}
    */
   export function isDate(obj: any): boolean {
     // eslint-disable-next-line no-prototype-builtins
@@ -95,8 +91,7 @@ export namespace greg {
 
   /**
    * Converts Gregorian date to absolute R.D. (Rata Die) days
-   * @param {Date} date Gregorian date
-   * @return {number}
+   * @param date Gregorian date
    */
   export function greg2abs(date: Date): number {
     if (!isDate(date)) {
@@ -121,8 +116,7 @@ export namespace greg {
    * Three Historical Calendars'' by E. M. Reingold,  N. Dershowitz, and S. M.
    * Clamen, Software--Practice and Experience, Volume 23, Number 4
    * (April, 1993), pages 383-404 for an explanation.
-   * @param {number} abs - R.D. number of days
-   * @return {Date}
+   * @param abs - R.D. number of days
    */
   export function abs2greg(abs: number): Date {
     if (typeof abs !== 'number') {
