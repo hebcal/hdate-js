@@ -197,7 +197,7 @@ export class HDate {
    * @returns an integer 1-13
    * @example
    * const hd = new HDate(new Date(2008, 10, 13)); // 15 Cheshvan 5769
-   * hd.getMonth(); // 2
+   * hd.getTishreiMonth(); // 2
    */
   getTishreiMonth(): number {
     const nummonths = monthsInYear(this.getFullYear());
