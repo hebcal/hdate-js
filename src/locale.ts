@@ -12,7 +12,7 @@ export interface StringArrayMap {
 
 export interface LocaleData {
   headers: Headers;
-  contexts: { [key: string]: StringArrayMap };
+  contexts: {[key: string]: StringArrayMap};
 }
 
 const noopLocale: LocaleData = {
@@ -25,9 +25,9 @@ interface StringProps {
 }
 
 const alias: StringProps = {
-  'h': 'he',
-  'a': 'ashkenazi',
-  's': 'en',
+  h: 'he',
+  a: 'ashkenazi',
+  s: 'en',
   '': 'en',
 };
 
@@ -54,7 +54,9 @@ export class Locale {
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
    */
   static lookupTranslation(id: string, locale?: string): string | undefined {
-    const loc = (typeof locale === 'string' && locales.get(locale.toLowerCase())) || activeLocale;
+    const loc =
+      (typeof locale === 'string' && locales.get(locale.toLowerCase())) ||
+      activeLocale;
     const array = loc[id];
     if (array?.length && array[0].length) {
       return array[0];
@@ -84,7 +86,10 @@ export class Locale {
     if (typeof locale !== 'string') {
       throw new TypeError(`Invalid locale name: ${locale}`);
     }
-    if (typeof data.contexts !== 'object' || typeof data.contexts[''] !== 'object') {
+    if (
+      typeof data.contexts !== 'object' ||
+      typeof data.contexts[''] !== 'object'
+    ) {
       throw new TypeError(`Locale '${locale}' invalid compact format`);
     }
     locales.set(locale.toLowerCase(), data.contexts['']);
@@ -96,7 +101,11 @@ export class Locale {
    * @param id Message ID to translate
    * @param translation Translation text
    */
-  static addTranslation(locale: string, id: string, translation: string | string[]): void {
+  static addTranslation(
+    locale: string,
+    id: string,
+    translation: string | string[]
+  ): void {
     if (typeof locale !== 'string') {
       throw new TypeError(`Invalid locale name: ${locale}`);
     }
@@ -131,7 +140,10 @@ export class Locale {
     if (!loc) {
       throw new TypeError(`Unknown locale: ${locale}`);
     }
-    if (typeof data.contexts !== 'object' || typeof data.contexts[''] !== 'object') {
+    if (
+      typeof data.contexts !== 'object' ||
+      typeof data.contexts[''] !== 'object'
+    ) {
       throw new TypeError(`Locale '${locale}' invalid compact format`);
     }
     const ctx = data.contexts[''];

@@ -8,7 +8,7 @@ import {
   longCheshvan,
   SimpleHebrewDate,
 } from './hdate-base';
-import { abs2greg, greg2abs, isDate } from './greg';
+import {abs2greg, greg2abs, isDate} from './greg';
 
 const NISAN = months.NISAN;
 const CHESHVAN = months.CHESHVAN;

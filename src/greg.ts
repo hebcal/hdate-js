@@ -44,99 +44,95 @@ const ABS_2SEP1752 = 639785;
  * Formerly in namespace, now top-level
  */
 
-  /**
-   * Returns true if the Gregorian year is a leap year
-   * @param year Gregorian year
-   */
-  export function isGregLeapYear(year: number): boolean {
-    return !(year % 4) && (!!(year % 100) || !(year % 400));
-  }
+/**
+ * Returns true if the Gregorian year is a leap year
+ * @param year Gregorian year
+ */
+export function isGregLeapYear(year: number): boolean {
+  return !(year % 4) && (!!(year % 100) || !(year % 400));
+}
 
-  /**
-   * Number of days in the Gregorian month for given year
-   * @param month Gregorian month (1=January, 12=December)
-   * @param year Gregorian year
-   */
-  export function daysInGregMonth(month: number, year: number): number {
-    // 1 based months
-    return monthLengths[+isGregLeapYear(year)][month];
-  }
+/**
+ * Number of days in the Gregorian month for given year
+ * @param month Gregorian month (1=January, 12=December)
+ * @param year Gregorian year
+ */
+export function daysInGregMonth(month: number, year: number): number {
+  // 1 based months
+  return monthLengths[+isGregLeapYear(year)][month];
+}
 
-  /**
-   * Returns true if the object is a Javascript Date
-   */
-  export function isDate(obj: any): boolean {
-    // eslint-disable-next-line no-prototype-builtins
-    return typeof obj === 'object' && Date.prototype.isPrototypeOf(obj);
-  }
+/**
+ * Returns true if the object is a Javascript Date
+ */
+export function isDate(obj: any): boolean {
+  // eslint-disable-next-line no-prototype-builtins
+  return typeof obj === 'object' && Date.prototype.isPrototypeOf(obj);
+}
 
-  /**
-   * @private
-   * @param year
-   * @param month (1-12)
-   * @param day (1-31)
-   */
-  function toFixed(year: number, month: number, day: number): number {
-    const py: number = year - 1;
-    return (
-      365 * py +
-      quotient(py, 4) -
-      quotient(py, 100) +
-      quotient(py, 400) +
-      quotient(367 * month - 362, 12) +
-      (month <= 2 ? 0 : isGregLeapYear(year) ? -1 : -2) +
-      day
-    );
-  }
+/**
+ * @private
+ * @param year
+ * @param month (1-12)
+ * @param day (1-31)
+ */
+function toFixed(year: number, month: number, day: number): number {
+  const py: number = year - 1;
+  return (
+    365 * py +
+    quotient(py, 4) -
+    quotient(py, 100) +
+    quotient(py, 400) +
+    quotient(367 * month - 362, 12) +
+    (month <= 2 ? 0 : isGregLeapYear(year) ? -1 : -2) +
+    day
+  );
+}
 
-  /**
-   * Converts Gregorian date to absolute R.D. (Rata Die) days
-   * @param date Gregorian date
-   */
-  export function greg2abs(date: Date): number {
-    if (!isDate(date)) {
-      throw new TypeError(`Argument not a Date: ${date}`);
-    }
-    const abs = toFixed(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate()
-    );
-    /*
+/**
+ * Converts Gregorian date to absolute R.D. (Rata Die) days
+ * @param date Gregorian date
+ */
+export function greg2abs(date: Date): number {
+  if (!isDate(date)) {
+    throw new TypeError(`Argument not a Date: ${date}`);
+  }
+  const abs = toFixed(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  /*
     if (abs < ABS_14SEP1752 && abs > ABS_2SEP1752) {
       throw new RangeError(`Invalid Date: ${date}`);
     }
     */
-    return abs;
-  }
+  return abs;
+}
 
-  /**
-   * Converts from Rata Die (R.D. number) to Gregorian date.
-   * See the footnote on page 384 of ``Calendrical Calculations, Part II:
-   * Three Historical Calendars'' by E. M. Reingold,  N. Dershowitz, and S. M.
-   * Clamen, Software--Practice and Experience, Volume 23, Number 4
-   * (April, 1993), pages 383-404 for an explanation.
-   * @param abs - R.D. number of days
-   */
-  export function abs2greg(abs: number): Date {
-    if (typeof abs !== 'number') {
-      throw new TypeError(`Argument not a Number: ${abs}`);
-    }
-    abs = Math.trunc(abs);
-    /*
+/**
+ * Converts from Rata Die (R.D. number) to Gregorian date.
+ * See the footnote on page 384 of ``Calendrical Calculations, Part II:
+ * Three Historical Calendars'' by E. M. Reingold,  N. Dershowitz, and S. M.
+ * Clamen, Software--Practice and Experience, Volume 23, Number 4
+ * (April, 1993), pages 383-404 for an explanation.
+ * @param abs - R.D. number of days
+ */
+export function abs2greg(abs: number): Date {
+  if (typeof abs !== 'number') {
+    throw new TypeError(`Argument not a Number: ${abs}`);
+  }
+  abs = Math.trunc(abs);
+  /*
     if (abs < ABS_14SEP1752 && abs > ABS_2SEP1752) {
       throw new RangeError(`Invalid Date: ${abs}`);
     }
     */
-    const year: number = yearFromFixed(abs);
-    const priorDays: number = abs - toFixed(year, 1, 1);
-    const correction: number =
-      abs < toFixed(year, 3, 1) ? 0 : isGregLeapYear(year) ? 1 : 2;
-    const month: number = quotient(12 * (priorDays + correction) + 373, 367);
-    const day: number = abs - toFixed(year, month, 1) + 1;
-    const dt: Date = new Date(year, month - 1, day);
-    if (year < 100 && year >= 0) {
-      dt.setFullYear(year);
-    }
-    return dt;
+  const year: number = yearFromFixed(abs);
+  const priorDays: number = abs - toFixed(year, 1, 1);
+  const correction: number =
+    abs < toFixed(year, 3, 1) ? 0 : isGregLeapYear(year) ? 1 : 2;
+  const month: number = quotient(12 * (priorDays + correction) + 373, 367);
+  const day: number = abs - toFixed(year, month, 1) + 1;
+  const dt: Date = new Date(year, month - 1, day);
+  if (year < 100 && year >= 0) {
+    dt.setFullYear(year);
   }
+  return dt;
+}

@@ -76,7 +76,7 @@ test('daysInYear', () => {
 });
 
 test('daysInYear2', () => {
-  const actual = {};
+  const actual: {[key: string]: number} = {};
   for (let year = 1; year <= 9999; year++) {
     const days = daysInYear(year);
     if (actual[days]) {

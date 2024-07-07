@@ -258,7 +258,7 @@ test('adar2-nonleap', () => {
 });
 
 // eslint-disable-next-line require-jsdoc
-function hd2iso(hd) {
+function hd2iso(hd: HDate) {
   return isoDateString(hd.greg());
 }
 

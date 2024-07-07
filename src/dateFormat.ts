@@ -25,7 +25,7 @@ const dateFormatRegex = /^(\d+).(\d+).(\d+),?\s+(\d+).(\d+).(\d+)/;
 /**
  * Returns a string similar to `Date.toISOString()` but in the
  * timezone `tzid`. Contrary to the typical meaning of `Z` at the end
- * of the string, this is not actually a UTC date. 
+ * of the string, this is not actually a UTC date.
  */
 export function getPseudoISO(tzid: string, date: Date): string {
   const str = getFormatter(tzid).format(date);
