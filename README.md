@@ -16,3 +16,5 @@ const date = new Date(2008, 10, 13); // 13 November 2008
 const abs = greg.greg2abs(date);
 const hdate = abs2hebrew(abs); // {yy: 5769, mm: CHESHVAN, dd: 15}
 ```
+
+## [API Documentation](https://hebcal.github.io/api/hdate/index.html)
