@@ -454,7 +454,8 @@ export class HDate {
         this.getMonth(),
         this.getFullYear() + amount
       );
-    } else if (units === UNITS_MONTH) {
+    } else {
+      // units === UNITS_MONTH
       let hd = new HDate(this);
       const sign = amount > 0 ? 1 : -1;
       amount = Math.abs(amount);
@@ -462,8 +463,6 @@ export class HDate {
         hd = new HDate(hd.abs() + sign * hd.daysInMonth());
       }
       return hd;
-    } else {
-      throw new TypeError(`Invalid units '${units}'`);
     }
   }
 
@@ -507,9 +506,6 @@ export class HDate {
    * @param other Hebrew date to compare
    */
   deltaDays(other: HDate): number {
-    if (!HDate.isHDate(other)) {
-      throw new TypeError(`Bad argument: ${other}`);
-    }
     return this.abs() - other.abs();
   }
 
@@ -522,12 +518,7 @@ export class HDate {
    * hd1.isSameDate(hd2); // true
    */
   isSameDate(other: HDate): boolean {
-    if (HDate.isHDate(other)) {
-      return (
-        this.yy === other.yy && this.mm === other.mm && this.dd === other.dd
-      );
-    }
-    return false;
+    return this.yy === other.yy && this.mm === other.mm && this.dd === other.dd;
   }
 
   /**

@@ -25,6 +25,15 @@ test('daysInMonth', () => {
   expect(HDate.daysInMonth(KISLEV, 5784)).toBe(29);
 });
 
+test('daysInMonth-instance', () => {
+  expect(new HDate(3, IYYAR, 5780).daysInMonth()).toBe(29);
+  expect(new HDate(3, SIVAN, 5780).daysInMonth()).toBe(30);
+  expect(new HDate(3, CHESHVAN, 5782).daysInMonth()).toBe(29);
+  expect(new HDate(3, CHESHVAN, 5783).daysInMonth()).toBe(30);
+  expect(new HDate(3, KISLEV, 5783).daysInMonth()).toBe(30);
+  expect(new HDate(3, KISLEV, 5784).daysInMonth()).toBe(29);
+});
+
 test('ctor-mdy', () => {
   let d = new HDate(29, CHESHVAN, 5769);
   let dt = d.greg(); // 2008-11-27
@@ -115,6 +124,42 @@ test('ctor-copy', () => {
   expect(d5.abs()).toBe(d6.abs());
 });
 
+test('isLeapYear', () => {
+  expect(new HDate(15, 'Cheshvan', 5783).isLeapYear()).toBe(false);
+  expect(new HDate(15, 'Cheshvan', 5784).isLeapYear()).toBe(true);
+});
+
+test('isLeapYear-static', () => {
+  expect(HDate.isLeapYear(5783)).toBe(false);
+  expect(HDate.isLeapYear(5784)).toBe(true);
+});
+
+test('monthsInYear', () => {
+  expect(HDate.monthsInYear(5783)).toBe(12);
+  expect(HDate.monthsInYear(5784)).toBe(13);
+});
+
+test('daysInYear', () => {
+  expect(HDate.daysInYear(5783)).toBe(355);
+  expect(HDate.daysInYear(5784)).toBe(383);
+});
+
+test('longCheshvan', () => {
+  expect(HDate.longCheshvan(5783)).toBe(true);
+  expect(HDate.longCheshvan(5784)).toBe(false);
+});
+
+test('shortKislev', () => {
+  expect(HDate.shortKislev(5783)).toBe(false);
+  expect(HDate.shortKislev(5784)).toBe(true);
+});
+
+test('throws-ctor-1-NaN', () => {
+  expect(() => {
+    new HDate(NaN);
+  }).toThrow('HDate called with bad argument: NaN');
+});
+
 test('throws-ctor-2', () => {
   expect(() => {
     new HDate(17, 'Cheshvan');
@@ -135,6 +180,21 @@ test('throws-ctor-NaN', () => {
   }).toThrow( 'Invalid month number: NaN');
 });
 
+test('getTishreiMonth', () => {
+  const hd = new HDate(15, 'Cheshvan', 5769);
+  expect(hd.getTishreiMonth()).toBe(2);
+});
+
+test('hebrew2abs', () => {
+  expect(HDate.hebrew2abs(5769, CHESHVAN, 15)).toBe(733359);
+});
+
+test('throws-invalid-units', () => {
+  expect(() => {
+    new HDate(NaN, 'Sivan', 5780);
+  }).toThrow('HDate called with bad day argument: NaN');
+
+});
 
 test('toString', () => {
   const d = new HDate(new Date(1751, 0, 1));
@@ -153,7 +213,7 @@ test('renderGematriya-suppressNikud', () => {
 });
 
 test('render', () => {
-  const hd = new HDate(15, months.CHESHVAN, 5769);
+  const hd = new HDate(15, CHESHVAN, 5769);
   expect(hd.render('')).toBe('15th of Cheshvan, 5769');
   expect(hd.render('en')).toBe('15th of Cheshvan, 5769');
   expect(hd.render('s')).toBe('15th of Cheshvan, 5769');
@@ -170,7 +230,7 @@ test('render', () => {
 });
 
 test('render-shvat', () => {
-  const hd = new HDate(15, months.SHVAT, 5789);
+  const hd = new HDate(15, SHVAT, 5789);
   expect(hd.render('')).toBe('15th of Sh’vat, 5789');
   expect(hd.render('en')).toBe('15th of Sh’vat, 5789');
   expect(hd.render('s')).toBe('15th of Sh’vat, 5789');
@@ -185,7 +245,7 @@ test('render-shvat', () => {
 
 
 test('render-tevet-ashkenazi', () => {
-  const hd = new HDate(3, months.TEVET, 5769);
+  const hd = new HDate(3, TEVET, 5769);
   expect(hd.render('en', false)).toBe('3rd of Tevet');
   expect(hd.render('s', false)).toBe('3rd of Tevet');
   expect(hd.render('ashkenazi', false)).toBe('3rd of Teves');
@@ -226,6 +286,18 @@ test('monthFromName', () => {
       HDate.monthFromName(sample);
     }).toThrow(`Unable to parse month name: ${sample}`);
   }
+
+  expect(() => {
+    HDate.monthFromName(25);
+  }).toThrow(`Invalid month name: 25`);
+
+  expect(() => {
+    HDate.monthFromName(-1);
+  }).toThrow(`Invalid month name: -1`);
+
+  expect(() => {
+    HDate.monthFromName(NaN);
+  }).toThrow(`Invalid month name: NaN`);
 });
 
 test('getMonthName-throws', () => {
@@ -336,6 +408,11 @@ test('add', () => {
   expect(hd.getDate()).toBe(7);
   expect(hd.getFullYear()).toBe(5769);
 
+  hd = cheshvan29.add(1, 'w');
+  expect(hd.getMonth()).toBe(KISLEV);
+  expect(hd.getDate()).toBe(7);
+  expect(hd.getFullYear()).toBe(5769);
+
   hd = cheshvan29.add(-3, 'Days');
   expect(hd.getMonth()).toBe(CHESHVAN);
   expect(hd.getDate()).toBe(26);
@@ -427,12 +504,13 @@ test('deltaDays', () => {
 });
 
 test('throws-invalid-units', () => {
-
+  const hd = new HDate(29, CHESHVAN, 5769);
   expect(() => {
-
-    const hd = new HDate(29, CHESHVAN, 5769);
-    hd.add(1, 'foobar');
-  }).toThrow('Invalid units \'foobar\'');
+    hd.add(1, 'x');
+  }).toThrow('Invalid units \'x\'');
+  expect(() => {
+    hd.subtract(1, 'zs');
+  }).toThrow('Invalid units \'zs\'');
 });
 
 test('fromGematriyaString', () => {
@@ -451,6 +529,12 @@ test('fromGematriyaString Adar I', () => {
 test('fromGematriyaString whitespace', () => {
   expect(HDate.fromGematriyaString(' ה׳     אִיָיר   תש״ח').toString()).toBe('5 Iyyar 5708');
   expect(HDate.fromGematriyaString('ה  באדר   א תשי"ט ').toString()).toBe('5 Adar I 5719');
+});
+
+test('fromGematriyaString-throws', () => {
+  expect(() => {
+    HDate.fromGematriyaString('abc def ghi jkl mno pqr');
+  }).toThrow('Unable to parse gematriya string: "abc def ghi jkl mno pqr"');
 });
 
 test('HDate-rollover-leap', () => {
