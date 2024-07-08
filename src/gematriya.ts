@@ -68,8 +68,8 @@ function num2digits(num: number): number[] {
 export function gematriya(num: number | string): string {
   const num0 = <string>num;
   const num1 = parseInt(num0, 10);
-  if (!num1) {
-    throw new TypeError(`invalid parameter to gematriya ${num}`);
+  if (!num1 || num1 < 0) {
+    throw new TypeError(`invalid gematriya number: ${num}`);
   }
   let str = '';
   const thousands = Math.floor(num1 / 1000);

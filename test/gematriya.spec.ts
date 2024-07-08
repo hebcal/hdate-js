@@ -49,3 +49,15 @@ test('gematriyaStrToNum-thousands', () => {
   expect(gematriyaStrToNum('א׳קכ״ג')).toBe(1123);
   expect(gematriyaStrToNum('ז׳ז׳')).toBe(7007);
 });
+
+test('throws-0', () => {
+  expect(() => {
+    gematriya(NaN);
+  }).toThrow('invalid gematriya number: NaN');
+  expect(() => {
+    gematriya(0);
+  }).toThrow('invalid gematriya number: 0');
+  expect(() => {
+    gematriya(-34);
+  }).toThrow('invalid gematriya number: -34');
+});
