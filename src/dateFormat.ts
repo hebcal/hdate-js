@@ -57,28 +57,28 @@ export function getTimezoneOffset(tzid: string, date: Date): number {
  * negative numbers similar to how the JavaScript date formats
  * negative year numbers (e.g. `-37` is formatted as `-000037`).
  */
-export function pad4(number: number): string {
-  if (number < 0) {
-    return '-00' + pad4(-number);
-  } else if (number < 10) {
-    return '000' + number;
-  } else if (number < 100) {
-    return '00' + number;
-  } else if (number < 1000) {
-    return '0' + number;
+export function pad4(num: number): string {
+  if (num < 0) {
+    return '-00' + pad4(-num);
+  } else if (num < 10) {
+    return '000' + num;
+  } else if (num < 100) {
+    return '00' + num;
+  } else if (num < 1000) {
+    return '0' + num;
   }
-  return String(number);
+  return String(num);
 }
 
 /**
  * Formats a number with leading zeros so the resulting string is 2 digits long.
  * Similar to `string.padStart(2, '0')`.
  */
-export function pad2(number: number): string {
-  if (number < 10) {
-    return '0' + number;
+export function pad2(num: number): string {
+  if (num >= 0 && num < 10) {
+    return '0' + num;
   }
-  return String(number);
+  return String(num);
 }
 
 /**
