@@ -106,3 +106,16 @@ test('ctor-hdate', () => {
   expect(anniversary).toBeDefined();
   expect(anniversary).toEqual({dd: 23, mm: 3, yy: 5782});
 });
+
+test('getYahrzeitHD-num', () => {
+  const yahrzeit = getYahrzeitHD(5782, 733373);
+  expect(yahrzeit).toBeDefined();
+  expect(yahrzeit).toEqual({dd: 29, mm: 8, yy: 5782});
+});
+
+test('getBirthdayHD-same', () => {
+  const birth = {dd: 23, mm: months.SIVAN, yy: 5735};
+  const anniversary = getBirthdayHD(5735, birth);
+  expect(anniversary).toBeDefined();
+  expect(anniversary).toEqual({dd: 23, mm: 3, yy: 5735});
+});

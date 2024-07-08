@@ -32,21 +32,20 @@ function isSimpleHebrewDate(obj: any): boolean {
   );
 }
 
+export type AnniversaryDate = Date | SimpleHebrewDate | number;
+
 /**
  * @private
  */
-function toSimpleHebrewDate(
-  obj: Date | SimpleHebrewDate | number
-): SimpleHebrewDate {
+function toSimpleHebrewDate(obj: AnniversaryDate): SimpleHebrewDate {
   if (isSimpleHebrewDate(obj)) {
     return obj as SimpleHebrewDate;
-  } else if (typeof obj === 'number') {
-    return abs2hebrew(obj);
   } else if (isDate(obj)) {
     const abs = greg2abs(obj as Date);
     return abs2hebrew(abs);
   } else {
-    throw new TypeError(`Argument not a Date: ${obj}`);
+    // typeof obj === 'number'
+    return abs2hebrew(obj as number);
   }
 }
 
@@ -85,7 +84,7 @@ function toSimpleHebrewDate(
  */
 export function getYahrzeit(
   hyear: number,
-  date: Date | SimpleHebrewDate | number
+  date: AnniversaryDate
 ): Date | undefined {
   const hd = getYahrzeitHD(hyear, date);
   if (typeof hd === 'undefined') {
@@ -96,7 +95,7 @@ export function getYahrzeit(
 
 export function getYahrzeitHD(
   hyear: number,
-  date: Date | SimpleHebrewDate | number
+  date: AnniversaryDate
 ): SimpleHebrewDate | undefined {
   let hDeath = toSimpleHebrewDate(date);
   if (hyear <= hDeath.yy) {
@@ -171,7 +170,7 @@ export function getYahrzeitHD(
  */
 export function getBirthdayOrAnniversary(
   hyear: number,
-  date: Date | SimpleHebrewDate
+  date: AnniversaryDate
 ): Date | undefined {
   const hd = getBirthdayHD(hyear, date);
   if (typeof hd === 'undefined') {
@@ -182,7 +181,7 @@ export function getBirthdayOrAnniversary(
 
 export function getBirthdayHD(
   hyear: number,
-  date: Date | SimpleHebrewDate
+  date: AnniversaryDate
 ): SimpleHebrewDate | undefined {
   const orig = toSimpleHebrewDate(date);
   const origYear = orig.yy;
