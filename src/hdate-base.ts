@@ -4,15 +4,15 @@
 
 const NISAN = 1;
 const IYYAR = 2;
-// const SIVAN = 3;
+const SIVAN = 3;
 const TAMUZ = 4;
-// const AV = 5;
+const AV = 5;
 const ELUL = 6;
 const TISHREI = 7;
 const CHESHVAN = 8;
 const KISLEV = 9;
 const TEVET = 10;
-// const SHVAT = 11;
+const SHVAT = 11;
 const ADAR_I = 12;
 const ADAR_II = 13;
 
@@ -23,32 +23,32 @@ const ADAR_II = 13;
  */
 export const months = {
   /** Nissan / ניסן */
-  NISAN: 1,
+  NISAN,
   /** Iyyar / אייר */
-  IYYAR: 2,
+  IYYAR,
   /** Sivan / סיון */
-  SIVAN: 3,
+  SIVAN,
   /** Tamuz (sometimes Tammuz) / תמוז */
-  TAMUZ: 4,
+  TAMUZ,
   /** Av / אב */
-  AV: 5,
+  AV,
   /** Elul / אלול */
-  ELUL: 6,
+  ELUL,
   /** Tishrei / תִּשְׁרֵי */
-  TISHREI: 7,
+  TISHREI,
   /** Cheshvan / חשון */
-  CHESHVAN: 8,
+  CHESHVAN,
   /** Kislev / כסלו */
-  KISLEV: 9,
+  KISLEV,
   /** Tevet / טבת */
-  TEVET: 10,
+  TEVET,
   /** Sh'vat / שבט */
-  SHVAT: 11,
+  SHVAT,
   /** Adar or Adar Rishon / אדר */
-  ADAR_I: 12,
+  ADAR_I,
   /** Adar Sheini (only on leap years) / אדר ב׳ */
-  ADAR_II: 13,
-};
+  ADAR_II,
+} as const;
 
 const monthNames0: string[] = [
   '',
@@ -63,7 +63,7 @@ const monthNames0: string[] = [
   'Kislev',
   'Tevet',
   "Sh'vat",
-];
+] as const;
 
 /**
  * Transliterations of Hebrew month names.
@@ -73,7 +73,7 @@ const monthNames0: string[] = [
 const monthNames: string[][] = [
   monthNames0.concat(['Adar', 'Nisan']),
   monthNames0.concat(['Adar I', 'Adar II', 'Nisan']),
-];
+] as const;
 
 const edCache: Map<number, number> = new Map<number, number>();
 
@@ -360,23 +360,23 @@ export function monthFromName(monthName: string): number {
       if (c[1] === 'o') {
         break; /* this catches "november" */
       }
-      return months.NISAN;
+      return NISAN;
     case 'i':
-      return months.IYYAR;
+      return IYYAR;
     case 'e':
-      return months.ELUL;
+      return ELUL;
     case 'c':
     case 'ח':
-      return months.CHESHVAN;
+      return CHESHVAN;
     case 'k':
     case 'כ':
-      return months.KISLEV;
+      return KISLEV;
     case 's':
       switch (c[1]) {
         case 'i':
-          return months.SIVAN;
+          return SIVAN;
         case 'h':
-          return months.SHVAT;
+          return SHVAT;
         default:
           break;
       }
@@ -384,11 +384,11 @@ export function monthFromName(monthName: string): number {
     case 't':
       switch (c[1]) {
         case 'a':
-          return months.TAMUZ;
+          return TAMUZ;
         case 'i':
-          return months.TISHREI;
+          return TISHREI;
         case 'e':
-          return months.TEVET;
+          return TEVET;
         default:
           break;
       }
@@ -396,35 +396,35 @@ export function monthFromName(monthName: string): number {
     case 'a':
       switch (c[1]) {
         case 'v':
-          return months.AV;
+          return AV;
         case 'd':
           if (/(1|[^i]i|a|א)$/i.test(monthName)) {
-            return months.ADAR_I;
+            return ADAR_I;
           }
-          return months.ADAR_II; // else assume sheini
+          return ADAR_II; // else assume sheini
         default:
           break;
       }
       break;
     case 'ס':
-      return months.SIVAN;
+      return SIVAN;
     case 'ט':
-      return months.TEVET;
+      return TEVET;
     case 'ש':
-      return months.SHVAT;
+      return SHVAT;
     case 'א':
       switch (c[1]) {
         case 'ב':
-          return months.AV;
+          return AV;
         case 'ד':
           if (/(1|[^i]i|a|א)$/i.test(monthName)) {
-            return months.ADAR_I;
+            return ADAR_I;
           }
-          return months.ADAR_II; // else assume sheini
+          return ADAR_II; // else assume sheini
         case 'י':
-          return months.IYYAR;
+          return IYYAR;
         case 'ל':
-          return months.ELUL;
+          return ELUL;
         default:
           break;
       }
@@ -432,9 +432,9 @@ export function monthFromName(monthName: string): number {
     case 'ת':
       switch (c[1]) {
         case 'מ':
-          return months.TAMUZ;
+          return TAMUZ;
         case 'ש':
-          return months.TISHREI;
+          return TISHREI;
         default:
           break;
       }

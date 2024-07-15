@@ -41,7 +41,7 @@ const sefirot = {
       'Malkhut',
     ],
   },
-};
+} as const;
 
 function checkDay(omerDay: number): void {
   if (omerDay < 1 || omerDay > 49) {

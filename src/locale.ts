@@ -18,7 +18,7 @@ export interface LocaleData {
 const noopLocale: LocaleData = {
   headers: {'plural-forms': 'nplurals=2; plural=(n!=1);'},
   contexts: {'': {}},
-};
+} as const;
 
 interface StringProps {
   [key: string]: string;
@@ -29,7 +29,7 @@ const alias: StringProps = {
   a: 'ashkenazi',
   s: 'en',
   '': 'en',
-};
+} as const;
 
 /** @private */
 const locales = new Map<string, StringArrayMap>();
@@ -247,5 +247,5 @@ for (const [key, val] of Object.entries(heStrs)) {
 const poHeNoNikud: LocaleData = {
   headers: poHe.headers,
   contexts: {'': heNoNikud},
-};
+} as const;
 Locale.addLocale('he-x-NoNikud', poHeNoNikud);

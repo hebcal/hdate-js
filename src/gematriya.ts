@@ -24,7 +24,7 @@ const alefbet = {
   ר: 200,
   ש: 300,
   ת: 400,
-};
+} as const;
 const heb2num = new Map<string, number>();
 const num2heb = new Map<number, string>();
 for (const [key, val] of Object.entries(alefbet)) {
