@@ -5,6 +5,7 @@ export * from './anniversary';
 export * from './gematriya';
 export * from './omer';
 export * from './molad';
+export * from './pad';
 export * from './dateFormat';
 export * from './locale';
 export {HDate} from './hdate';
