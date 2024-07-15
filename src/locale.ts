@@ -38,6 +38,31 @@ let activeLocale: StringArrayMap;
 /** @private */
 let activeName: string;
 
+/** @private */
+function getEnOrdinal(n: number): string {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+/** @private */
+function checkLocale(locale: string): string {
+  if (typeof locale !== 'string') {
+    throw new TypeError(`Invalid locale name: ${locale}`);
+  }
+  return locale.toLowerCase();
+}
+
+/** @private */
+function getExistingLocale(locale: string): StringArrayMap {
+  const locale1 = checkLocale(locale);
+  const loc = locales.get(locale1);
+  if (!loc) {
+    throw new RangeError(`Locale '${locale}' not found`);
+  }
+  return loc;
+}
+
 /**
  * A locale in Hebcal is used for translations/transliterations of
  * holidays. `@hebcal/hdate` supports four locales by default
@@ -83,16 +108,14 @@ export class Locale {
    * @param data parsed data from a `.po` file.
    */
   static addLocale(locale: string, data: LocaleData): void {
-    if (typeof locale !== 'string') {
-      throw new TypeError(`Invalid locale name: ${locale}`);
-    }
+    locale = checkLocale(locale);
     if (
       typeof data.contexts !== 'object' ||
       typeof data.contexts[''] !== 'object'
     ) {
       throw new TypeError(`Locale '${locale}' invalid compact format`);
     }
-    locales.set(locale.toLowerCase(), data.contexts['']);
+    locales.set(locale, data.contexts['']);
   }
 
   /**
@@ -106,15 +129,9 @@ export class Locale {
     id: string,
     translation: string | string[]
   ): void {
-    if (typeof locale !== 'string') {
-      throw new TypeError(`Invalid locale name: ${locale}`);
-    }
-    const loc = locales.get(locale.toLowerCase());
-    if (!loc) {
-      throw new TypeError(`Unknown locale: ${locale}`);
-    }
+    const loc = getExistingLocale(locale);
     if (typeof id !== 'string' || id.length === 0) {
-      throw new TypeError(`Invalid id: ${id}`);
+      throw new TypeError(`Invalid id string: ${id}`);
     }
     const isArray = Array.isArray(translation);
     if (isArray) {
@@ -123,7 +140,7 @@ export class Locale {
         throw new TypeError(`Invalid translation array: ${translation}`);
       }
     } else if (typeof translation !== 'string') {
-      throw new TypeError(`Invalid translation: ${translation}`);
+      throw new TypeError(`Invalid translation string: ${translation}`);
     }
     loc[id] = isArray ? translation : [translation];
   }
@@ -133,13 +150,7 @@ export class Locale {
    * @param data parsed data from a `.po` file.
    */
   static addTranslations(locale: string, data: LocaleData) {
-    if (typeof locale !== 'string') {
-      throw new TypeError(`Invalid locale name: ${locale}`);
-    }
-    const loc = locales.get(locale.toLowerCase());
-    if (!loc) {
-      throw new TypeError(`Unknown locale: ${locale}`);
-    }
+    const loc = getExistingLocale(locale);
     if (
       typeof data.contexts !== 'object' ||
       typeof data.contexts[''] !== 'object'
@@ -156,11 +167,8 @@ export class Locale {
    * @param locale Locale name (i.e: `'he'`, `'fr'`)
    */
   static useLocale(locale: string): StringArrayMap {
-    const locale0 = locale.toLowerCase();
-    const obj = locales.get(locale0);
-    if (!obj) {
-      throw new RangeError(`Locale '${locale}' not found`);
-    }
+    const locale0 = checkLocale(locale);
+    const obj = getExistingLocale(locale0);
     activeName = alias[locale0] || locale0;
     activeLocale = obj;
     return activeLocale;
@@ -189,17 +197,13 @@ export class Locale {
     const locale1 = locale?.toLowerCase();
     const locale0 = locale1 || activeName;
     if (!locale0) {
-      return this.getEnOrdinal(n);
+      return getEnOrdinal(n);
     }
     switch (locale0) {
       case 'en':
       case 's':
       case 'a':
-      case 'ashkenazi':
-      case 'ashkenazi_litvish':
-      case 'ashkenazi_poylish':
-      case 'ashkenazi_standard':
-        return this.getEnOrdinal(n);
+        return getEnOrdinal(n);
       case 'es':
         return n + 'º';
       case 'h':
@@ -207,14 +211,12 @@ export class Locale {
       case 'he-x-nonikud':
         return String(n);
       default:
-        return n + '.';
+        break;
     }
-  }
-
-  private static getEnOrdinal(n: number): string {
-    const s = ['th', 'st', 'nd', 'rd'];
-    const v = n % 100;
-    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    if (locale0.startsWith('ashkenazi')) {
+      return getEnOrdinal(n);
+    }
+    return n + '.';
   }
 
   /**
