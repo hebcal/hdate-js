@@ -97,6 +97,8 @@ function assertNumber(n: any, name: string) {
  * @param year Hebrew year
  * @param month Hebrew month
  * @param day Hebrew date (1-30)
+ * @example
+ * const abs = hebrew2abs(5769, months.CHESHVAN, 15);
  */
 export function hebrew2abs(year: number, month: number, day: number): number {
   assertNumber(year, 'year');

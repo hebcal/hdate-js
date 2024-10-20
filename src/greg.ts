@@ -119,8 +119,8 @@ export function greg2abs(date: Date): number {
  * function would return only the date 13 November 2008.
  * @param abs - R.D. number of days
  * @example
- * const hd = new HDate(15, 'Cheshvan', 5769);
- * const date = hd.greg(); // 13 November 2008
+ * const abs = hebrew2abs(5769, months.CHESHVAN, 15);
+ * const date = abs2greg(abs); // 13 November 2008
  * const year = date.getFullYear(); // 2008
  * const monthNum = date.getMonth() + 1; // 11
  * const day = date.getDate(); // 13
