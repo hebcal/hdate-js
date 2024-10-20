@@ -112,7 +112,18 @@ export function greg2abs(date: Date): number {
  * Three Historical Calendars'' by E. M. Reingold,  N. Dershowitz, and S. M.
  * Clamen, Software--Practice and Experience, Volume 23, Number 4
  * (April, 1993), pages 383-404 for an explanation.
+ *
+ * Note that this function returns the daytime portion of the date.
+ * For example, the 15th of Cheshvan 5769 began at sundown on
+ * 12 November 2008 and continues through 13 November 2008. This
+ * function would return only the date 13 November 2008.
  * @param abs - R.D. number of days
+ * @example
+ * const hd = new HDate(15, 'Cheshvan', 5769);
+ * const date = hd.greg(); // 13 November 2008
+ * const year = date.getFullYear(); // 2008
+ * const monthNum = date.getMonth() + 1; // 11
+ * const day = date.getDate(); // 13
  */
 export function abs2greg(abs: number): Date {
   if (typeof abs !== 'number') {

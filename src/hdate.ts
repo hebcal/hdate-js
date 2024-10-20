@@ -242,13 +242,20 @@ export class HDate {
 
   /**
    * Converts this Hebrew date to the corresponding Gregorian date.
+   *
+   * The returned `Date` object will be in the local (i.e. host system) time zone.
+   * Hours, minutes, seconds and milliseconds will all be zero.
+   *
    * Note that this function returns the daytime portion of the date.
    * For example, the 15th of Cheshvan 5769 began at sundown on
    * 12 November 2008 and continues through 13 November 2008. This
    * function would return only the date 13 November 2008.
    * @example
    * const hd = new HDate(15, 'Cheshvan', 5769);
-   * hd.greg(); // 13 November 2008
+   * const date = hd.greg(); // 13 November 2008
+   * const year = date.getFullYear(); // 2008
+   * const monthNum = date.getMonth() + 1; // 11
+   * const day = date.getDate(); // 13
    */
   greg(): Date {
     return abs2greg(this.abs());
