@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "module": "es6",
-    "declaration": false,
+    "declaration": true,
     "target": "es6",
     "sourceMap": false,
     "outDir": "dist/esm",
