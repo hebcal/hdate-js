@@ -1,2 +1,4 @@
 node_modules
 src/*.po.ts
+.rollup.cache/
+dist/
