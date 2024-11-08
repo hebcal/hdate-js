@@ -50,7 +50,7 @@ export const months = {
   ADAR_II,
 } as const;
 
-const monthNames0: string[] = [
+const monthNames0 = [
   '',
   'Nisan',
   'Iyyar',
@@ -70,10 +70,13 @@ const monthNames0: string[] = [
  * Regular years are index 0 and leap years are index 1.
  * @private
  */
-const monthNames: string[][] = [
-  monthNames0.concat(['Adar', 'Nisan']),
-  monthNames0.concat(['Adar I', 'Adar II', 'Nisan']),
+const monthNames = [
+  [...monthNames0, 'Adar', 'Nisan'],
+  [...monthNames0, 'Adar I', 'Adar II', 'Nisan'],
 ] as const;
+
+/** Transliterated Hebrew month names. */
+export type MonthName = (typeof monthNames)[number][number];
 
 const edCache: Map<number, number> = new Map<number, number>();
 
@@ -227,7 +230,7 @@ export function daysInMonth(month: number, year: number): number {
  * @param month Hebrew month (e.g. months.TISHREI)
  * @param year Hebrew year
  */
-export function getMonthName(month: number, year: number): string {
+export function getMonthName(month: number, year: number): MonthName {
   assertNumber(month, 'month');
   assertNumber(year, 'year');
   if (month < 1 || month > 14) {

@@ -19,6 +19,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import {
+  MonthName,
   SimpleHebrewDate,
   abs2hebrew,
   daysInMonth,
@@ -324,7 +325,7 @@ export class HDate {
    * const hd = new HDate(new Date(2008, 10, 13)); // 15 Cheshvan 5769
    * hd.getMonthName(); // 'Cheshvan'
    */
-  getMonthName(): string {
+  getMonthName(): MonthName {
     return getMonthName(this.getMonth(), this.getFullYear());
   }
 
@@ -610,7 +611,7 @@ export class HDate {
    * import {HDate, months} from '@hebcal/hdate';
    * HDate.getMonthName(months.CHESHVAN, 5769); // 'Cheshvan'
    */
-  static getMonthName(month: number, year: number): string {
+  static getMonthName(month: number, year: number): MonthName {
     return getMonthName(month, year);
   }
 
