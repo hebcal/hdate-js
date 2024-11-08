@@ -50,6 +50,32 @@ const UNITS_WEEK = 'week';
 const UNITS_MONTH = 'month';
 const UNITS_YEAR = 'year';
 
+type ToFlexibleUnit<U extends TimeUnit> =
+  | U
+  | `${U}s`
+  | Uppercase<U>
+  | Uppercase<`${U}s`>
+  | Capitalize<U>
+  | Capitalize<`${U}s`>
+  | (U extends 'month' ? 'M' : FirstChar<U>);
+
+type FirstChar<S extends string> = S extends `${infer FirstLetter}${string}`
+  ? FirstLetter
+  : never;
+type Capitalize<S extends string> =
+  S extends `${infer FirstLetter}${infer Rest}`
+    ? `${Uppercase<FirstLetter>}${Rest}`
+    : never;
+
+type TimeUnit =
+  | typeof UNITS_DAY
+  | typeof UNITS_WEEK
+  | typeof UNITS_MONTH
+  | typeof UNITS_YEAR;
+
+/** Units that can be passed to `add()` and similar methods. */
+export type FlexibleTimeUnit = ToFlexibleUnit<TimeUnit>;
+
 /**
  * A `HDate` represents a Hebrew calendar date.
  *
@@ -444,7 +470,7 @@ export class HDate {
    * | `month` | `M` | months |
    * | `year` | `y` | years |
    */
-  add(amount: number | string, units = 'd'): HDate {
+  add(amount: number | string, units: FlexibleTimeUnit = 'd'): HDate {
     amount =
       typeof amount === 'string' ? parseInt(amount, 10) : (amount as number);
     if (!amount) {
@@ -492,7 +518,7 @@ export class HDate {
    * const hd2 = hd1.add(1, 'weeks'); // 7 Kislev 5769
    * const hd3 = hd1.add(-3, 'M'); // 30 Av 5768
    */
-  subtract(amount: number, units = 'd'): HDate {
+  subtract(amount: number, units: FlexibleTimeUnit = 'd'): HDate {
     return this.add(amount * -1, units);
   }
 
@@ -723,7 +749,7 @@ export class HDate {
   }
 }
 
-function standardizeUnits(units: string): string {
+function standardizeUnits(units: FlexibleTimeUnit): TimeUnit {
   switch (units) {
     case 'd':
       return UNITS_DAY;

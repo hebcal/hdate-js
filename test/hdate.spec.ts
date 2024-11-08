@@ -1,5 +1,5 @@
 import {months} from '../src/hdateBase';
-import {HDate} from '../src/hdate';
+import {FlexibleTimeUnit, HDate} from '../src/hdate';
 import {isoDateString} from '../src/dateFormat';
 
 const NISAN = months.NISAN;
@@ -173,11 +173,11 @@ test('throws-ctor-NaN', () => {
 
   expect(() => {
     new HDate(17, 'Sivan', NaN);
-  }).toThrow( 'HDate called with bad year argument: NaN');
+  }).toThrow('HDate called with bad year argument: NaN');
 
   expect(() => {
     new HDate(17, NaN, 5780);
-  }).toThrow( 'Invalid month number: NaN');
+  }).toThrow('Invalid month number: NaN');
 });
 
 test('getTishreiMonth', () => {
@@ -193,7 +193,6 @@ test('throws-invalid-units', () => {
   expect(() => {
     new HDate(NaN, 'Sivan', 5780);
   }).toThrow('HDate called with bad day argument: NaN');
-
 });
 
 test('toString', () => {
@@ -202,14 +201,22 @@ test('toString', () => {
 });
 
 test('renderGematriya', () => {
-  expect(new HDate(17, 'Tamuz', 5748).renderGematriya()).toBe('י״ז תַּמּוּז תשמ״ח');
-  expect(new HDate(20, 'Tishrei', 5780).renderGematriya()).toBe('כ׳ תִּשְׁרֵי תש״פ');
+  expect(new HDate(17, 'Tamuz', 5748).renderGematriya()).toBe(
+    'י״ז תַּמּוּז תשמ״ח'
+  );
+  expect(new HDate(20, 'Tishrei', 5780).renderGematriya()).toBe(
+    'כ׳ תִּשְׁרֵי תש״פ'
+  );
   expect(new HDate(26, 'Tevet', 8008).renderGematriya()).toBe('כ״ו טֵבֵת ח׳ח׳');
 });
 
 test('renderGematriya-suppressNikud', () => {
-  expect(new HDate(17, 'Tamuz', 5748).renderGematriya(false)).toBe('י״ז תַּמּוּז תשמ״ח');
-  expect(new HDate(17, 'Tamuz', 5748).renderGematriya(true)).toBe('י״ז תמוז תשמ״ח');
+  expect(new HDate(17, 'Tamuz', 5748).renderGematriya(false)).toBe(
+    'י״ז תַּמּוּז תשמ״ח'
+  );
+  expect(new HDate(17, 'Tamuz', 5748).renderGematriya(true)).toBe(
+    'י״ז תמוז תשמ״ח'
+  );
 });
 
 test('render', () => {
@@ -243,7 +250,6 @@ test('render-shvat', () => {
   expect(hd.render('ashkenazi', false)).toBe('15th of Sh’vat');
 });
 
-
 test('render-tevet-ashkenazi', () => {
   const hd = new HDate(3, TEVET, 5769);
   expect(hd.render('en', false)).toBe('3rd of Tevet');
@@ -254,25 +260,39 @@ test('render-tevet-ashkenazi', () => {
 
 test('monthFromName', () => {
   const toTest = [
-    NISAN, 'Nisan_nisan_n_N_Nissan_ניסן',
-    IYYAR, 'Iyyar_Iyar_iyyar_iy_אייר',
-    ELUL, 'Elul_elul_אלול',
-    CHESHVAN, 'Cheshvan_cheshvan_חשון',
-    KISLEV, 'Kislev_kislev_כסלו',
-    SIVAN, 'Sivan_sivan_סייון_סיון',
-    SHVAT, 'Shvat_Sh\'vat_Shevat_שבט',
-    TAMUZ, 'Tamuz_Tammuz_תמוז',
-    TISHREI, 'Tishrei_תשרי',
-    TEVET, 'Tevet_טבת',
-    AV, 'Av_אב',
-    ADAR_I, ['Adar I', 'Adar 1', 'AdarI', 'Adar1', 'אדר א', 'אדר 1'],
-    ADAR_II, ['Adar II', 'Adar 2', 'AdarII', 'Adar2', 'אדר', 'אדר ב', 'אדר 2'],
+    NISAN,
+    'Nisan_nisan_n_N_Nissan_ניסן',
+    IYYAR,
+    'Iyyar_Iyar_iyyar_iy_אייר',
+    ELUL,
+    'Elul_elul_אלול',
+    CHESHVAN,
+    'Cheshvan_cheshvan_חשון',
+    KISLEV,
+    'Kislev_kislev_כסלו',
+    SIVAN,
+    'Sivan_sivan_סייון_סיון',
+    SHVAT,
+    "Shvat_Sh'vat_Shevat_שבט",
+    TAMUZ,
+    'Tamuz_Tammuz_תמוז',
+    TISHREI,
+    'Tishrei_תשרי',
+    TEVET,
+    'Tevet_טבת',
+    AV,
+    'Av_אב',
+    ADAR_I,
+    ['Adar I', 'Adar 1', 'AdarI', 'Adar1', 'אדר א', 'אדר 1'],
+    ADAR_II,
+    ['Adar II', 'Adar 2', 'AdarII', 'Adar2', 'אדר', 'אדר ב', 'אדר 2'],
   ];
 
   for (let i = 0; i < toTest.length; i += 2) {
     const monthNum = toTest[i];
     const samples = toTest[i + 1];
-    const arr = typeof samples == 'string' ? samples.split('_') : samples as string[];
+    const arr =
+      typeof samples == 'string' ? samples.split('_') : (samples as string[]);
     for (const input of arr) {
       expect(HDate.monthFromName(input)).toBe(monthNum);
     }
@@ -340,26 +360,48 @@ test('before', () => {
 });
 
 test('onOrBefore', () => {
-  expect(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).onOrBefore(6))).toBe('2014-02-15');
-  expect(hd2iso(new HDate(new Date('Saturday February 22, 2014')).onOrBefore(6))).toBe('2014-02-22');
-  expect(hd2iso(new HDate(new Date('Sunday February 23, 2014')).onOrBefore(6))).toBe('2014-02-22');
+  expect(
+    hd2iso(new HDate(new Date('Wednesday February 19, 2014')).onOrBefore(6))
+  ).toBe('2014-02-15');
+  expect(
+    hd2iso(new HDate(new Date('Saturday February 22, 2014')).onOrBefore(6))
+  ).toBe('2014-02-22');
+  expect(
+    hd2iso(new HDate(new Date('Sunday February 23, 2014')).onOrBefore(6))
+  ).toBe('2014-02-22');
 });
 
 test('nearest', () => {
-  expect(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).nearest(6))).toBe('2014-02-22');
-  expect(hd2iso(new HDate(new Date('Tuesday February 18, 2014')).nearest(6))).toBe('2014-02-15');
+  expect(
+    hd2iso(new HDate(new Date('Wednesday February 19, 2014')).nearest(6))
+  ).toBe('2014-02-22');
+  expect(
+    hd2iso(new HDate(new Date('Tuesday February 18, 2014')).nearest(6))
+  ).toBe('2014-02-15');
 });
 
 test('onOrAfter', () => {
-  expect(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).onOrAfter(6))).toBe('2014-02-22');
-  expect(hd2iso(new HDate(new Date('Saturday February 22, 2014')).onOrAfter(6))).toBe('2014-02-22');
-  expect(hd2iso(new HDate(new Date('Sunday February 23, 2014')).onOrAfter(6))).toBe('2014-03-01');
+  expect(
+    hd2iso(new HDate(new Date('Wednesday February 19, 2014')).onOrAfter(6))
+  ).toBe('2014-02-22');
+  expect(
+    hd2iso(new HDate(new Date('Saturday February 22, 2014')).onOrAfter(6))
+  ).toBe('2014-02-22');
+  expect(
+    hd2iso(new HDate(new Date('Sunday February 23, 2014')).onOrAfter(6))
+  ).toBe('2014-03-01');
 });
 
 test('after', () => {
-  expect(hd2iso(new HDate(new Date('Wednesday February 19, 2014')).after(6))).toBe('2014-02-22');
-  expect(hd2iso(new HDate(new Date('Saturday February 22, 2014')).after(6))).toBe('2014-03-01');
-  expect(hd2iso(new HDate(new Date('Sunday February 23, 2014')).after(6))).toBe('2014-03-01');
+  expect(
+    hd2iso(new HDate(new Date('Wednesday February 19, 2014')).after(6))
+  ).toBe('2014-02-22');
+  expect(
+    hd2iso(new HDate(new Date('Saturday February 22, 2014')).after(6))
+  ).toBe('2014-03-01');
+  expect(hd2iso(new HDate(new Date('Sunday February 23, 2014')).after(6))).toBe(
+    '2014-03-01'
+  );
 });
 
 test('isHDate', () => {
@@ -506,11 +548,11 @@ test('deltaDays', () => {
 test('throws-invalid-units', () => {
   const hd = new HDate(29, CHESHVAN, 5769);
   expect(() => {
-    hd.add(1, 'x');
-  }).toThrow('Invalid units \'x\'');
+    hd.add(1, 'x' as FlexibleTimeUnit);
+  }).toThrow("Invalid units 'x'");
   expect(() => {
-    hd.subtract(1, 'zs');
-  }).toThrow('Invalid units \'zs\'');
+    hd.subtract(1, 'zs' as FlexibleTimeUnit);
+  }).toThrow("Invalid units 'zs'");
 });
 
 test('fromGematriyaString', () => {
