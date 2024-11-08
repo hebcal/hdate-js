@@ -1,6 +1,6 @@
 export * from './greg';
 export {greg} from './gregNamespace';
-export * from './hdate-base';
+export * from './hdateBase';
 export * from './anniversary';
 export * from './gematriya';
 export * from './omer';

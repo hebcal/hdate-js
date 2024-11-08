@@ -7,7 +7,7 @@ import {
   shortKislev,
   longCheshvan,
   SimpleHebrewDate,
-} from './hdate-base';
+} from './hdateBase';
 import {abs2greg, greg2abs, isDate} from './greg';
 
 const NISAN = months.NISAN;

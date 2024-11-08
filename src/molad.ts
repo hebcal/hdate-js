@@ -1,4 +1,4 @@
-import {monthsInYear} from './hdate-base';
+import {monthsInYear} from './hdateBase';
 
 /**
  * Represents a molad, the moment when the new moon is "born"

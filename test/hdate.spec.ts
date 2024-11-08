@@ -1,4 +1,4 @@
-import {months} from '../src/hdate-base';
+import {months} from '../src/hdateBase';
 import {HDate} from '../src/hdate';
 import {isoDateString} from '../src/dateFormat';
 

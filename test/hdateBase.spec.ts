@@ -1,7 +1,7 @@
 import {
   abs2hebrew, daysInMonth, daysInYear, elapsedDays, hebrew2abs,
   isLeapYear, months, getMonthName, monthFromName
-} from '../src/hdate-base';
+} from '../src/hdateBase';
 
 const NISAN = months.NISAN;
 const IYYAR = months.IYYAR;

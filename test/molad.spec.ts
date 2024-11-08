@@ -1,5 +1,5 @@
 import {molad} from '../src/molad';
-import {months} from '../src/hdate-base';
+import {months} from '../src/hdateBase';
 
 test('Molad', () => {
   const items = [

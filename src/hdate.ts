@@ -31,7 +31,7 @@ import {
   months,
   monthsInYear,
   shortKislev,
-} from './hdate-base';
+} from './hdateBase';
 import {abs2greg, greg2abs, isDate} from './greg';
 import {gematriya, gematriyaStrToNum} from './gematriya';
 import {Locale} from './locale';
