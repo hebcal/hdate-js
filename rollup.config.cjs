@@ -7,7 +7,7 @@ const {defineConfig} = require('rollup');
 
 const banner = '/*! ' + pkg.name + ' v' + pkg.version + ' */';
 
-const TARGET_NODE_VER = '16.0.0';
+const TARGET_NODE_VER = '18.0.0';
 
 module.exports = defineConfig([
   {
@@ -48,39 +48,5 @@ module.exports = defineConfig([
       commonjs(),
     ],
     external: [/node_modules/],
-  },
-  {
-    input: 'src/index.ts',
-    output: [{
-      file: pkg.main, 
-      format: 'cjs', 
-      name: pkg.name, 
-      banner, 
-      sourcemap: true,
-    }],
-    plugins: [
-      typescript({
-        tsconfig: 'tsconfig-cjs.json',
-        declaration: true,
-      }),
-      babel({
-        babelHelpers: 'runtime',
-        plugins: ['@babel/plugin-transform-runtime'],
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              modules: false,
-              targets: {
-                node: TARGET_NODE_VER,
-              },
-            },
-          ],
-        ],
-        exclude: ['node_modules/**'],
-      }),
-      nodeResolve(),
-      commonjs(),
-    ],
   },
 ]);
