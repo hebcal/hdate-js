@@ -165,6 +165,7 @@ export class Locale {
    * After setting the locale to be used, all strings marked for translations
    * will be represented by the corresponding translation in the specified locale.
    * @param locale Locale name (i.e: `'he'`, `'fr'`)
+   * @deprecated
    */
   static useLocale(locale: string): StringArrayMap {
     const locale0 = checkLocale(locale);
@@ -176,6 +177,7 @@ export class Locale {
 
   /**
    * Returns the name of the active locale (i.e. 'he', 'ashkenazi', 'fr')
+   * @deprecated
    */
   static getLocaleName(): string {
     return activeName;
