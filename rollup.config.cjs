@@ -1,5 +1,4 @@
 const {nodeResolve} = require('@rollup/plugin-node-resolve');
-const commonjs = require('@rollup/plugin-commonjs');
 const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const pkg = require('./package.json');
@@ -45,7 +44,6 @@ module.exports = defineConfig([
         exclude: ['node_modules/**'],
       }),
       nodeResolve(),
-      commonjs(),
     ],
     external: [/node_modules/],
   },
