@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {omerSefira, omerTodayIs, omerEmoji} from '../src/omer';
 
 test('sefira', () => {

@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {gematriya, gematriyaStrToNum} from '../src/gematriya';
 
 test('gematriya', () => {

@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {greg} from '../src/gregNamespace';
 
 function ymd(date: Date) {

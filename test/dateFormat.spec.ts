@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import { getPseudoISO, getTimezoneOffset } from '../src/dateFormat';
 
 test('getPseudoISO-2021', () => {

@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import {expect, test} from 'vitest';
 import {months} from '../src/hdateBase';
 import {
   getYahrzeit, getBirthdayOrAnniversary,

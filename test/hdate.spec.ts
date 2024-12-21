@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {months} from '../src/hdateBase';
 import {FlexibleTimeUnit, HDate} from '../src/hdate';
 import {isoDateString} from '../src/dateFormat';

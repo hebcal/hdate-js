@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import { pad2, pad4 } from '../src/pad';
 
 test('pad2', () => {
