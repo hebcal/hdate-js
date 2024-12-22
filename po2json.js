@@ -9,10 +9,20 @@ for (const arg of process.argv.slice(2)) {
   writePoFile(arg, outpath);
 }
 
+function assertHeader(name, value) {
+  if (!value) {
+    throw new Error(`Bad .po file. "${name}" header is missing`);
+  }
+}
+
 function writePoFile(inpath, outpath) {
   const input = fs.readFileSync(inpath).toString().normalize();
   const poData = po.parse(input);
-
+  const pluralHeader =
+    poData.headers['plural-forms'] || poData.headers['Plural-Forms'];
+  const language = poData.headers.language || poData.headers.Language;
+  assertHeader('Plural-Forms', pluralHeader);
+  assertHeader('Language', language);
   const dict = {};
   for (const msg of Object.values(poData.translations[''])) {
     const msgid = msg.msgid;
@@ -23,21 +33,11 @@ function writePoFile(inpath, outpath) {
   }
   const compactPo = {
     headers: {
-      'plural-forms': '',
-      language: 'en',
+      'plural-forms': pluralHeader,
+      language: language,
     },
-    contexts: {
-      '': dict,
-    },
+    contexts: {'': dict},
   };
-  const pluralHeader =
-    poData.headers['plural-forms'] || poData.headers['Plural-Forms'];
-  if (!pluralHeader) {
-    throw new Error('Bad .po file. "Plural-Forms" header is missing ');
-  }
-  compactPo.headers['plural-forms'] = pluralHeader;
-  compactPo.headers.language = poData.headers.language;
-
   const outstream = fs.createWriteStream(outpath, {flags: 'w'});
   outstream.write('export default ');
   outstream.write(JSON.stringify(compactPo, null, 0));
