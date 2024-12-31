@@ -50,9 +50,10 @@ export const months = {
   ADAR_II,
 } as const;
 
+const NISAN_STR = 'Nisan';
 const monthNames0 = [
   '',
-  'Nisan',
+  NISAN_STR,
   'Iyyar',
   'Sivan',
   'Tamuz',
@@ -65,18 +66,32 @@ const monthNames0 = [
   "Sh'vat",
 ] as const;
 
-/**
+/*
  * Transliterations of Hebrew month names.
  * Regular years are index 0 and leap years are index 1.
  * @private
  */
 const monthNames = [
-  [...monthNames0, 'Adar', 'Nisan'],
-  [...monthNames0, 'Adar I', 'Adar II', 'Nisan'],
+  [...monthNames0, 'Adar', NISAN_STR],
+  [...monthNames0, 'Adar I', 'Adar II', NISAN_STR],
 ] as const;
 
 /** Transliterated Hebrew month names. */
-export type MonthName = (typeof monthNames)[number][number];
+export type MonthName =
+  | 'Nisan'
+  | 'Iyyar'
+  | 'Sivan'
+  | 'Tamuz'
+  | 'Av'
+  | 'Elul'
+  | 'Tishrei'
+  | 'Cheshvan'
+  | 'Kislev'
+  | 'Tevet'
+  | "Sh'vat"
+  | 'Adar'
+  | 'Adar I'
+  | 'Adar II';
 
 const edCache: Map<number, number> = new Map<number, number>();
 
@@ -87,7 +102,7 @@ const AVG_HEBYEAR_DAYS = 365.24682220597794;
 /**
  * @private
  */
-function assertNumber(n: any, name: string) {
+function assertNumber(n: unknown, name: string) {
   if (typeof n !== 'number' || isNaN(n)) {
     throw new TypeError(`invalid parameter '${name}' not a number: ${n}`);
   }
@@ -236,7 +251,7 @@ export function getMonthName(month: number, year: number): MonthName {
   if (month < 1 || month > 14) {
     throw new TypeError(`bad month argument ${month}`);
   }
-  return monthNames[+isLeapYear(year)][month];
+  return monthNames[+isLeapYear(year)][month] as MonthName;
 }
 
 /**
