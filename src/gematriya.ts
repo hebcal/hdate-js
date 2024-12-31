@@ -1,7 +1,7 @@
 const GERESH = '׳';
 const GERSHAYIM = '״';
 
-const alefbet = {
+const alefbet: Record<string, number> = {
   א: 1,
   ב: 2,
   ג: 3,
@@ -25,12 +25,10 @@ const alefbet = {
   ש: 300,
   ת: 400,
 } as const;
-const heb2num = new Map<string, number>();
-const num2heb = new Map<number, string>();
-for (const [key, val] of Object.entries(alefbet)) {
-  heb2num.set(key, val);
-  num2heb.set(val, key);
-}
+
+const num2heb = new Map<number, string>(
+  Object.entries(alefbet).map(([key, val]) => [val, key])
+);
 
 function num2digits(num: number): number[] {
   const digits: number[] = [];
@@ -109,7 +107,7 @@ export function gematriyaStrToNum(str: string): number {
     str = str.substring(gereshIdx);
   }
   for (const ch of str) {
-    const n: number | undefined = heb2num.get(ch);
+    const n: number | undefined = alefbet[ch];
     if (typeof n === 'number') {
       num += n;
     }
