@@ -65,9 +65,9 @@ export function daysInGregMonth(month: number, year: number): number {
 /**
  * Returns true if the object is a Javascript Date
  */
-export function isDate(obj: any): boolean {
+export function isDate(obj: unknown): boolean {
   // eslint-disable-next-line no-prototype-builtins
-  return typeof obj === 'object' && Date.prototype.isPrototypeOf(obj);
+  return typeof obj === 'object' && Date.prototype.isPrototypeOf(obj as object);
 }
 
 /**

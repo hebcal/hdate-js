@@ -41,8 +41,7 @@ function mod(x: number, y: number): number {
   return x - y * Math.floor(x / y);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isSimpleHebrewDate(obj: any): obj is SimpleHebrewDate {
+function isSimpleHebrewDate(obj: unknown): obj is SimpleHebrewDate {
   return (obj as SimpleHebrewDate).yy !== undefined;
 }
 
