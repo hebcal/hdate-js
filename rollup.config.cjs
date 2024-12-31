@@ -2,7 +2,9 @@ const typescript = require('@rollup/plugin-typescript');
 const pkg = require('./package.json');
 const {defineConfig} = require('rollup');
 
-const banner = '/*! ' + pkg.name + ' v' + pkg.version + ' */';
+const banner = '/*! ' + pkg.name +
+  ' v' + pkg.version +
+  ', distributed under GPLv2 https://www.gnu.org/licenses/gpl-2.0.txt */';
 
 module.exports = defineConfig([
   {

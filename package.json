@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/hdate",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "converts between Hebrew and Gregorian dates using Rata Die (R.D.) algorithm by Dershowitz and Reingold",
   "author": "Michael J. Radwin (https://github.com/mjradwin)",
   "contributors": [
@@ -45,8 +45,8 @@
     "@types/node": "^22.10.2",
     "gettext-parser": "^8.0.0",
     "gts": "^6.0.2",
-    "rollup": "^4.28.1",
-    "typedoc": "^0.27.5",
+    "rollup": "^4.29.1",
+    "typedoc": "^0.27.6",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }
