@@ -104,7 +104,7 @@ const AVG_HEBYEAR_DAYS = 365.24682220597794;
  */
 function assertNumber(n: unknown, name: string) {
   if (typeof n !== 'number' || isNaN(n)) {
-    throw new TypeError(`invalid parameter '${name}' not a number: ${n}`);
+    throw new TypeError(`param '${name}' not a number: ${n}`);
   }
 }
 
@@ -249,7 +249,7 @@ export function getMonthName(month: number, year: number): MonthName {
   assertNumber(month, 'month');
   assertNumber(year, 'year');
   if (month < 1 || month > 14) {
-    throw new TypeError(`bad month argument ${month}`);
+    throw new TypeError(`bad monthNum: ${month}`);
   }
   return monthNames[+isLeapYear(year)][month] as MonthName;
 }
@@ -343,7 +343,7 @@ export function shortKislev(year: number): boolean {
 export function monthFromName(monthName: string): number {
   if (typeof monthName === 'number') {
     if (isNaN(monthName) || monthName < 1 || monthName > 14) {
-      throw new RangeError(`Invalid month name: ${monthName}`);
+      throw new RangeError(`bad monthName: ${monthName}`);
     }
     return monthName;
   }
@@ -460,5 +460,5 @@ export function monthFromName(monthName: string): number {
       }
       break;
   }
-  throw new RangeError(`Unable to parse month name: ${monthName}`);
+  throw new RangeError(`bad monthName: ${monthName}`);
 }

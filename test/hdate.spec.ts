@@ -158,7 +158,7 @@ test('shortKislev', () => {
 test('throws-ctor-1-NaN', () => {
   expect(() => {
     new HDate(NaN);
-  }).toThrow('HDate called with bad argument: NaN');
+  }).toThrow('HDate called with bad arg: NaN');
 });
 
 test('throws-ctor-2', () => {
@@ -170,15 +170,15 @@ test('throws-ctor-2', () => {
 test('throws-ctor-NaN', () => {
   expect(() => {
     new HDate(NaN, 'Sivan', 5780);
-  }).toThrow('HDate called with bad day argument: NaN');
+  }).toThrow('HDate called with bad day: NaN');
 
   expect(() => {
     new HDate(17, 'Sivan', NaN);
-  }).toThrow('HDate called with bad year argument: NaN');
+  }).toThrow('HDate called with bad year: NaN');
 
   expect(() => {
     new HDate(17, NaN, 5780);
-  }).toThrow('Invalid month number: NaN');
+  }).toThrow('bad monthNum: NaN');
 });
 
 test('getTishreiMonth', () => {
@@ -193,7 +193,7 @@ test('hebrew2abs', () => {
 test('throws-invalid-units', () => {
   expect(() => {
     new HDate(NaN, 'Sivan', 5780);
-  }).toThrow('HDate called with bad day argument: NaN');
+  }).toThrow('HDate called with bad day: NaN');
 });
 
 test('toString', () => {
@@ -305,26 +305,26 @@ test('monthFromName', () => {
   for (const sample of bad) {
     expect(() => {
       HDate.monthFromName(sample);
-    }).toThrow(`Unable to parse month name: ${sample}`);
+    }).toThrow(`bad monthName: ${sample}`);
   }
 
   expect(() => {
     HDate.monthFromName(25);
-  }).toThrow(`Invalid month name: 25`);
+  }).toThrow(`bad monthName: 25`);
 
   expect(() => {
     HDate.monthFromName(-1);
-  }).toThrow(`Invalid month name: -1`);
+  }).toThrow(`bad monthName: -1`);
 
   expect(() => {
     HDate.monthFromName(NaN);
-  }).toThrow(`Invalid month name: NaN`);
+  }).toThrow(`bad monthName: NaN`);
 });
 
 test('getMonthName-throws', () => {
   expect(() => {
     HDate.getMonthName(0, 5780);
-  }).toThrow(`bad month argument 0`);
+  }).toThrow(`bad monthNum: 0`);
 });
 
 test('month14-rollover', () => {
@@ -577,7 +577,7 @@ test('fromGematriyaString whitespace', () => {
 test('fromGematriyaString-throws', () => {
   expect(() => {
     HDate.fromGematriyaString('abc def ghi jkl mno pqr');
-  }).toThrow('Unable to parse gematriya string: "abc def ghi jkl mno pqr"');
+  }).toThrow('cannot parse gematriya str: "abc def ghi jkl mno pqr"');
 });
 
 test('HDate-rollover-leap', () => {

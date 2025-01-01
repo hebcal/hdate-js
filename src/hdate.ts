@@ -148,14 +148,14 @@ export class HDate {
       const yy: number =
         typeof year === 'string' ? parseInt(year, 10) : (year as number);
       if (isNaN(yy)) {
-        throw new TypeError(`HDate called with bad year argument: ${year}`);
+        throw new TypeError(`HDate called with bad year: ${year}`);
       }
       this.yy = yy;
       setMonth(this, month as string | number); // will throw if we can't parse
       const dd: number =
         typeof day === 'string' ? parseInt(day, 10) : (day as number);
       if (isNaN(dd)) {
-        throw new TypeError(`HDate called with bad day argument: ${day}`);
+        throw new TypeError(`HDate called with bad day: ${day}`);
       }
       setDate(this, dd);
     } else {
@@ -173,7 +173,7 @@ export class HDate {
               ? day
               : null;
       if (abs0 === null) {
-        throw new TypeError(`HDate called with bad argument: ${day}`);
+        throw new TypeError(`HDate called with bad arg: ${day}`);
       }
       const isNumber = typeof abs0 === 'number';
       const d: SimpleHebrewDate = isNumber ? abs2hebrew(abs0) : abs0;
@@ -626,7 +626,7 @@ export class HDate {
   static monthNum(month: number | string): number {
     if (typeof month === 'number') {
       if (isNaN(month) || month > 14) {
-        throw new RangeError(`Invalid month number: ${month}`);
+        throw new RangeError(`bad monthNum: ${month}`);
       }
       return month;
     }
@@ -681,7 +681,7 @@ export class HDate {
   static monthFromName(monthName: string | number): number {
     if (typeof monthName === 'number') {
       if (isNaN(monthName) || monthName < 1 || monthName > 14) {
-        throw new RangeError(`Invalid month name: ${monthName}`);
+        throw new RangeError(`bad monthName: ${monthName}`);
       }
       return monthName;
     }
@@ -735,7 +735,7 @@ export class HDate {
     const parts = str.split(' ').filter(x => x.length !== 0);
     const numParts = parts.length;
     if (numParts !== 3 && numParts !== 4) {
-      throw new RangeError(`Unable to parse gematriya string: "${str}"`);
+      throw new RangeError(`cannot parse gematriya str: "${str}"`);
     }
     const day = gematriyaStrToNum(parts[0]);
     const monthStr = numParts === 3 ? parts[1] : parts[1] + ' ' + parts[2];

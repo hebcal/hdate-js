@@ -54,11 +54,11 @@ test('gematriyaStrToNum-thousands', () => {
 test('throws-0', () => {
   expect(() => {
     gematriya(NaN);
-  }).toThrow('invalid gematriya number: NaN');
+  }).toThrow('invalid number: NaN');
   expect(() => {
     gematriya(0);
-  }).toThrow('invalid gematriya number: 0');
+  }).toThrow('invalid number: 0');
   expect(() => {
     gematriya(-34);
-  }).toThrow('invalid gematriya number: -34');
+  }).toThrow('invalid number: -34');
 });

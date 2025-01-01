@@ -154,7 +154,7 @@ test('abs2hebrew-88ce', () => {
 test('throws-abs2hebrew', () => {
   expect(() => {
     abs2hebrew(NaN);
-  }).toThrow('invalid parameter \'abs\' not a number: NaN');
+  }).toThrow('param \'abs\' not a number: NaN');
 });
 
 test('throws-abs2hebrew-before-epoch', () => {
@@ -188,10 +188,10 @@ test('getMonthName', () => {
 test('throws-getMonthName', () => {
   expect(() => {
     getMonthName(NaN, 5780);
-  }).toThrow('invalid parameter \'month\' not a number: NaN');
+  }).toThrow('param \'month\' not a number: NaN');
   expect(() => {
     getMonthName(20, 5780);
-  }).toThrow('bad month argument 20');
+  }).toThrow('bad monthNum: 20');
 });
 
 test('abs2hebrew-1752-reformation', () => {
@@ -238,6 +238,6 @@ test('monthFromName', () => {
   for (const sample of bad) {
     expect(() => {
       monthFromName(sample);
-    }).toThrow(`Unable to parse month name: ${sample}`);
+    }).toThrow(`bad monthName: ${sample}`);
   }
 });

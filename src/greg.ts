@@ -95,7 +95,7 @@ function toFixed(year: number, month: number, day: number): number {
  */
 export function greg2abs(date: Date): number {
   if (!isDate(date)) {
-    throw new TypeError(`Argument not a Date: ${date}`);
+    throw new TypeError(`not a Date: ${date}`);
   }
   const abs = toFixed(date.getFullYear(), date.getMonth() + 1, date.getDate());
   /*
@@ -127,7 +127,7 @@ export function greg2abs(date: Date): number {
  */
 export function abs2greg(abs: number): Date {
   if (typeof abs !== 'number') {
-    throw new TypeError(`Argument not a Number: ${abs}`);
+    throw new TypeError(`not a Number: ${abs}`);
   }
   abs = Math.trunc(abs);
   /*
