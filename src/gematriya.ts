@@ -1,7 +1,7 @@
 const GERESH = '׳';
 const GERSHAYIM = '״';
 
-const alefbet: Record<string, number> = {
+const heb2num: Record<string, number> = {
   א: 1,
   ב: 2,
   ג: 3,
@@ -26,9 +26,10 @@ const alefbet: Record<string, number> = {
   ת: 400,
 } as const;
 
-const num2heb = new Map<number, string>(
-  Object.entries(alefbet).map(([key, val]) => [val, key])
-);
+const num2heb: Record<number, string> = {};
+for (const [key, val] of Object.entries(heb2num)) {
+  num2heb[val] = key;
+}
 
 function num2digits(num: number): number[] {
   const digits: number[] = [];
@@ -64,29 +65,28 @@ function num2digits(num: number): number[] {
  * gematriya(1123) // 'א׳קכ״ג'
  */
 export function gematriya(num: number | string): string {
-  const num0 = <string>num;
-  const num1 = parseInt(num0, 10);
+  const num1 = parseInt(num as string, 10);
   if (!num1 || num1 < 0) {
-    throw new TypeError(`invalid gematriya number: ${num}`);
+    throw new TypeError(`invalid number: ${num}`);
   }
   let str = '';
   const thousands = Math.floor(num1 / 1000);
   if (thousands > 0 && thousands !== 5) {
     const tdigits = num2digits(thousands);
     for (const tdig of tdigits) {
-      str += num2heb.get(tdig);
+      str += num2heb[tdig];
     }
     str += GERESH;
   }
   const digits = num2digits(num1 % 1000);
   if (digits.length === 1) {
-    return str + num2heb.get(digits[0]) + GERESH;
+    return str + num2heb[digits[0]] + GERESH;
   }
   for (let i = 0; i < digits.length; i++) {
     if (i + 1 === digits.length) {
       str += GERSHAYIM;
     }
-    str += num2heb.get(digits[i]);
+    str += num2heb[digits[i]];
   }
   return str;
 }
@@ -107,7 +107,7 @@ export function gematriyaStrToNum(str: string): number {
     str = str.substring(gereshIdx);
   }
   for (const ch of str) {
-    const n: number | undefined = alefbet[ch];
+    const n: number | undefined = heb2num[ch];
     if (typeof n === 'number') {
       num += n;
     }
