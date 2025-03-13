@@ -96,6 +96,8 @@ function toFixed(year: number, month: number, day: number): number {
 export function greg2abs(date: Date): number {
   if (!isDate(date)) {
     throw new TypeError(`not a Date: ${date}`);
+  } else if (isNaN(date.getTime())) {
+    throw new RangeError('Invalid Date');
   }
   const abs = toFixed(date.getFullYear(), date.getMonth() + 1, date.getDate());
   /*
@@ -126,7 +128,7 @@ export function greg2abs(date: Date): number {
  * const day = date.getDate(); // 13
  */
 export function abs2greg(abs: number): Date {
-  if (typeof abs !== 'number') {
+  if (typeof abs !== 'number' || isNaN(abs)) {
     throw new TypeError(`not a Number: ${abs}`);
   }
   abs = Math.trunc(abs);

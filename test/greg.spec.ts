@@ -87,6 +87,18 @@ test('isLeapYear', () => {
   expect(greg.isLeapYear(1980)).toBe(true);
 });
 
+test('NaN-date-throws', () => {
+  expect(() => {
+    console.log(greg.greg2abs(new Date(NaN)));
+  }).toThrow('Invalid Date');
+  expect(() => {
+    console.log(greg.abs2greg('foo' as unknown as number));
+  }).toThrow('not a Number: foo');
+  expect(() => {
+    console.log(greg.abs2greg(NaN));
+  }).toThrow('not a Number: NaN');
+});
+
 test.skip('greg2abs-1752-reformation', () => {
   expect(greg.greg2abs(new Date(1752, 8, 14))).toBe(639797);
   // expect(greg.greg2abs(new Date(1752, 8, 2))).toBe(639796);
