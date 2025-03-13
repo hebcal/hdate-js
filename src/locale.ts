@@ -6,9 +6,7 @@ export interface Headers {
   'plural-forms'?: string;
 }
 
-export interface StringArrayMap {
-  [key: string]: string[];
-}
+export type StringArrayMap = Record<string, string[]>;
 
 export interface LocaleData {
   headers: Headers;
