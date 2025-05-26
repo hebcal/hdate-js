@@ -223,9 +223,7 @@ export class Locale {
    * Removes nekudot from Hebrew string
    */
   static hebrewStripNikkud(str: string): string {
-    let a = str.normalize();
-    // first replace a holam that not followed by a vav with a plain vav
-    a = a.replace(/([^ו])\u05b9/g, '$1ו');
+    const a = str.normalize();
     // now strip out niqqud and trope
     return a.replace(/[\u0590-\u05bd]/g, '').replace(/[\u05bf-\u05c7]/g, '');
   }

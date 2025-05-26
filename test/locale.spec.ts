@@ -96,8 +96,3 @@ test('addTranslations', () => {
   expect(Locale.lookupTranslation('Hello world', 'a')).toBe('Quux');
   expect(Locale.lookupTranslation('Goodbye', 'a')).toBe('World');
 });
-
-test('hebrewStripNikkud-holam', () => {
-  expect(Locale.hebrewStripNikkud('קֹרַח')).toBe('קורח');
-  expect(Locale.hebrewStripNikkud('קוֹרַח')).toBe('קורח');
-});
