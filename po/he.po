@@ -26,7 +26,7 @@ msgid "Elul"
 msgstr "אֱלוּל"
 
 msgid "Iyyar"
-msgstr "אִיָיר"
+msgstr "אִיָּיר"
 
 msgid "Kislev"
 msgstr "כִּסְלֵו"

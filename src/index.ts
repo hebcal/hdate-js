@@ -7,4 +7,4 @@ export * from './molad';
 export * from './pad';
 export * from './dateFormat';
 export * from './locale';
-export {HDate} from './hdate';
+export {HDate, FlexibleTimeUnit} from './hdate';
