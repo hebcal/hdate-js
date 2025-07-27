@@ -8,13 +8,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid "Adar"
-msgstr "אַדָר"
+msgstr "אֲדָר"
 
 msgid "Adar I"
-msgstr "אַדָר א׳"
+msgstr "אֲדָר א׳"
 
 msgid "Adar II"
-msgstr "אַדָר ב׳"
+msgstr "אֲדָר ב׳"
 
 msgid "Av"
 msgstr "אָב"
