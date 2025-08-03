@@ -348,7 +348,9 @@ export function monthFromName(monthName: string | number): number {
     }
     return monthName;
   }
-  let c = hebrewStripNikkud(monthName.trim().toLowerCase());
+  let c = monthName.trim().toLowerCase();
+  // remove all niqud and trailing gershayim (for Adar Alef/Bet)
+  c = hebrewStripNikkud(c).replace(/׳$/, '');
   // If Hebrew month starts with a bet (for example `בתמוז`) then ignore it
   if (c[0] === 'ב') {
     c = c.substring(1);
@@ -419,7 +421,7 @@ export function monthFromName(monthName: string | number): number {
         case 'v':
           return AV;
         case 'd':
-          if (/(1|[^i]i|a|א)$/i.test(monthName)) {
+          if (/(1|[^i]i|a|א)$/i.test(c)) {
             return ADAR_I;
           }
           return ADAR_II; // else assume sheini
@@ -438,7 +440,7 @@ export function monthFromName(monthName: string | number): number {
         case 'ב':
           return AV;
         case 'ד':
-          if (/(1|[^i]i|a|א)$/i.test(monthName)) {
+          if (/(1|[^i]i|a|א)$/i.test(c)) {
             return ADAR_I;
           }
           return ADAR_II; // else assume sheini

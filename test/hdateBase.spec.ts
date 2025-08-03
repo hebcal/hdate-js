@@ -211,7 +211,7 @@ test('hebrew2abs-1752-reformation', () => {
 test('monthFromName', () => {
   const toTest = [
     NISAN, 'Nisan_nisan_n_N_Nissan_ניסן',
-    IYYAR, 'Iyyar_Iyar_iyyar_iy_אייר',
+    IYYAR, ['Iyyar', 'Iyar', 'iyyar', 'iy', 'אייר', "אִיָּיר"],
     ELUL, 'Elul_elul_אלול',
     CHESHVAN, 'Cheshvan_cheshvan_חשון',
     KISLEV, 'Kislev_kislev_כסלו',
@@ -220,9 +220,11 @@ test('monthFromName', () => {
     TAMUZ, 'Tamuz_Tammuz_תמוז',
     TISHREI, 'Tishrei_תשרי',
     TEVET, 'Tevet_טבת',
-    AV, 'Av_אב',
-    ADAR_I, ['Adar I', 'Adar 1', 'AdarI', 'Adar1', 'אדר א', 'אדר 1'],
-    ADAR_II, ['Adar II', 'Adar 2', 'AdarII', 'Adar2', 'אדר', 'אדר ב', 'אדר 2'],
+    AV, ['Av', 'אב', 'אָב'],
+    ADAR_I, ['Adar I', 'Adar 1', 'AdarI', 'Adar1',
+      'אדר א', "אֲדָר א", "אֲדָר א׳", 'אדר 1'],
+    ADAR_II, ['Adar II', 'Adar 2', 'AdarII', 'Adar2',
+      'אדר', 'אֲדָר', "אֲדָר ב", "אֲדָר ב׳", 'אדר ב', 'אדר 2'],
   ];
 
   for (let i = 0; i < toTest.length; i += 2) {
