@@ -1,3 +1,4 @@
+import {hebrewStripNikkud} from './hebrewStripNikkud';
 import poAshkenazi from './ashkenazi.po';
 import poHe from './he.po';
 
@@ -223,9 +224,7 @@ export class Locale {
    * Removes nekudot from Hebrew string
    */
   static hebrewStripNikkud(str: string): string {
-    const a = str.normalize();
-    // now strip out niqqud and trope
-    return a.replace(/[\u0590-\u05bd]/g, '').replace(/[\u05bf-\u05c7]/g, '');
+    return hebrewStripNikkud(str);
   }
 }
 

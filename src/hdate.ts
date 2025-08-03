@@ -632,7 +632,7 @@ export class HDate {
     }
     return month.charCodeAt(0) >= 48 && month.charCodeAt(0) <= 57 /* number */
       ? parseInt(month, 10)
-      : HDate.monthFromName(month);
+      : monthFromName(month);
   }
 
   /**
@@ -679,14 +679,7 @@ export class HDate {
    * HDate.monthFromName('חשון'); // 8
    */
   static monthFromName(monthName: string | number): number {
-    if (typeof monthName === 'number') {
-      if (isNaN(monthName) || monthName < 1 || monthName > 14) {
-        throw new RangeError(`bad monthName: ${monthName}`);
-      }
-      return monthName;
-    }
-    const name = Locale.hebrewStripNikkud(monthName);
-    return monthFromName(name);
+    return monthFromName(monthName);
   }
 
   /**
@@ -739,7 +732,7 @@ export class HDate {
     }
     const day = gematriyaStrToNum(parts[0]);
     const monthStr = numParts === 3 ? parts[1] : parts[1] + ' ' + parts[2];
-    const month = HDate.monthFromName(monthStr);
+    const month = monthFromName(monthStr);
     const yearStr = numParts === 3 ? parts[2] : parts[3];
     let year = gematriyaStrToNum(yearStr);
     if (year < 1000) {

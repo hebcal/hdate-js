@@ -1,6 +1,7 @@
 /*
  * More minimal HDate
  */
+import {hebrewStripNikkud} from './hebrewStripNikkud';
 
 const NISAN = 1;
 const IYYAR = 2;
@@ -340,14 +341,14 @@ export function shortKislev(year: number): boolean {
  * Converts Hebrew month string name to numeric
  * @param monthName monthName
  */
-export function monthFromName(monthName: string): number {
+export function monthFromName(monthName: string | number): number {
   if (typeof monthName === 'number') {
     if (isNaN(monthName) || monthName < 1 || monthName > 14) {
       throw new RangeError(`bad monthName: ${monthName}`);
     }
     return monthName;
   }
-  let c = monthName.trim().toLowerCase();
+  let c = hebrewStripNikkud(monthName.trim().toLowerCase());
   // If Hebrew month starts with a bet (for example `בתמוז`) then ignore it
   if (c[0] === 'ב') {
     c = c.substring(1);
