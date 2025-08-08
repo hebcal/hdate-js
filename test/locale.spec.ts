@@ -96,3 +96,32 @@ test('addTranslations', () => {
   expect(Locale.lookupTranslation('Hello world', 'a')).toBe('Quux');
   expect(Locale.lookupTranslation('Goodbye', 'a')).toBe('World');
 });
+
+test('addTranslation-throws', () => {
+  expect(() => {
+    Locale.addTranslation('a', 'foo', null);
+  }).toThrow('Invalid translation string: null');
+  expect(() => {
+    Locale.addTranslation('a', 'foo', undefined);
+  }).toThrow('Invalid translation string: undefined');
+  expect(() => {
+    Locale.addTranslation('a', 'foo', 123 as any);
+  }).toThrow('Invalid translation string: 123');
+  expect(() => {
+    Locale.addTranslation('a', 'foo', ['']);
+  }).toThrow('Invalid translation array: ');
+  expect(() => {
+    Locale.addTranslation('a', 'foo', [123] as any);
+  }).toThrow('Invalid translation array: 123');
+  expect(() => {
+    Locale.addTranslation('a', '', 'translation');
+  }).toThrow('Invalid id string: ');
+  expect(() => {
+    Locale.addTranslation('a', null, 'translation');
+  }).toThrow('Invalid id string: null');
+});
+
+test('ordinal-ashkenazi-prefix', () => {
+  Locale.addLocale('ashkenazi-custom', { headers: {}, contexts: { '': {} } });
+  expect(Locale.ordinal(3, 'ashkenazi-custom')).toBe('3rd');
+});

@@ -1,5 +1,32 @@
-import {expect, test} from 'vitest';
+import {expect, test, vi} from 'vitest';
 import { getPseudoISO, getTimezoneOffset } from '../src/dateFormat';
+
+test('getPseudoISO-24-hour', () => {
+  const mockFormat = vi.fn().mockReturnValue('03/28/2021, 24:00:00');
+  vi.stubGlobal('Intl', {
+    DateTimeFormat: vi.fn().mockImplementation(() => ({
+      format: mockFormat,
+    })),
+  });
+  const dt = new Date(); // Date doesn't matter as we are mocking
+  const iso = getPseudoISO('America/Chicago', dt);
+  expect(iso).toBe('2021-03-28T00:00:00Z');
+  vi.unstubAllGlobals();
+});
+
+test('getPseudoISO-parse-error', () => {
+  const mockFormat = vi.fn().mockReturnValue('not a date');
+  vi.stubGlobal('Intl', {
+    DateTimeFormat: vi.fn().mockImplementation(() => ({
+      format: mockFormat,
+    })),
+  });
+  const dt = new Date(); // Date doesn't matter as we are mocking
+  expect(() => {
+    getPseudoISO('America/Denver', dt);
+  }).toThrow('Unable to parse formatted string: not a date');
+  vi.unstubAllGlobals();
+});
 
 test('getPseudoISO-2021', () => {
   const dt = new Date(Date.UTC(2021, 0, 31, 7, 30, 50, 551));
