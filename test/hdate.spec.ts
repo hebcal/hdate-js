@@ -140,6 +140,12 @@ test('monthsInYear', () => {
   expect(HDate.monthsInYear(5784)).toBe(13);
 });
 
+test('monthNum', () => {
+  expect(HDate.monthNum('Cheshvan')).toBe(8);
+  expect(HDate.monthNum(8)).toBe(8);
+  expect(HDate.monthNum('8')).toBe(8);
+});
+
 test('daysInYear', () => {
   expect(HDate.daysInYear(5783)).toBe(355);
   expect(HDate.daysInYear(5784)).toBe(383);
@@ -257,6 +263,12 @@ test('render-tevet-ashkenazi', () => {
   expect(hd.render('s', false)).toBe('3rd of Tevet');
   expect(hd.render('ashkenazi', false)).toBe('3rd of Teves');
   expect(hd.render('a', false)).toBe('3rd of Teves');
+});
+
+test('render-of', () => {
+  const hd = new HDate(3, ELUL, 5769);
+  expect(hd.render('ashkenazi_foobar', false)).toBe('3rd of Elul');
+  expect(hd.render('bogus', false)).toBe('3. Elul');
 });
 
 test('monthFromName', () => {

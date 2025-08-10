@@ -1,6 +1,7 @@
 import {expect, test} from 'vitest';
 import {
   abs2hebrew, daysInMonth, daysInYear, elapsedDays, hebrew2abs,
+  hd2abs,
   isLeapYear, months, getMonthName, monthFromName
 } from '../src/hdateBase';
 
@@ -126,6 +127,16 @@ test('hebrew2abs', () => {
   expect(hebrew2abs(5765, ADAR_II, 22)).toBe(732038);
   expect(hebrew2abs(5765, ADAR_II, 1)).toBe(732017);
   expect(hebrew2abs(5765, NISAN, 1)).toBe(732046);
+});
+
+test('hd2abs', () => {
+  expect(hd2abs({yy: 5769, mm: CHESHVAN, dd: 15})).toBe(733359);
+  expect(hd2abs({yy: 5765, mm: TISHREI, dd: 1})).toBe(731840);
+  expect(hd2abs({yy: 5765, mm: SHVAT, dd: 1})).toBe(731957);
+  expect(hd2abs({yy: 5765, mm: ADAR_I, dd: 1})).toBe(731987);
+  expect(hd2abs({yy: 5765, mm: ADAR_II, dd: 22})).toBe(732038);
+  expect(hd2abs({yy: 5765, mm: ADAR_II, dd: 1})).toBe(732017);
+  expect(hd2abs({yy: 5765, mm: NISAN, dd: 1})).toBe(732046);
 });
 
 test('abs2hebrew', () => {
