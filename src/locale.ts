@@ -11,7 +11,7 @@ export type StringArrayMap = Record<string, string[]>;
 
 export interface LocaleData {
   headers: Headers;
-  contexts: {[key: string]: StringArrayMap};
+  contexts: Record<string, StringArrayMap>;
 }
 
 const noopLocale: LocaleData = {
@@ -19,11 +19,7 @@ const noopLocale: LocaleData = {
   contexts: {'': {}},
 } as const;
 
-interface StringProps {
-  [key: string]: string;
-}
-
-const alias: StringProps = {
+const alias: Record<string, string> = {
   h: 'he',
   a: 'ashkenazi',
   s: 'en',
@@ -226,6 +222,21 @@ export class Locale {
   static hebrewStripNikkud(str: string): string {
     return hebrewStripNikkud(str);
   }
+
+  /**
+   * Makes a copy of entire Hebrew locale with no niqqud
+   */
+  static copyLocaleNoNikud(data: LocaleData): LocaleData {
+    const strs = data.contexts[''];
+    const m: StringArrayMap = {};
+    for (const [key, val] of Object.entries(strs)) {
+      m[key] = [Locale.hebrewStripNikkud(val[0])];
+    }
+    return {
+      headers: data.headers,
+      contexts: {'': m},
+    };
+  }
 }
 
 Locale.addLocale('en', noopLocale);
@@ -242,13 +253,5 @@ Locale.addLocale('he', poHe);
 Locale.addLocale('h', poHe);
 
 /* Hebrew without nikkud */
-const heStrs = poHe.contexts[''];
-const heNoNikud: StringArrayMap = {};
-for (const [key, val] of Object.entries(heStrs)) {
-  heNoNikud[key] = [Locale.hebrewStripNikkud(val[0])];
-}
-const poHeNoNikud: LocaleData = {
-  headers: poHe.headers,
-  contexts: {'': heNoNikud},
-} as const;
+const poHeNoNikud = Locale.copyLocaleNoNikud(poHe);
 Locale.addLocale('he-x-NoNikud', poHeNoNikud);

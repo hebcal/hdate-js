@@ -9,6 +9,10 @@ test('getLocaleNames', () => {
 
 test('gettext-he', () => {
   expect(Locale.gettext('Elul', 'he')).toBe('אֱלוּל');
+  expect(Locale.gettext('Elul', 'h')).toBe('אֱלוּל');
+  const str = "אלול";
+  expect(Locale.gettext('Elul', 'he-x-NoNikud')).toBe(str);
+  expect(Locale.gettext('Elul', 'he-x-nonikud')).toBe(str);
 });
 
 test('hebrewStripNikkud', () => {

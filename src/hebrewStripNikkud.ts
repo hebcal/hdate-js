@@ -1,5 +1,5 @@
 /**
- * Removes nekudot from Hebrew string
+ * Removes niqqud from Hebrew string
  */
 export function hebrewStripNikkud(str: string): string {
   const a = str.normalize();
