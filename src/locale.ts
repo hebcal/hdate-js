@@ -45,6 +45,7 @@ function checkLocale(locale: string): string {
   if (typeof locale !== 'string') {
     throw new TypeError(`Invalid locale name: ${locale}`);
   }
+  locale = alias[locale] || locale;
   return locale.toLowerCase();
 }
 
@@ -75,7 +76,7 @@ export class Locale {
    */
   static lookupTranslation(id: string, locale?: string): string | undefined {
     const loc =
-      (typeof locale === 'string' && locales.get(locale.toLowerCase())) ||
+      (typeof locale === 'string' && locales.get(checkLocale(locale))) ||
       activeLocale;
     const array = loc[id];
     if (array?.length && array[0].length) {
@@ -191,19 +192,17 @@ export class Locale {
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
    */
   static ordinal(n: number, locale?: string): string {
-    const locale1 = locale?.toLowerCase();
-    const locale0 = locale1 || activeName;
+    let locale0 = locale?.toLowerCase() || activeName;
     if (!locale0) {
       return getEnOrdinal(n);
     }
+    locale0 = alias[locale0] || locale0;
     switch (locale0) {
       case 'en':
-      case 's':
-      case 'a':
+      case 'ashkenazi':
         return getEnOrdinal(n);
       case 'es':
         return n + 'º';
-      case 'h':
       case 'he':
       case 'he-x-nonikud':
         return String(n);
@@ -230,7 +229,7 @@ export class Locale {
     const strs = data.contexts[''];
     const m: StringArrayMap = {};
     for (const [key, val] of Object.entries(strs)) {
-      m[key] = [Locale.hebrewStripNikkud(val[0])];
+      m[key] = [hebrewStripNikkud(val[0])];
     }
     return {
       headers: data.headers,
@@ -240,17 +239,13 @@ export class Locale {
 }
 
 Locale.addLocale('en', noopLocale);
-Locale.addLocale('s', noopLocale);
-Locale.addLocale('', noopLocale);
 Locale.useLocale('en');
 
 /* Ashkenazic transliterations */
 Locale.addLocale('ashkenazi', poAshkenazi);
-Locale.addLocale('a', poAshkenazi);
 
 /* Hebrew with nikkud */
 Locale.addLocale('he', poHe);
-Locale.addLocale('h', poHe);
 
 /* Hebrew without nikkud */
 const poHeNoNikud = Locale.copyLocaleNoNikud(poHe);

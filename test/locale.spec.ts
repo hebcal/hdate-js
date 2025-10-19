@@ -2,7 +2,7 @@ import {expect, test} from 'vitest';
 import {Locale} from '../src/locale';
 
 test('getLocaleNames', () => {
-  const expected = ['', 'a', 'ashkenazi', 'en', 'h', 'he', 'he-x-nonikud', 's'];
+  const expected = ['ashkenazi', 'en', 'he', 'he-x-nonikud'];
   const actual = Locale.getLocaleNames();
   expect(actual).toEqual(expected);
 });
