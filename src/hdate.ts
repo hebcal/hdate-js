@@ -344,7 +344,7 @@ export class HDate {
    * @see {@link Locale}
    */
   render(locale?: string, showYear = true): string {
-    const locale0 = locale || Locale.getLocaleName();
+    const locale0 = locale || 'en';
     const day = this.getDate();
     const monthName0 = Locale.gettext(this.getMonthName(), locale0);
     const monthName = monthName0.replace(/'/g, '’');

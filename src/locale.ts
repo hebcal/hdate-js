@@ -28,10 +28,6 @@ const alias: Record<string, string> = {
 
 /** @private */
 const locales = new Map<string, StringArrayMap>();
-/** @private */
-let activeLocale: StringArrayMap;
-/** @private */
-let activeName: string;
 
 /** @private */
 function getEnOrdinal(n: number): string {
@@ -72,12 +68,12 @@ export class Locale {
    * Returns translation only if `locale` offers a non-empty translation for `id`.
    * Otherwise, returns `undefined`.
    * @param id Message ID to translate
-   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
+   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
    */
   static lookupTranslation(id: string, locale?: string): string | undefined {
     const loc =
       (typeof locale === 'string' && locales.get(checkLocale(locale))) ||
-      activeLocale;
+      noopLocale.contexts[''];
     const array = loc[id];
     if (array?.length && array[0].length) {
       return array[0];
@@ -88,7 +84,7 @@ export class Locale {
   /**
    * By default, if no translation was found, returns `id`.
    * @param id Message ID to translate
-   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
+   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
    */
   static gettext(id: string, locale?: string): string {
     const text = this.lookupTranslation(id, locale);
@@ -105,13 +101,11 @@ export class Locale {
    */
   static addLocale(locale: string, data: LocaleData): void {
     locale = checkLocale(locale);
-    if (
-      typeof data.contexts !== 'object' ||
-      typeof data.contexts[''] !== 'object'
-    ) {
+    const ctx = data.contexts;
+    if (typeof ctx !== 'object' || typeof ctx[''] !== 'object') {
       throw new TypeError(`Locale '${locale}' invalid compact format`);
     }
-    locales.set(locale, data.contexts['']);
+    locales.set(locale, ctx['']);
   }
 
   /**
@@ -147,36 +141,11 @@ export class Locale {
    */
   static addTranslations(locale: string, data: LocaleData) {
     const loc = getExistingLocale(locale);
-    if (
-      typeof data.contexts !== 'object' ||
-      typeof data.contexts[''] !== 'object'
-    ) {
+    const ctx = data.contexts;
+    if (typeof ctx !== 'object' || typeof ctx[''] !== 'object') {
       throw new TypeError(`Locale '${locale}' invalid compact format`);
     }
-    const ctx = data.contexts[''];
-    Object.assign(loc, ctx);
-  }
-  /**
-   * Activates a locale. Throws an error if the locale has not been previously added.
-   * After setting the locale to be used, all strings marked for translations
-   * will be represented by the corresponding translation in the specified locale.
-   * @param locale Locale name (i.e: `'he'`, `'fr'`)
-   * @deprecated
-   */
-  static useLocale(locale: string): StringArrayMap {
-    const locale0 = checkLocale(locale);
-    const obj = getExistingLocale(locale0);
-    activeName = alias[locale0] || locale0;
-    activeLocale = obj;
-    return activeLocale;
-  }
-
-  /**
-   * Returns the name of the active locale (i.e. 'he', 'ashkenazi', 'fr')
-   * @deprecated
-   */
-  static getLocaleName(): string {
-    return activeName;
+    Object.assign(loc, ctx['']);
   }
 
   /**
@@ -189,10 +158,10 @@ export class Locale {
 
   /**
    * Renders a number in ordinal, such as 1st, 2nd or 3rd
-   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to active locale.
+   * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
    */
   static ordinal(n: number, locale?: string): string {
-    let locale0 = locale?.toLowerCase() || activeName;
+    let locale0 = locale?.toLowerCase();
     if (!locale0) {
       return getEnOrdinal(n);
     }
@@ -239,7 +208,6 @@ export class Locale {
 }
 
 Locale.addLocale('en', noopLocale);
-Locale.useLocale('en');
 
 /* Ashkenazic transliterations */
 Locale.addLocale('ashkenazi', poAshkenazi);

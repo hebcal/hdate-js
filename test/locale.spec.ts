@@ -27,9 +27,8 @@ test('hebrewStripNikkud', () => {
   }
 });
 
-test('useLocale-ordinal', () => {
-  Locale.useLocale('en');
-  expect(Locale.ordinal(3)).toBe('3rd');
+test('ordinal', () => {
+  expect(Locale.ordinal(3, 'en')).toBe('3rd');
   const expected = {
     a: '3rd',
     s: '3rd',
@@ -39,11 +38,10 @@ test('useLocale-ordinal', () => {
     h: '3',
   };
   for (const [loc, str] of Object.entries(expected)) {
-    Locale.useLocale(loc);
-    expect(Locale.ordinal(3)).toBe(str);
+    expect(Locale.ordinal(3, loc)).toBe(str);
   }
-  Locale.useLocale('');
-  expect(Locale.ordinal(3)).toBe('3rd');
+  expect(Locale.ordinal(3, '')).toBe('3rd');
+  expect(Locale.ordinal(3, undefined)).toBe('3rd');
 
   expect(Locale.ordinal(3, 'fr')).toBe('3.');
   expect(Locale.ordinal(3, 'es')).toBe('3º');
@@ -58,21 +56,6 @@ test('lookupTranslation-he-x-NoNikud', () => {
 test('gettext-ashkenazi', () => {
   expect(Locale.gettext('Tevet', 'a')).toBe('Teves');
   expect(Locale.gettext('Tevet', 'ashkenazi')).toBe('Teves');
-});
-
-test('getLocaleName', () => {
-  Locale.useLocale('he');
-  expect(Locale.getLocaleName()).toBe('he');
-  Locale.useLocale('s');
-  expect(Locale.getLocaleName()).toBe('en');
-  Locale.useLocale('h');
-  expect(Locale.getLocaleName()).toBe('he');
-});
-
-test('useLocale-throws', () => {
-  expect(() => {
-    Locale.useLocale('bogus');
-  }).toThrow('Locale \'bogus\' not found');
 });
 
 test('addTranslation', () => {
