@@ -157,6 +157,15 @@ export class Locale {
   }
 
   /**
+   * Checks whether a locale has been registered
+   * @param locale Locale name (i.e: `'he'`, `'fr'`).
+   */
+  static hasLocale(locale: string): boolean {
+    const locale1 = checkLocale(locale);
+    return locales.has(locale1);
+  }
+
+  /**
    * Renders a number in ordinal, such as 1st, 2nd or 3rd
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
    */

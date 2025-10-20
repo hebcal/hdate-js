@@ -83,3 +83,37 @@ test('addTranslations', () => {
   expect(Locale.lookupTranslation('Hello world', 'a')).toBe('Quux');
   expect(Locale.lookupTranslation('Goodbye', 'a')).toBe('World');
 });
+
+test('hasLocale', () => {
+  // Test existing locales
+  expect(Locale.hasLocale('en')).toBe(true);
+  expect(Locale.hasLocale('EN')).toBe(true);
+  expect(Locale.hasLocale('he')).toBe(true);
+  expect(Locale.hasLocale('HE')).toBe(true);
+  expect(Locale.hasLocale('ashkenazi')).toBe(true);
+  expect(Locale.hasLocale('ASHKENAZI')).toBe(true);
+  expect(Locale.hasLocale('he-x-NoNikud')).toBe(true);
+  expect(Locale.hasLocale('he-x-nonikud')).toBe(true);
+
+  // Test aliases
+  expect(Locale.hasLocale('h')).toBe(true);
+  expect(Locale.hasLocale('a')).toBe(true);
+  expect(Locale.hasLocale('s')).toBe(true);
+  expect(Locale.hasLocale('')).toBe(true);
+
+  // Test non-existent locale
+  expect(Locale.hasLocale('fr')).toBe(false);
+  expect(Locale.hasLocale('nonexistent')).toBe(false);
+
+  // Test with dummy locale
+  const dummyLocaleData = {
+    headers: {'plural-forms': 'nplurals=2; plural=(n!=1);'},
+    contexts: {'': {
+      'Test': ['DummyTest'],
+    }},
+  };
+  Locale.addLocale('dummy', dummyLocaleData);
+  expect(Locale.hasLocale('dummy')).toBe(true);
+  expect(Locale.hasLocale('DUMMY')).toBe(true);
+  expect(Locale.hasLocale('DuMmY')).toBe(true);
+});
