@@ -361,18 +361,25 @@ export class HDate {
 
   /**
    * Renders this Hebrew date in Hebrew gematriya, regardless of locale.
+   * @param suppressNikud - suppress nekudot (default false)
+   * @param suppressYear - suppress Hebrew year (default false)
    * @example
    * import {HDate, months} from '@hebcal/hdate';
    * const hd = new HDate(15, months.CHESHVAN, 5769);
    * hd.renderGematriya(); // 'ט״ו חֶשְׁוָן תשס״ט'
    * hd.renderGematriya(true); // 'ט״ו חשון תשס״ט'
+   * hd.renderGematriya(false, true); // 'ט״ו חֶשְׁוָן'
    */
-  renderGematriya(suppressNikud = false): string {
+  renderGematriya(suppressNikud = false, suppressYear = false): string {
     const d = this.getDate();
     const locale = suppressNikud ? 'he-x-NoNikud' : 'he';
     const m = Locale.gettext(this.getMonthName(), locale);
+    const prefix = gematriya(d) + ' ' + m;
+    if (suppressYear) {
+      return prefix;
+    }
     const y = this.getFullYear();
-    return gematriya(d) + ' ' + m + ' ' + gematriya(y);
+    return prefix + ' ' + gematriya(y);
   }
 
   /**

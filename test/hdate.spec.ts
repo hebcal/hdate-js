@@ -226,6 +226,15 @@ test('renderGematriya-suppressNikud', () => {
   );
 });
 
+test('renderGematriya-suppressYear', () => {
+  const hd1 = new HDate(19, 'Tishrei', 5786);
+  expect(hd1.renderGematriya(false, true)).toBe('י״ט תִּשְׁרֵי');
+  expect(hd1.renderGematriya(true, true)).toBe('י״ט תשרי');
+  const hd2 = new HDate(17, 'Tamuz', 5748);
+  expect(hd2.renderGematriya(false, true)).toBe('י״ז תַּמּוּז');
+  expect(hd2.renderGematriya(true, true)).toBe('י״ז תמוז');
+});
+
 test('render', () => {
   const hd = new HDate(15, CHESHVAN, 5769);
   expect(hd.render('')).toBe('15th of Cheshvan, 5769');
