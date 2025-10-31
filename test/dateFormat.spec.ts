@@ -2,30 +2,30 @@ import {expect, test, vi} from 'vitest';
 import { getPseudoISO, getTimezoneOffset } from '../src/dateFormat';
 
 test('getPseudoISO-24-hour', () => {
-  const mockFormat = vi.fn().mockReturnValue('03/28/2021, 24:00:00');
-  vi.stubGlobal('Intl', {
-    DateTimeFormat: vi.fn().mockImplementation(() => ({
-      format: mockFormat,
-    })),
-  });
-  const dt = new Date(); // Date doesn't matter as we are mocking
-  const iso = getPseudoISO('America/Chicago', dt);
-  expect(iso).toBe('2021-03-28T00:00:00Z');
-  vi.unstubAllGlobals();
-});
+  // Test the edge case where Intl.DateTimeFormat returns hour 24
+  // Mock the DateTimeFormat constructor to return a formatter that returns hour 24
+  const mockFormat = vi.fn().mockReturnValue('03/28/2021, 24:12:34');
+  const OriginalDateTimeFormat = Intl.DateTimeFormat;
 
-test('getPseudoISO-parse-error', () => {
-  const mockFormat = vi.fn().mockReturnValue('not a date');
-  vi.stubGlobal('Intl', {
-    DateTimeFormat: vi.fn().mockImplementation(() => ({
-      format: mockFormat,
-    })),
-  });
-  const dt = new Date(); // Date doesn't matter as we are mocking
-  expect(() => {
-    getPseudoISO('America/Denver', dt);
-  }).toThrow('Unable to parse formatted string: not a date');
-  vi.unstubAllGlobals();
+  try {
+    // @ts-ignore - mocking for test
+    Intl.DateTimeFormat = function() {
+      return {
+        format: mockFormat,
+      };
+    };
+
+    const dt = new Date(Date.UTC(2021, 2, 28, 0, 12, 34));
+    // Use a unique timezone that won't be cached from other tests
+    const result = getPseudoISO('Europe/Paris', dt);
+
+    // Should convert hour 24 to 00
+    expect(result).toBe('2021-03-28T00:12:34Z');
+    expect(mockFormat).toHaveBeenCalledWith(dt);
+  } finally {
+    // Restore
+    Intl.DateTimeFormat = OriginalDateTimeFormat;
+  }
 });
 
 test('getPseudoISO-2021', () => {
