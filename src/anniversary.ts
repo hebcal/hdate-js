@@ -145,8 +145,8 @@ export function getYahrzeitHD(
 
 /**
  * Calculates a birthday or anniversary (non-yahrzeit).
- * `hyear` must be after original `date` of anniversary.
- * Returns `undefined` when requested year preceeds or is same as original year.
+ * `hyear` must be on or after original `date` of anniversary.
+ * Returns `undefined` when requested year preceeds the original year.
  *
  * Hebcal uses the algorithm defined in "Calendrical Calculations"
  * by Edward M. Reingold and Nachum Dershowitz.
