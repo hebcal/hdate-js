@@ -43,6 +43,9 @@ msgstr "סִיוָן"
 msgid "Tamuz"
 msgstr "תַּמּוּז"
 
+msgid "Tammuz"
+msgstr "תַּמּוּז"
+
 msgid "Tevet"
 msgstr "טֵבֵת"
 
