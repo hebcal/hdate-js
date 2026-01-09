@@ -46,7 +46,7 @@
     "@types/node": "^24.10.1",
     "@vitest/coverage-v8": "^4.0.16",
     "gettext-parser": "^8.0.0",
-    "gts": "^6.0.2",
+    "gts": "^7.0.0",
     "rollup": "^4.53.5",
     "typedoc": "^0.28.15",
     "typescript": "^5.9.3",
