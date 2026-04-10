@@ -352,7 +352,7 @@ export function monthFromName(monthName: string | number): number {
   // remove all niqud and trailing gershayim (for Adar Alef/Bet)
   c = hebrewStripNikkud(c).replace(/׳$/, '');
   // If Hebrew month starts with a bet (for example `בתמוז`) then ignore it
-  if (c[0] === 'ב') {
+  if (c.startsWith('ב')) {
     c = c.substring(1);
   }
   /*

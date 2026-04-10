@@ -22,7 +22,8 @@ const ADAR_II = months.ADAR_II;
  * Returns true if the object is a SimpleHebrewDate
  * @private
  */
-function isSimpleHebrewDate(obj: any): boolean {
+function isSimpleHebrewDate(obj0: unknown): boolean {
+  const obj = obj0 as SimpleHebrewDate;
   return (
     typeof obj === 'object' &&
     obj !== null &&
@@ -87,7 +88,7 @@ export function getYahrzeit(
   date: AnniversaryDate
 ): Date | undefined {
   const hd = getYahrzeitHD(hyear, date);
-  if (typeof hd === 'undefined') {
+  if (!hd) {
     return hd;
   }
   return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
@@ -173,7 +174,7 @@ export function getBirthdayOrAnniversary(
   date: AnniversaryDate
 ): Date | undefined {
   const hd = getBirthdayHD(hyear, date);
-  if (typeof hd === 'undefined') {
+  if (!hd) {
     return hd;
   }
   return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));

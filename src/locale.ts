@@ -88,7 +88,7 @@ export class Locale {
    */
   static gettext(id: string, locale?: string): string {
     const text = this.lookupTranslation(id, locale);
-    if (typeof text === 'undefined') {
+    if (text === undefined) {
       return id;
     }
     return text;

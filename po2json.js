@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import {po} from 'gettext-parser';
 
 for (const arg of process.argv.slice(2)) {
@@ -27,7 +27,7 @@ function writePoFile(inpath, outpath) {
   for (const msg of Object.values(poData.translations[''])) {
     const msgid = msg.msgid;
     const msgstr = msg.msgstr;
-    if (msgid && msgid.length && msgstr && msgstr.length) {
+    if (msgid?.length && msgstr?.length) {
       dict[msgid] = msgstr;
     }
   }

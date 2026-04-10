@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace, no-inner-declarations */
 /** @private */
 const lengths: number[] = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 /** @private */

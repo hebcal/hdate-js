@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace */
 import {
   abs2greg,
   daysInGregMonth,

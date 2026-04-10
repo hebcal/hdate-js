@@ -160,7 +160,7 @@ export class HDate {
       setDate(this, dd);
     } else {
       // 0 arguments
-      if (typeof day === 'undefined' || day === null) {
+      if (day === undefined || day === null) {
         day = new Date();
       }
       // 1 argument
@@ -478,8 +478,7 @@ export class HDate {
    * | `year` | `y` | years |
    */
   add(amount: number | string, units: FlexibleTimeUnit = 'd'): HDate {
-    amount =
-      typeof amount === 'string' ? parseInt(amount, 10) : (amount as number);
+    amount = typeof amount === 'string' ? parseInt(amount, 10) : amount;
     if (!amount) {
       return new HDate(this);
     }
@@ -712,7 +711,8 @@ export class HDate {
    * HDate.isHDate(12345); // false
    * HDate.isHDate('15 Cheshvan 5769'); // false
    */
-  static isHDate(obj: any): boolean {
+  static isHDate(obj0: unknown): boolean {
+    const obj = obj0 as HDate;
     return (
       obj !== null &&
       typeof obj === 'object' &&

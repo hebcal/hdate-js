@@ -3,7 +3,6 @@ export {greg} from './gregNamespace';
 export * from './hdateBase';
 export * from './anniversary';
 export * from './gematriya';
-export * from './molad';
 export * from './pad';
 export * from './dateFormat';
 export * from './locale';
