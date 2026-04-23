@@ -117,3 +117,20 @@ test('hasLocale', () => {
   expect(Locale.hasLocale('DUMMY')).toBe(true);
   expect(Locale.hasLocale('DuMmY')).toBe(true);
 });
+
+test('isHebrewLocale', () => {
+  // Test Hebrew locales
+  expect(Locale.isHebrewLocale('he')).toBe(true);
+  expect(Locale.isHebrewLocale('HE')).toBe(true);
+  expect(Locale.isHebrewLocale('he-x-NoNikud')).toBe(true);
+  expect(Locale.isHebrewLocale('he-x-nonikud')).toBe(true);
+  expect(Locale.isHebrewLocale('h')).toBe(true);
+
+  // Test non-Hebrew locales
+  expect(Locale.isHebrewLocale(undefined)).toBe(false);
+  expect(Locale.isHebrewLocale('')).toBe(false);
+  expect(Locale.isHebrewLocale('en')).toBe(false);
+  expect(Locale.isHebrewLocale('ashkenazi')).toBe(false);
+  expect(Locale.isHebrewLocale('fr')).toBe(false);
+  expect(Locale.isHebrewLocale('nonexistent')).toBe(false);
+});

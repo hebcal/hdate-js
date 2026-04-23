@@ -170,25 +170,13 @@ export class Locale {
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
    */
   static ordinal(n: number, locale?: string): string {
-    let locale0 = locale?.toLowerCase();
-    if (!locale0) {
+    const locale1 = checkLocale(locale || '');
+    if (locale1 === 'en' || locale1.startsWith('ashkenazi')) {
       return getEnOrdinal(n);
-    }
-    locale0 = alias[locale0] || locale0;
-    switch (locale0) {
-      case 'en':
-      case 'ashkenazi':
-        return getEnOrdinal(n);
-      case 'es':
-        return n + 'º';
-      case 'he':
-      case 'he-x-nonikud':
-        return String(n);
-      default:
-        break;
-    }
-    if (locale0.startsWith('ashkenazi')) {
-      return getEnOrdinal(n);
+    } else if (Locale.isHebrewLocale(locale1)) {
+      return String(n);
+    } else if (locale1 === 'es') {
+      return n + 'º';
     }
     return n + '.';
   }
@@ -213,6 +201,18 @@ export class Locale {
       headers: data.headers,
       contexts: {'': m},
     };
+  }
+
+  /**
+   * Returns true if `locale` is a Hebrew locale (i.e. `he` or `he-x-NoNikud`)
+   */
+  static isHebrewLocale(locale?: string): boolean {
+    if (typeof locale !== 'string') {
+      return false;
+    }
+    locale = alias[locale] || locale;
+    locale = locale.toLowerCase();
+    return locale.startsWith('he');
   }
 }
 
