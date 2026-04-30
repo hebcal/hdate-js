@@ -213,31 +213,23 @@ export function monthsInYear(year: number): number {
   return 12 + +isLeapYear(year); // boolean is cast to 1 or 0
 }
 
+// Static day counts indexed by month number. 0 marks months whose length
+// depends on the year (CHESHVAN, KISLEV, ADAR_I).
+const STATIC_DAYS_IN_MONTH: readonly number[] = [
+  0, 30, 29, 30, 29, 30, 29, 30, 0, 0, 29, 30, 0, 29,
+];
+
 /**
  * Number of days in Hebrew month in a given year (29 or 30)
  * @param month Hebrew month (e.g. months.TISHREI)
  * @param year Hebrew year
  */
 export function daysInMonth(month: number, year: number): number {
-  switch (month) {
-    case IYYAR:
-    case TAMUZ:
-    case ELUL:
-    case TEVET:
-    case ADAR_II:
-      return 29;
-    default:
-      break;
-  }
-  if (
-    (month === ADAR_I && !isLeapYear(year)) ||
-    (month === CHESHVAN && !longCheshvan(year)) ||
-    (month === KISLEV && shortKislev(year))
-  ) {
-    return 29;
-  } else {
-    return 30;
-  }
+  const d = STATIC_DAYS_IN_MONTH[month];
+  if (d !== 0) return d;
+  if (month === ADAR_I) return isLeapYear(year) ? 30 : 29;
+  if (month === CHESHVAN) return longCheshvan(year) ? 30 : 29;
+  return shortKislev(year) ? 29 : 30; // KISLEV
 }
 
 /**
