@@ -131,7 +131,8 @@ export function hebrew2abs(year: number, month: number, day: number): number {
   let tempabs: number = day;
 
   if (month < TISHREI) {
-    for (let m = TISHREI; m <= monthsInYear(year); m++) {
+    const endMonth = monthsInYear(year);
+    for (let m = TISHREI; m <= endMonth; m++) {
       tempabs += daysInMonth(m, year);
     }
     for (let m = NISAN; m < month; m++) {
