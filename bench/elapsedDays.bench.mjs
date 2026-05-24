@@ -127,6 +127,48 @@ function elapsedDays_typed2(year) {
   return elapsed;
 }
 
+// 7. Offset Int32Array, double comparison bound check
+const ED_MIN = 3760;
+const ED_MAX = 9999;
+const offsetCache = new Int32Array(ED_MAX - ED_MIN + 1);
+function elapsedDays_offset(year) {
+  if (year >= ED_MIN && year <= ED_MAX) {
+    const idx = year - ED_MIN;
+    const n = offsetCache[idx];
+    if (n !== 0) return n;
+    const elapsed = elapsedDays0(year);
+    offsetCache[idx] = elapsed;
+    return elapsed;
+  }
+  return elapsedDays0(year);
+}
+
+// 8. Offset Int32Array with unsigned-coerce single-comparison
+const offsetCache2 = new Int32Array(ED_MAX - ED_MIN + 1);
+const OFFSET_LEN = ED_MAX - ED_MIN + 1;
+function elapsedDays_offsetU(year) {
+  const idx = (year - ED_MIN) >>> 0; // negatives wrap to huge positives
+  if (idx < OFFSET_LEN) {
+    const n = offsetCache2[idx];
+    if (n !== 0) return n;
+    const elapsed = elapsedDays0(year);
+    offsetCache2[idx] = elapsed;
+    return elapsed;
+  }
+  return elapsedDays0(year);
+}
+
+// 9. Offset Int32Array, rely on typed-array bound-check (OOB returns undefined)
+const offsetCache3 = new Int32Array(ED_MAX - ED_MIN + 1);
+function elapsedDays_offsetT(year) {
+  const idx = year - ED_MIN;
+  const n = offsetCache3[idx]; // OOB or holey idx => undefined
+  if (n !== undefined && n !== 0) return n;
+  const elapsed = elapsedDays0(year);
+  if (idx >= 0 && idx < OFFSET_LEN) offsetCache3[idx] = elapsed;
+  return elapsed;
+}
+
 // ---- Benchmark harness ----------------------------------------------------
 
 function bench(name, fn, years, iterations) {
@@ -169,6 +211,9 @@ function resetCaches() {
   typedCache.fill(0);
   typedCache2.fill(0);
   typedFallback.clear();
+  offsetCache.fill(0);
+  offsetCache2.fill(0);
+  offsetCache3.fill(0);
 }
 
 // Sanity: every variant agrees with the pure implementation
@@ -182,9 +227,16 @@ function verify() {
     const a = elapsedDays_arr(y);
     const t = elapsedDays_typed(y);
     const t2 = elapsedDays_typed2(y);
-    if (m !== ref || m2 !== ref || o !== ref || a !== ref || t !== ref || t2 !== ref) {
+    const oA = elapsedDays_offset(y);
+    const oU = elapsedDays_offsetU(y);
+    const oT = elapsedDays_offsetT(y);
+    if (
+      m !== ref || m2 !== ref || o !== ref || a !== ref ||
+      t !== ref || t2 !== ref || oA !== ref || oU !== ref || oT !== ref
+    ) {
       throw new Error(
-        `mismatch at year ${y}: ref=${ref} map=${m} map2=${m2} obj=${o} arr=${a} typed=${t} typed2=${t2}`,
+        `mismatch at year ${y}: ref=${ref} map=${m} map2=${m2} obj=${o} arr=${a} ` +
+        `typed=${t} typed2=${t2} offset=${oA} offsetU=${oU} offsetT=${oT}`,
       );
     }
   }
@@ -235,6 +287,12 @@ function runScenario(label, years, iterations) {
   const typedWarm = bench('Int32Array', elapsedDays_typed, years, iterations);
   resetCaches();
   const typed2Warm = bench('Int32Array+fallback', elapsedDays_typed2, years, iterations);
+  resetCaches();
+  bench('offset (a>=lo && a<=hi)', elapsedDays_offset, years, iterations);
+  resetCaches();
+  bench('offset (idx>>>0)', elapsedDays_offsetU, years, iterations);
+  resetCaches();
+  bench('offset (typed OOB)', elapsedDays_offsetT, years, iterations);
   const noCache = bench('no cache', elapsedDays_nocache, years, iterations);
 
   const mapSpeedup = (noCache / mapWarm).toFixed(2);

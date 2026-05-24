@@ -36,9 +36,10 @@ function realisticElapsed() {
   return acc;
 }
 
-// Workload B: elapsedDays across a wide span (annual-calendar build)
+// Workload B: elapsedDays across a wide span (annual-calendar build).
+// Stays within the cached range so the comparison is apples-to-apples.
 const wideYears = [];
-for (let y = 3000; y <= 7000; y++) wideYears.push(y);
+for (let y = 3800; y <= 7800; y++) wideYears.push(y);
 function wideElapsed() {
   let acc = 0;
   for (const y of wideYears) acc += elapsedDays(y);
