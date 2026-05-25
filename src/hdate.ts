@@ -45,6 +45,31 @@ function isSimpleHebrewDate(obj: unknown): obj is SimpleHebrewDate {
   return (obj as SimpleHebrewDate).yy !== undefined;
 }
 
+function parseIntArg(val: unknown, name: 'day' | 'year'): number {
+  const n = typeof val === 'string' ? parseInt(val, 10) : (val as number);
+  if (isNaN(n)) {
+    throw new TypeError(`HDate called with bad ${name}: ${val}`);
+  }
+  return n;
+}
+
+function toHebrewDate(arg: unknown): {hd: SimpleHebrewDate; rd?: number} {
+  if (typeof arg === 'number') {
+    if (isNaN(arg)) {
+      throw new TypeError(`HDate called with bad arg: ${arg}`);
+    }
+    return {hd: abs2hebrew(arg), rd: arg};
+  }
+  if (isDate(arg)) {
+    const rd = greg2abs(arg as Date);
+    return {hd: abs2hebrew(rd), rd};
+  }
+  if (isSimpleHebrewDate(arg)) {
+    return {hd: arg};
+  }
+  throw new TypeError(`HDate called with bad arg: ${arg}`);
+}
+
 const UNITS_DAY = 'day';
 const UNITS_WEEK = 'week';
 const UNITS_MONTH = 'month';
@@ -139,50 +164,26 @@ export class HDate {
     month?: number | string,
     year?: number
   ) {
-    if (arguments.length === 2 || arguments.length > 3) {
+    const argc = arguments.length;
+    if (argc === 2 || argc > 3) {
       throw new TypeError('HDate constructor requires 0, 1 or 3 arguments');
     }
-    if (arguments.length === 3) {
+    if (argc === 3) {
       // Hebrew day, Hebrew month, Hebrew year
       this.dd = this.mm = 1;
-      const yy: number =
-        typeof year === 'string' ? parseInt(year, 10) : (year as number);
-      if (isNaN(yy)) {
-        throw new TypeError(`HDate called with bad year: ${year}`);
-      }
-      this.yy = yy;
+      this.yy = parseIntArg(year, 'year');
       setMonth(this, month as string | number); // will throw if we can't parse
-      const dd: number =
-        typeof day === 'string' ? parseInt(day, 10) : (day as number);
-      if (isNaN(dd)) {
-        throw new TypeError(`HDate called with bad day: ${day}`);
-      }
-      setDate(this, dd);
-    } else {
-      // 0 arguments
-      if (day === undefined || day === null) {
-        day = new Date();
-      }
-      // 1 argument
-      const abs0 =
-        typeof day === 'number' && !isNaN(day)
-          ? day
-          : isDate(day)
-            ? greg2abs(day as Date)
-            : isSimpleHebrewDate(day)
-              ? day
-              : null;
-      if (abs0 === null) {
-        throw new TypeError(`HDate called with bad arg: ${day}`);
-      }
-      const isNumber = typeof abs0 === 'number';
-      const d: SimpleHebrewDate = isNumber ? abs2hebrew(abs0) : abs0;
-      this.yy = d.yy;
-      this.mm = d.mm;
-      this.dd = d.dd;
-      if (isNumber) {
-        this.rd = abs0;
-      }
+      setDate(this, parseIntArg(day, 'day'));
+      return;
+    }
+    // 0 or 1 argument
+    const arg = day === undefined || day === null ? new Date() : day;
+    const {hd, rd} = toHebrewDate(arg);
+    this.yy = hd.yy;
+    this.mm = hd.mm;
+    this.dd = hd.dd;
+    if (rd !== undefined) {
+      this.rd = rd;
     }
   }
 
