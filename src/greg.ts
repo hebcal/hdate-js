@@ -46,6 +46,11 @@ const ABS_2SEP1752 = 639785;
 /**
  * Returns true if the Gregorian year is a leap year
  * @param year Gregorian year
+ * @example
+ * isGregLeapYear(2000); // true
+ * isGregLeapYear(2020); // true
+ * isGregLeapYear(2023); // false
+ * isGregLeapYear(2100); // false (divisible by 100 but not 400)
  */
 export function isGregLeapYear(year: number): boolean {
   return !(year % 4) && (!!(year % 100) || !(year % 400));
@@ -55,6 +60,10 @@ export function isGregLeapYear(year: number): boolean {
  * Number of days in the Gregorian month for given year
  * @param month Gregorian month (1=January, 12=December)
  * @param year Gregorian year
+ * @example
+ * daysInGregMonth(2, 2024); // 29 (February in a leap year)
+ * daysInGregMonth(2, 2023); // 28
+ * daysInGregMonth(7, 2024); // 31 (July)
  */
 export function daysInGregMonth(month: number, year: number): number {
   // 1 based months
@@ -63,6 +72,10 @@ export function daysInGregMonth(month: number, year: number): number {
 
 /**
  * Returns true if the object is a Javascript Date
+ * @example
+ * isDate(new Date()); // true
+ * isDate('2024-01-01'); // false
+ * isDate(1700000000000); // false
  */
 export function isDate(obj: unknown): boolean {
   // eslint-disable-next-line no-prototype-builtins
@@ -91,6 +104,9 @@ function toFixed(year: number, month: number, day: number): number {
 /**
  * Converts Gregorian date to absolute R.D. (Rata Die) days
  * @param date Gregorian date
+ * @example
+ * greg2abs(new Date(2008, 10, 13)); // 733359 (13 November 2008)
+ * greg2abs(new Date(2005, 3, 2)); // 732038 (2 April 2005)
  */
 export function greg2abs(date: Date): number {
   if (!isDate(date)) {

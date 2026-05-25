@@ -33,6 +33,14 @@ function isSimpleHebrewDate(obj0: unknown): boolean {
   );
 }
 
+/**
+ * Accepted forms of the original event date for `getYahrzeit`,
+ * `getYahrzeitHD`, `getBirthdayOrAnniversary`, and `getBirthdayHD`.
+ *
+ * - `Date` — a Gregorian date (local time; hours and below ignored)
+ * - `SimpleHebrewDate` — `{yy, mm, dd}` already in the Hebrew calendar
+ * - `number` — an absolute R.D. day count
+ */
 export type AnniversaryDate = Date | SimpleHebrewDate | number;
 
 /**
@@ -94,6 +102,24 @@ export function getYahrzeit(
   return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
 
+/**
+ * Same calculation as `getYahrzeit`, but returns the result as a
+ * `SimpleHebrewDate` (`{yy, mm, dd}`) rather than converting to a
+ * Gregorian `Date`. Useful when the caller needs the Hebrew date
+ * directly (e.g. for rendering with `gematriya` or further Hebrew-calendar
+ * arithmetic) and wants to avoid an extra R.D. → Gregorian round-trip.
+ *
+ * See `getYahrzeit` for the full description of the algorithm and
+ * edge cases (Marcheshvan 30, Kislev 30, Adar I / Adar II).
+ * @example
+ * import {getYahrzeitHD} from '@hebcal/hdate';
+ * const dt = new Date(2014, 2, 2); // 30 Adar I 5774
+ * getYahrzeitHD(5780, dt); // {yy: 5780, mm: 11, dd: 30} (30 Sh'vat)
+ * @param hyear Hebrew year in which to find the anniversary
+ * @param date Gregorian or Hebrew date of death
+ * @returns anniversary occurring in `hyear`, or `undefined`
+ *   when `hyear` is on or before the original year
+ */
 export function getYahrzeitHD(
   hyear: number,
   date: AnniversaryDate
@@ -180,6 +206,26 @@ export function getBirthdayOrAnniversary(
   return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
 
+/**
+ * Same calculation as `getBirthdayOrAnniversary`, but returns the
+ * result as a `SimpleHebrewDate` (`{yy, mm, dd}`) rather than
+ * converting to a Gregorian `Date`. Useful when the caller needs the
+ * Hebrew date directly (e.g. for rendering with `gematriya` or further
+ * Hebrew-calendar arithmetic) and wants to avoid an extra R.D. →
+ * Gregorian round-trip.
+ *
+ * See `getBirthdayOrAnniversary` for the full description of the
+ * algorithm and edge cases (Adar / Adar II, and the 30th of
+ * Marcheshvan, Kislev, or Adar I).
+ * @example
+ * import {getBirthdayHD} from '@hebcal/hdate';
+ * const dt = new Date(2014, 2, 2); // 30 Adar I 5774
+ * getBirthdayHD(5780, dt); // {yy: 5780, mm: 1, dd: 1} (1 Nisan)
+ * @param hyear Hebrew year in which to find the anniversary
+ * @param date Gregorian or Hebrew date of the original event
+ * @returns anniversary occurring in `hyear`, or `undefined`
+ *   when `hyear` precedes the original year
+ */
 export function getBirthdayHD(
   hyear: number,
   date: AnniversaryDate

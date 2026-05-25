@@ -476,6 +476,13 @@ export class HDate {
    * | `week` | `w` | weeks |
    * | `month` | `M` | months |
    * | `year` | `y` | years |
+   * @example
+   * import {HDate, months} from '@hebcal/hdate';
+   *
+   * const hd1 = new HDate(15, months.CHESHVAN, 5769);
+   * hd1.add(7, 'd');     // 22 Cheshvan 5769
+   * hd1.add(1, 'weeks'); // 22 Cheshvan 5769
+   * hd1.add(1, 'year');  // 15 Cheshvan 5770
    */
   add(amount: number | string, units: FlexibleTimeUnit = 'd'): HDate {
     amount = typeof amount === 'string' ? parseInt(amount, 10) : amount;

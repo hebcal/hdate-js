@@ -35,8 +35,7 @@ function num2digits(num: number): number[] {
   const digits: number[] = [];
   while (num > 0) {
     if (num === 15 || num === 16) {
-      digits.push(9);
-      digits.push(num - 9);
+      digits.push(9, num - 9);
       break;
     }
     let incr = 100;
@@ -97,6 +96,10 @@ export function gematriya(num: number | string): string {
  * Only considers the value of Hebrew letters `א` through `ת`.
  * Ignores final Hebrew letters such as `ך` (kaf sofit) or `ם` (mem sofit)
  * and vowels (nekudot).
+ * @example
+ * gematriyaStrToNum('תשע״ד');   // 774
+ * gematriyaStrToNum('ט״ו');     // 15
+ * gematriyaStrToNum('ג׳תשס״א'); // 3761 (thousands prefix)
  */
 export function gematriyaStrToNum(str: string): number {
   let num = 0;

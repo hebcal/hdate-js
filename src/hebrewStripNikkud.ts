@@ -1,5 +1,8 @@
 /**
  * Removes niqqud from Hebrew string
+ * @example
+ * hebrewStripNikkud('אֱלוּל');     // 'אלול'
+ * hebrewStripNikkud('חֶשְׁוָן');   // 'חשון'
  */
 export function hebrewStripNikkud(str: string): string {
   const a = str.normalize();
