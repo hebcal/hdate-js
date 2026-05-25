@@ -94,7 +94,15 @@ export type MonthName =
   | 'Adar I'
   | 'Adar II';
 
-const edCache: Map<number, number> = new Map<number, number>();
+// Typed-array cache for elapsedDays, indexed by `year - ED_CACHE_MIN`.
+// The range covers Hebrew years ~AD 1240 through ~AD 3240, which spans
+// every realistic modern use. Years outside the range fall through
+// uncached. 0 is the "not computed" sentinel; every valid input
+// (year >= 1) produces a result >= 1, so it can't collide.
+// elapsedDays(6999) is ~2.56M, well within Int32 range.
+const ED_CACHE_MIN = 5000;
+const ED_CACHE_MAX = 6999;
+const edCache = new Int32Array(ED_CACHE_MAX - ED_CACHE_MIN + 1);
 
 const EPOCH = -1373428;
 // Avg year length in the cycle (19 solar years with 235 lunar months)
@@ -254,13 +262,15 @@ export function getMonthName(month: number, year: number): MonthName {
  * @param year Hebrew year
  */
 export function elapsedDays(year: number): number {
-  const n = edCache.get(year);
-  if (typeof n === 'number') {
-    return n;
+  if (year >= ED_CACHE_MIN && year <= ED_CACHE_MAX) {
+    const idx = year - ED_CACHE_MIN;
+    const n = edCache[idx];
+    if (n !== 0) return n;
+    const elapsed = elapsedDays0(year);
+    edCache[idx] = elapsed;
+    return elapsed;
   }
-  const elapsed: number = elapsedDays0(year);
-  edCache.set(year, elapsed);
-  return elapsed;
+  return elapsedDays0(year);
 }
 
 /**
