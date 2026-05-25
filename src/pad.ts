@@ -3,6 +3,10 @@
  * Similar to `string.padStart(4, '0')` but will also format
  * negative numbers similar to how the JavaScript date formats
  * negative year numbers (e.g. `-37` is formatted as `-000037`).
+ * @example
+ * pad4(7);     // '0007'
+ * pad4(2024);  // '2024'
+ * pad4(-37);   // '-000037'
  */
 export function pad4(num: number): string {
   if (num < 0) {
@@ -20,6 +24,9 @@ export function pad4(num: number): string {
 /**
  * Formats a number with leading zeros so the resulting string is 2 digits long.
  * Similar to `string.padStart(2, '0')`.
+ * @example
+ * pad2(3);   // '03'
+ * pad2(11);  // '11'
  */
 export function pad2(num: number): string {
   if (num >= 0 && num < 10) {

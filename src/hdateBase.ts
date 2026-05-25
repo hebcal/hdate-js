@@ -125,7 +125,8 @@ function assertNumber(n: unknown, name: string) {
  * @param month Hebrew month
  * @param day Hebrew date (1-30)
  * @example
- * const abs = hebrew2abs(5769, months.CHESHVAN, 15);
+ * import {hebrew2abs, months} from '@hebcal/hdate';
+ * hebrew2abs(5769, months.CHESHVAN, 15); // 733359
  */
 export function hebrew2abs(year: number, month: number, day: number): number {
   assertNumber(year, 'year');
@@ -156,9 +157,12 @@ export function hebrew2abs(year: number, month: number, day: number): number {
 }
 
 /**
- * Converts Hebrew date to R.D. (Rata Die) fixed days.
- * R.D. 1 is the imaginary date Monday, January 1, 1 on the Gregorian
- * Calendar.
+ * Convenience wrapper for `hebrew2abs` that accepts a
+ * `SimpleHebrewDate` (`{yy, mm, dd}`) rather than three separate
+ * arguments. Returns the same R.D. (Rata Die) day number.
+ * @example
+ * import {hd2abs, months} from '@hebcal/hdate';
+ * hd2abs({yy: 5769, mm: months.CHESHVAN, dd: 15}); // 733359
  */
 export function hd2abs(hdate: SimpleHebrewDate): number {
   return hebrew2abs(hdate.yy, hdate.mm, hdate.dd);
@@ -183,6 +187,8 @@ export type SimpleHebrewDate = {
 /**
  * Converts absolute R.D. days to Hebrew date
  * @param abs absolute R.D. days
+ * @example
+ * abs2hebrew(733359); // {yy: 5769, mm: 8, dd: 15} (15 Cheshvan 5769)
  */
 export function abs2hebrew(abs: number): SimpleHebrewDate {
   assertNumber(abs, 'abs');
@@ -209,6 +215,9 @@ export function abs2hebrew(abs: number): SimpleHebrewDate {
 /**
  * Returns true if Hebrew year is a leap year
  * @param year Hebrew year
+ * @example
+ * isLeapYear(5783); // false
+ * isLeapYear(5784); // true
  */
 export function isLeapYear(year: number): boolean {
   return (1 + year * 7) % 19 < 7;
@@ -217,6 +226,9 @@ export function isLeapYear(year: number): boolean {
 /**
  * Number of months in this Hebrew year (either 12 or 13 depending on leap year)
  * @param year Hebrew year
+ * @example
+ * monthsInYear(5783); // 12
+ * monthsInYear(5784); // 13
  */
 export function monthsInYear(year: number): number {
   return 12 + +isLeapYear(year); // boolean is cast to 1 or 0
@@ -232,6 +244,10 @@ const STATIC_DAYS_IN_MONTH: readonly number[] = [
  * Number of days in Hebrew month in a given year (29 or 30)
  * @param month Hebrew month (e.g. months.TISHREI)
  * @param year Hebrew year
+ * @example
+ * import {daysInMonth, months} from '@hebcal/hdate';
+ * daysInMonth(months.CHESHVAN, 5769); // 29
+ * daysInMonth(months.KISLEV, 5769);   // 30
  */
 export function daysInMonth(month: number, year: number): number {
   const d = STATIC_DAYS_IN_MONTH[month];
@@ -246,6 +262,11 @@ export function daysInMonth(month: number, year: number): number {
  * for example 'Elul' or 'Cheshvan'.
  * @param month Hebrew month (e.g. months.TISHREI)
  * @param year Hebrew year
+ * @example
+ * import {getMonthName, months} from '@hebcal/hdate';
+ * getMonthName(months.CHESHVAN, 5769); // 'Cheshvan'
+ * getMonthName(months.ADAR_I, 5784);   // 'Adar I' (leap year)
+ * getMonthName(months.ADAR_I, 5783);   // 'Adar'   (common year)
  */
 export function getMonthName(month: number, year: number): MonthName {
   assertNumber(month, 'month');
@@ -319,6 +340,9 @@ function elapsedDays0(year: number): number {
  * A common Hebrew calendar year can have a length of 353, 354 or 355 days
  * A leap Hebrew calendar year can have a length of 383, 384 or 385 days
  * @param year Hebrew year
+ * @example
+ * daysInYear(5783); // 355
+ * daysInYear(5784); // 383 (leap year)
  */
 export function daysInYear(year: number): number {
   return elapsedDays(year + 1) - elapsedDays(year);
@@ -327,6 +351,9 @@ export function daysInYear(year: number): number {
 /**
  * true if Cheshvan is long in Hebrew year
  * @param year Hebrew year
+ * @example
+ * longCheshvan(5783); // true
+ * longCheshvan(5784); // false
  */
 export function longCheshvan(year: number): boolean {
   return daysInYear(year) % 10 === 5;
@@ -335,6 +362,9 @@ export function longCheshvan(year: number): boolean {
 /**
  * true if Kislev is short in Hebrew year
  * @param year Hebrew year
+ * @example
+ * shortKislev(5783); // false
+ * shortKislev(5784); // true
  */
 export function shortKislev(year: number): boolean {
   return daysInYear(year) % 10 === 3;
@@ -343,6 +373,11 @@ export function shortKislev(year: number): boolean {
 /**
  * Converts Hebrew month string name to numeric
  * @param monthName monthName
+ * @example
+ * monthFromName('Cheshvan'); // 8
+ * monthFromName('חשון');     // 8
+ * monthFromName('Adar II');  // 13
+ * monthFromName(7);          // 7 (passthrough)
  */
 export function monthFromName(monthName: string | number): number {
   if (typeof monthName === 'number') {

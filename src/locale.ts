@@ -69,6 +69,9 @@ export class Locale {
    * Otherwise, returns `undefined`.
    * @param id Message ID to translate
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
+   * @example
+   * Locale.lookupTranslation('Adar II', 'he-x-NoNikud'); // 'אדר ב׳'
+   * Locale.lookupTranslation('Foobar', 'he-x-NoNikud');  // undefined
    */
   static lookupTranslation(id: string, locale?: string): string | undefined {
     const loc =
@@ -85,6 +88,10 @@ export class Locale {
    * By default, if no translation was found, returns `id`.
    * @param id Message ID to translate
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
+   * @example
+   * Locale.gettext('Elul', 'he');          // 'אֱלוּל'
+   * Locale.gettext('Tevet', 'ashkenazi');  // 'Teves'
+   * Locale.gettext('Unknown', 'he');       // 'Unknown' (falls back to id)
    */
   static gettext(id: string, locale?: string): string {
     const text = this.lookupTranslation(id, locale);
@@ -98,6 +105,10 @@ export class Locale {
    * Register locale translations.
    * @param locale Locale name (i.e.: `'he'`, `'fr'`)
    * @param data parsed data from a `.po` file.
+   * @example
+   * import poFr from './fr.po';
+   * Locale.addLocale('fr', poFr);
+   * Locale.gettext('Shabbat', 'fr'); // 'Chabbat'
    */
   static addLocale(locale: string, data: LocaleData): void {
     locale = checkLocale(locale);
@@ -113,6 +124,9 @@ export class Locale {
    * @param locale Locale name (i.e: `'he'`, `'fr'`).
    * @param id Message ID to translate
    * @param translation Translation text
+   * @example
+   * Locale.addTranslation('ashkenazi', 'Foobar', 'Quux');
+   * Locale.gettext('Foobar', 'ashkenazi'); // 'Quux'
    */
   static addTranslation(
     locale: string,
@@ -136,6 +150,12 @@ export class Locale {
   }
   /**
    * Adds multiple translations to `locale`, replacing any previous translations.
+   *
+   * The locale must already be registered (typically via `addLocale`);
+   * to register a brand-new locale instead, call `addLocale` directly.
+   * Use this method to merge an additional `.po` file (e.g. holiday
+   * translations supplied by a separate `@hebcal/*` package) into an
+   * existing locale.
    * @param locale Locale name (i.e: `'he'`, `'fr'`).
    * @param data parsed data from a `.po` file.
    */
@@ -150,6 +170,8 @@ export class Locale {
 
   /**
    * Returns the names of registered locales
+   * @example
+   * Locale.getLocaleNames(); // ['ashkenazi', 'en', 'he', 'he-x-nonikud']
    */
   static getLocaleNames(): string[] {
     const keys = Array.from(locales.keys());
@@ -159,6 +181,9 @@ export class Locale {
   /**
    * Checks whether a locale has been registered
    * @param locale Locale name (i.e: `'he'`, `'fr'`).
+   * @example
+   * Locale.hasLocale('he'); // true
+   * Locale.hasLocale('fr'); // false
    */
   static hasLocale(locale: string): boolean {
     const locale1 = checkLocale(locale);
@@ -168,6 +193,11 @@ export class Locale {
   /**
    * Renders a number in ordinal, such as 1st, 2nd or 3rd
    * @param [locale] Optional locale name (i.e: `'he'`, `'fr'`). Defaults to no-op locale.
+   * @example
+   * Locale.ordinal(3, 'en'); // '3rd'
+   * Locale.ordinal(3, 'es'); // '3º'
+   * Locale.ordinal(3, 'fr'); // '3.'
+   * Locale.ordinal(3, 'he'); // '3'
    */
   static ordinal(n: number, locale?: string): string {
     const locale1 = checkLocale(locale || '');
@@ -183,13 +213,21 @@ export class Locale {
 
   /**
    * Removes nekudot from Hebrew string
+   * @example
+   * Locale.hebrewStripNikkud('אֱלוּל'); // 'אלול'
    */
   static hebrewStripNikkud(str: string): string {
     return hebrewStripNikkud(str);
   }
 
   /**
-   * Makes a copy of entire Hebrew locale with no niqqud
+   * Returns a new `LocaleData` derived from `data` with niqqud (vowel
+   * points) stripped from every translation value. The input is not
+   * modified.
+   *
+   * This is the helper used internally to build the `he-x-NoNikud`
+   * locale from `he`; call it when registering a derived "no nikud"
+   * variant of a custom Hebrew-script locale.
    */
   static copyLocaleNoNikud(data: LocaleData): LocaleData {
     const strs = data.contexts[''];
@@ -205,6 +243,10 @@ export class Locale {
 
   /**
    * Returns true if `locale` is a Hebrew locale (i.e. `he` or `he-x-NoNikud`)
+   * @example
+   * Locale.isHebrewLocale('he');           // true
+   * Locale.isHebrewLocale('he-x-NoNikud'); // true
+   * Locale.isHebrewLocale('en');           // false
    */
   static isHebrewLocale(locale?: string): boolean {
     if (typeof locale !== 'string') {
