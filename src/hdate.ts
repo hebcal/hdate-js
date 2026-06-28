@@ -643,6 +643,9 @@ export class HDate {
       }
       return month;
     }
+    if (typeof month !== 'string') {
+      throw new TypeError(`bad monthNum: ${month}`);
+    }
     return month.charCodeAt(0) >= 48 && month.charCodeAt(0) <= 57 /* number */
       ? parseInt(month, 10)
       : monthFromName(month);
@@ -739,6 +742,9 @@ export class HDate {
    * HDate.fromGematriyaString('ה׳ אִיָיר תש״ח') // 5 Iyyar 5708
    */
   static fromGematriyaString(str: string, currentThousands = 5000): HDate {
+    if (typeof str !== 'string') {
+      throw new TypeError(`bad gematriya str: ${str}`);
+    }
     const parts = str.split(' ').filter(x => x.length !== 0);
     const numParts = parts.length;
     if (numParts !== 3 && numParts !== 4) {

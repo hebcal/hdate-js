@@ -41,6 +41,15 @@ test('gematriyaStrToNum', () => {
   expect(gematriyaStrToNum('תרי״ג')).toBe(613);
 });
 
+test('gematriyaStrToNum-throws', () => {
+  expect(() => {
+    gematriyaStrToNum(null as unknown as string);
+  }).toThrow('bad gematriya str: null');
+  expect(() => {
+    gematriyaStrToNum(undefined as unknown as string);
+  }).toThrow('bad gematriya str: undefined');
+});
+
 test('gematriyaStrToNum-thousands', () => {
   expect(gematriyaStrToNum('ג׳תשס״א')).toBe(3761);
   expect(gematriyaStrToNum('ו׳תשמ״ט')).toBe(6749);

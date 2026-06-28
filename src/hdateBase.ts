@@ -386,6 +386,9 @@ export function monthFromName(monthName: string | number): number {
     }
     return monthName;
   }
+  if (typeof monthName !== 'string') {
+    throw new TypeError(`bad monthName: ${monthName}`);
+  }
   let c = monthName.trim().toLowerCase();
   // remove all niqud and trailing gershayim (for Adar Alef/Bet)
   c = hebrewStripNikkud(c).replace(/׳$/, '');

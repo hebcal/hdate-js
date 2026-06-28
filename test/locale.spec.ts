@@ -27,6 +27,15 @@ test('hebrewStripNikkud', () => {
   }
 });
 
+test('hebrewStripNikkud-throws', () => {
+  expect(() => {
+    Locale.hebrewStripNikkud(null as unknown as string);
+  }).toThrow('bad nikkud str: null');
+  expect(() => {
+    Locale.hebrewStripNikkud(undefined as unknown as string);
+  }).toThrow('bad nikkud str: undefined');
+});
+
 test('ordinal', () => {
   expect(Locale.ordinal(3, 'en')).toBe('3rd');
   const expected = {

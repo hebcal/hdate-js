@@ -146,6 +146,15 @@ test('monthNum', () => {
   expect(HDate.monthNum('8')).toBe(8);
 });
 
+test('monthNum-throws', () => {
+  expect(() => {
+    HDate.monthNum(null as unknown as string);
+  }).toThrow('bad monthNum: null');
+  expect(() => {
+    HDate.monthNum(undefined as unknown as string);
+  }).toThrow('bad monthNum: undefined');
+});
+
 test('daysInYear', () => {
   expect(HDate.daysInYear(5783)).toBe(355);
   expect(HDate.daysInYear(5784)).toBe(383);
@@ -599,6 +608,12 @@ test('fromGematriyaString-throws', () => {
   expect(() => {
     HDate.fromGematriyaString('abc def ghi jkl mno pqr');
   }).toThrow('cannot parse gematriya str: "abc def ghi jkl mno pqr"');
+  expect(() => {
+    HDate.fromGematriyaString(null as unknown as string);
+  }).toThrow('bad gematriya str: null');
+  expect(() => {
+    HDate.fromGematriyaString(undefined as unknown as string);
+  }).toThrow('bad gematriya str: undefined');
 });
 
 test('HDate-rollover-leap', () => {

@@ -102,6 +102,9 @@ export function gematriya(num: number | string): string {
  * gematriyaStrToNum('ג׳תשס״א'); // 3761 (thousands prefix)
  */
 export function gematriyaStrToNum(str: string): number {
+  if (typeof str !== 'string') {
+    throw new TypeError(`bad gematriya str: ${str}`);
+  }
   let num = 0;
   const gereshIdx: number = str.indexOf(GERESH);
   if (gereshIdx !== -1 && gereshIdx !== str.length - 1) {
