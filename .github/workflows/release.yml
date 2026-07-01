@@ -1,6 +1,6 @@
 # .github/workflows/release.yml
 #
-# Publishes to npm via OIDC Trusted Publishing when a GitHub Release is published.
+# Publishes to npm via OIDC Trusted Publishing when a version tag is pushed.
 # Requires: trusted publisher configured on npmjs.com for this package, pointing at
 # this repo, this workflow file (release.yml), and (optionally) the "npm-publish" environment.
 #
@@ -9,8 +9,10 @@
 name: Publish to npm
 
 on:
-  release:
-    types: [published]
+  # Publish from the tag push so npm trusted publishing receives a
+  # refs/tags/vX.Y.Z SourceRepositoryRef in the provenance certificate.
+  push:
+    tags: ['v*']
   # Allow manual re-runs if a release fails partway through
   workflow_dispatch:
 
