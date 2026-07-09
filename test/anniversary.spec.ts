@@ -33,7 +33,6 @@ test('yahrzeit', () => {
   ];
   for (const item of items) {
     const gd = new Date(item[0], item[1] - 1, item[2]);
-    const name = item[3];
     const expected = item[4].split(' ');
     for (let i = 0; i < 25; i++) {
       const hyear = i + 5778;
@@ -68,7 +67,6 @@ test('birthday', () => {
   ];
   for (const item of items) {
     const gd = new Date(item[0], item[1] - 1, item[2]);
-    const name = item[3];
     const expected = item[4].split(' ');
     for (let i = 0; i < 21; i++) {
       const hyear = i + 5753;

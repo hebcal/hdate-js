@@ -8,7 +8,7 @@ test('getPseudoISO-24-hour', () => {
   const OriginalDateTimeFormat = Intl.DateTimeFormat;
 
   try {
-    // @ts-ignore - mocking for test
+    // @ts-expect-error - mocking for test
     Intl.DateTimeFormat = function() {
       return {
         format: mockFormat,
