@@ -1,0 +1,45 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "files": {
+    "ignore": ["dist", "docs", "src/*.po.ts"]
+  },
+  "formatter": {
+    "bracketSpacing": false,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "asNeeded",
+      "quoteStyle": "single",
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "style": {
+        "noArguments": "off",
+        "noParameterAssign": "off",
+        "noUnusedTemplateLiteral": "off",
+        "noUselessElse": "off",
+        "useImportType": "off",
+        "useNumberNamespace": "off",
+        "useTemplate": "off"
+      },
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "noThisInStatic": "off",
+        "useArrowFunction": "off"
+      },
+      "performance": {
+        "noDelete": "off"
+      },
+      "suspicious": {
+        "noDoubleEquals": "off",
+        "noGlobalIsNan": "off",
+        "noImplicitAnyLet": "off",
+        "noPrototypeBuiltins": "off"
+      }
+    }
+  }
+}
