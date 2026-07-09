@@ -30,8 +30,9 @@
     "po"
   ],
   "scripts": {
-    "build:rollup": "rollup -c",
-    "build": "npm run po2json && npm run build:rollup --production",
+    "build:tsc": "tsc",
+    "build:banner": "node ./add-banner.mjs",
+    "build": "npm run po2json && npm run build:tsc && npm run build:banner",
     "prepublish": "npm run build",
     "po2json": "node ./po2json.js po/he.po po/ashkenazi.po",
     "docs": "typedoc",
@@ -44,11 +45,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@rollup/plugin-typescript": "^12.3.0",
     "@types/node": "^26.1.1",
     "@vitest/coverage-v8": "^4.1.10",
     "gettext-parser": "^9.1.1",
-    "rollup": "^4.62.2",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
