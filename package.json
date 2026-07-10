@@ -37,17 +37,18 @@
     "po2json": "node ./po2json.js po/he.po po/ashkenazi.po",
     "docs": "typedoc",
     "pretest": "npm run build",
-    "lint": "biome lint .",
+    "lint": "oxlint && prettier --check .",
     "test": "vitest",
     "coverage": "vitest --coverage",
-    "clean": "node -e \"for (const dir of ['dist', 'coverage']) require('node:fs').rmSync(dir, {recursive: true, force: true})\"",
-    "fix": "biome check --write ."
+    "clean": "rm -rf dist coverage",
+    "fix": "oxlint --fix && prettier --write ."
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.3",
     "@types/node": "^26.1.1",
     "@vitest/coverage-v8": "^4.1.10",
     "gettext-parser": "^9.1.1",
+    "oxlint": "^1.73.0",
+    "prettier": "^3.9.5",
     "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
