@@ -1,0 +1,7 @@
+dist/
+docs/
+coverage/
+node_modules/
+package-lock.json
+.github/
+src/*.po.ts

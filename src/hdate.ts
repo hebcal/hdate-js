@@ -68,10 +68,7 @@ type Capitalize<S extends string> =
     : never;
 
 type TimeUnit =
-  | typeof UNITS_DAY
-  | typeof UNITS_WEEK
-  | typeof UNITS_MONTH
-  | typeof UNITS_YEAR;
+  typeof UNITS_DAY | typeof UNITS_WEEK | typeof UNITS_MONTH | typeof UNITS_YEAR;
 
 /** Units that can be passed to `add()` and similar methods. */
 export type FlexibleTimeUnit = ToFlexibleUnit<TimeUnit>;
