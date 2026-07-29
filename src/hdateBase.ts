@@ -18,9 +18,21 @@ const ADAR_I = 12;
 const ADAR_II = 13;
 
 /**
- * Hebrew months of the year (NISAN=1, TISHREI=7)
+ * Hebrew months of the year (NISAN=1, TISHREI=7).
+ *
+ * Months are numbered from Nisan, the first month of the ecclesiastical
+ * year, even though the civil year begins with Tishrei on Rosh Hashanah
+ * (see {@link HDate.getTishreiMonth} for Tishrei-based numbering).
+ *
+ * In a common year month 12 is Adar; in a leap year month 12 is Adar I
+ * and month 13 is Adar II.
  * @readonly
  * @enum {number}
+ * @example
+ * import {months, getMonthName} from '@hebcal/hdate';
+ * months.TISHREI;                     // 7
+ * getMonthName(months.ADAR_I, 5784);  // 'Adar I' (5784 is a leap year)
+ * getMonthName(months.ADAR_I, 5783);  // 'Adar'
  */
 export const months = {
   /** Nissan / ניסן */
@@ -77,7 +89,17 @@ const monthNames = [
   [...monthNames0, 'Adar I', 'Adar II', NISAN_STR],
 ] as const;
 
-/** Transliterated Hebrew month names. */
+/**
+ * Transliterated Hebrew month names, as returned by
+ * {@link getMonthName} and {@link HDate.getMonthName}.
+ *
+ * These strings double as the message IDs used for translation, so they
+ * can be passed straight to {@link Locale.gettext}.
+ * @example
+ * import {Locale} from '@hebcal/hdate';
+ * const name: MonthName = 'Cheshvan';
+ * Locale.gettext(name, 'he'); // 'חֶשְׁוָן'
+ */
 export type MonthName =
   | 'Nisan'
   | 'Iyyar'
@@ -119,11 +141,19 @@ function assertNumber(n: unknown, name: string) {
 
 /**
  * Converts Hebrew date to R.D. (Rata Die) fixed days.
- * R.D. 1 is the imaginary date Monday, January 1, 1 on the Gregorian
- * Calendar.
+ * R.D. 1 is the imaginary date Monday, January 1, 1 on the (proleptic)
+ * Gregorian Calendar.
+ *
+ * R.D. is the common currency between the two calendars: convert a
+ * Hebrew date to R.D. with this function, then to a Gregorian `Date`
+ * with {@link abs2greg}.
  * @param year Hebrew year
- * @param month Hebrew month
+ * @param month Hebrew month (1=NISAN, 7=TISHREI)
  * @param day Hebrew date (1-30)
+ * @returns R.D. number of days
+ * @throws {TypeError} if any argument is not a number
+ * @throws {RangeError} if `year` is less than 1
+ * @see {@link abs2hebrew}
  * @example
  * import {hebrew2abs, months} from '@hebcal/hdate';
  * hebrew2abs(5769, months.CHESHVAN, 15); // 733359
@@ -160,6 +190,9 @@ export function hebrew2abs(year: number, month: number, day: number): number {
  * Convenience wrapper for `hebrew2abs` that accepts a
  * `SimpleHebrewDate` (`{yy, mm, dd}`) rather than three separate
  * arguments. Returns the same R.D. (Rata Die) day number.
+ * @param hdate Hebrew date, or any object with `yy`/`mm`/`dd` fields
+ *   (an {@link HDate} qualifies)
+ * @returns R.D. number of days
  * @example
  * import {hd2abs, months} from '@hebcal/hdate';
  * hd2abs({yy: 5769, mm: months.CHESHVAN, dd: 15}); // 733359
@@ -175,6 +208,25 @@ function newYear(year: number): number {
   return EPOCH + elapsedDays(year);
 }
 
+/**
+ * A plain-object Hebrew date: year, month and day with no methods and no
+ * time or location attached.
+ *
+ * This is the lightweight currency of the low-level functions in this
+ * package ({@link abs2hebrew}, {@link hd2abs}, {@link getYahrzeitHD},
+ * {@link getBirthdayHD}). The {@link HDate} class is structurally
+ * compatible with it, so an `HDate` may be passed anywhere a
+ * `SimpleHebrewDate` is expected.
+ *
+ * Note that nothing validates the field values: constructing
+ * `{yy: 5769, mm: 8, dd: 31}` is possible even though Cheshvan 5769 has
+ * only 29 days. Use {@link HDate} if you want out-of-range days and
+ * months normalized for you.
+ * @example
+ * import {SimpleHebrewDate, months, hd2abs} from '@hebcal/hdate';
+ * const hd: SimpleHebrewDate = {yy: 5769, mm: months.CHESHVAN, dd: 15};
+ * hd2abs(hd); // 733359
+ */
 export type SimpleHebrewDate = {
   /** Hebrew year */
   yy: number;
@@ -187,6 +239,10 @@ export type SimpleHebrewDate = {
 /**
  * Converts absolute R.D. days to Hebrew date
  * @param abs absolute R.D. days
+ * @returns the Hebrew date as a plain `{yy, mm, dd}` object
+ * @throws {TypeError} if `abs` is not a number
+ * @throws {RangeError} if `abs` precedes the Hebrew epoch
+ * @see {@link hebrew2abs}
  * @example
  * abs2hebrew(733359); // {yy: 5769, mm: 8, dd: 15} (15 Cheshvan 5769)
  */
@@ -213,8 +269,13 @@ export function abs2hebrew(abs: number): SimpleHebrewDate {
 }
 
 /**
- * Returns true if Hebrew year is a leap year
+ * Returns true if Hebrew year is a leap year.
+ *
+ * The Hebrew calendar is lunisolar: 7 years out of every 19-year
+ * (Metonic) cycle are leap years, in which a 13th month (Adar I) is
+ * inserted before Adar so that Nisan stays in the spring.
  * @param year Hebrew year
+ * @returns `true` if `year` has 13 months
  * @example
  * isLeapYear(5783); // false
  * isLeapYear(5784); // true
@@ -224,8 +285,13 @@ export function isLeapYear(year: number): boolean {
 }
 
 /**
- * Number of months in this Hebrew year (either 12 or 13 depending on leap year)
+ * Number of months in this Hebrew year (either 12 or 13 depending on leap year).
+ *
+ * Because Adar II is the last month of a leap year and Adar the last
+ * month of a common year, this doubles as "the number of the final
+ * month", which is how the anniversary rules identify Adar.
  * @param year Hebrew year
+ * @returns 12 or 13
  * @example
  * monthsInYear(5783); // 12
  * monthsInYear(5784); // 13
@@ -241,9 +307,15 @@ const STATIC_DAYS_IN_MONTH: readonly number[] = [
 ];
 
 /**
- * Number of days in Hebrew month in a given year (29 or 30)
+ * Number of days in Hebrew month in a given year (29 or 30).
+ *
+ * Most months have a fixed length. Cheshvan and Kislev vary to absorb
+ * the 353/354/355-day variation of the Hebrew year (see
+ * {@link longCheshvan} and {@link shortKislev}), and Adar I has 30 days
+ * in a leap year but 29 in a common year.
  * @param month Hebrew month (e.g. months.TISHREI)
  * @param year Hebrew year
+ * @returns an integer 29-30
  * @example
  * import {daysInMonth, months} from '@hebcal/hdate';
  * daysInMonth(months.CHESHVAN, 5769); // 29
@@ -260,8 +332,14 @@ export function daysInMonth(month: number, year: number): number {
 /**
  * Returns a transliterated string name of Hebrew month in year,
  * for example 'Elul' or 'Cheshvan'.
+ *
+ * The year matters only for the 12th month, which is named `'Adar'` in a
+ * common year and `'Adar I'` in a leap year. To translate the result into
+ * another locale, pass it to {@link Locale.gettext}.
  * @param month Hebrew month (e.g. months.TISHREI)
  * @param year Hebrew year
+ * @returns transliterated month name
+ * @throws {TypeError} if `month` is out of range 1-14
  * @example
  * import {getMonthName, months} from '@hebcal/hdate';
  * getMonthName(months.CHESHVAN, 5769); // 'Cheshvan'
@@ -279,8 +357,15 @@ export function getMonthName(month: number, year: number): MonthName {
 
 /**
  * Days from sunday prior to start of Hebrew calendar to mean
- * conjunction of Tishrei in Hebrew YEAR
+ * conjunction of Tishrei in Hebrew YEAR, after applying the four
+ * postponement rules (dechiyot) that fix Rosh Hashanah.
+ *
+ * This is an implementation detail of the calendar arithmetic rather
+ * than a supported entry point; prefer {@link hebrew2abs} or
+ * {@link daysInYear}. Results for years 5000-6999 are cached.
+ * @internal
  * @param year Hebrew year
+ * @returns days elapsed since the epoch
  */
 export function elapsedDays(year: number): number {
   if (year >= ED_CACHE_MIN && year <= ED_CACHE_MAX) {
@@ -339,7 +424,12 @@ function elapsedDays0(year: number): number {
  * Number of days in the hebrew YEAR.
  * A common Hebrew calendar year can have a length of 353, 354 or 355 days
  * A leap Hebrew calendar year can have a length of 383, 384 or 385 days
+ *
+ * The three lengths within each group are deficient, regular and
+ * complete years respectively; see {@link shortKislev} and
+ * {@link longCheshvan} for which month absorbs the difference.
  * @param year Hebrew year
+ * @returns 353-355 in a common year, 383-385 in a leap year
  * @example
  * daysInYear(5783); // 355
  * daysInYear(5784); // 383 (leap year)
@@ -349,8 +439,13 @@ export function daysInYear(year: number): number {
 }
 
 /**
- * true if Cheshvan is long in Hebrew year
+ * true if Cheshvan is long in Hebrew year.
+ *
+ * Cheshvan normally has 29 days, but gains a 30th in a "complete"
+ * (שלמה) year, one of the two ways the calendar stretches a year to
+ * keep Rosh Hashanah off a forbidden weekday.
  * @param year Hebrew year
+ * @returns `true` if Cheshvan has 30 days
  * @example
  * longCheshvan(5783); // true
  * longCheshvan(5784); // false
@@ -360,8 +455,13 @@ export function longCheshvan(year: number): boolean {
 }
 
 /**
- * true if Kislev is short in Hebrew year
+ * true if Kislev is short in Hebrew year.
+ *
+ * Kislev normally has 30 days, but drops to 29 in a "deficient" (חסרה)
+ * year, the counterpart to {@link longCheshvan} that shortens a year by
+ * a day.
  * @param year Hebrew year
+ * @returns `true` if Kislev has 29 days
  * @example
  * shortKislev(5783); // false
  * shortKislev(5784); // true
@@ -371,8 +471,18 @@ export function shortKislev(year: number): boolean {
 }
 
 /**
- * Converts Hebrew month string name to numeric
+ * Converts Hebrew month string name to numeric.
+ *
+ * Accepts transliterated names (`'Cheshvan'`, `'Sh'vat'`), Hebrew-script
+ * names with or without nikud (`'חשון'`, `'תִּשְׁרֵי'`), an optional bet
+ * prefix (`'בתמוז'`), and passes numbers through unchanged. Matching is
+ * case-insensitive and only needs enough of the name to be unambiguous.
+ * `'Adar'` resolves to Adar I; `'Adar II'` (and `'אדר ב׳'`) to Adar II.
  * @param monthName monthName
+ * @returns Hebrew month number (1=NISAN, 7=TISHREI)
+ * @throws {TypeError} if `monthName` is neither a string nor a number
+ * @throws {RangeError} if the name is not recognized, or a numeric month
+ *   is outside 1-14
  * @example
  * monthFromName('Cheshvan'); // 8
  * monthFromName('חשון');     // 8

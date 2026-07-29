@@ -2,15 +2,44 @@ import {hebrewStripNikkud} from './hebrewStripNikkud';
 import poAshkenazi from './ashkenazi.po';
 import poHe from './he.po';
 
+/**
+ * Metadata from the header block of a `.po` file. Only the two fields
+ * gettext tooling emits by default are modelled; both are optional and
+ * neither affects lookup in this package.
+ */
 export interface Headers {
+  /** MIME type and charset, e.g. `'text/plain; charset=UTF-8'` */
   'content-type'?: string;
+  /** gettext plural rule, e.g. `'nplurals=2; plural=(n!=1);'` */
   'plural-forms'?: string;
 }
 
+/**
+ * Message IDs mapped to their translations. The value is an array
+ * because gettext supports plural forms; this package reads only the
+ * first element.
+ */
 export type StringArrayMap = Record<string, string[]>;
 
+/**
+ * Translations for a single locale, in the "compact" JSON shape produced
+ * by `gettext-parser` from a `.po` file. Pass one of these to
+ * {@link Locale.addLocale} or {@link Locale.addTranslations}.
+ *
+ * Translations live under the empty-string context; other gettext
+ * contexts are ignored.
+ * @example
+ * import {LocaleData, Locale} from '@hebcal/hdate';
+ * const poFr: LocaleData = {
+ *   headers: {'plural-forms': 'nplurals=2; plural=(n>1);'},
+ *   contexts: {'': {Shabbat: ['Chabbat'], Adar: ['Adar']}},
+ * };
+ * Locale.addLocale('fr', poFr);
+ */
 export interface LocaleData {
+  /** Header metadata from the `.po` file */
   headers: Headers;
+  /** gettext contexts; translations are read from the `''` context */
   contexts: Record<string, StringArrayMap>;
 }
 
@@ -62,6 +91,27 @@ function getExistingLocale(locale: string): StringArrayMap {
  * * `ashkenazi` - Ashkenazi transliterations (e.g. "Shabbos")
  * * `he` - Hebrew (e.g. "שַׁבָּת")
  * * `he-x-NoNikud` - Hebrew without nikud (e.g. "שבת")
+ *
+ * The locale set that ships here covers only what this package needs:
+ * month names, a handful of connective words, and the parts of speech
+ * used by {@link HDate.render}. Packages built on top of it (such as
+ * `@hebcal/core`) register their own holiday translations into the same
+ * locales with {@link Locale.addTranslations}.
+ *
+ * Every method is static — `Locale` is a namespace, not something you
+ * instantiate. Locale names are matched case-insensitively, and the
+ * single letters `h`, `a` and `s` are accepted as aliases for `he`,
+ * `ashkenazi` and `en` respectively.
+ * @example
+ * import {Locale, HDate, months} from '@hebcal/hdate';
+ *
+ * Locale.gettext('Cheshvan', 'he');        // 'חֶשְׁוָן'
+ * Locale.gettext('Cheshvan', 'ashkenazi'); // 'Cheshvan'
+ * Locale.ordinal(15, 'en');                // '15th'
+ *
+ * const hd = new HDate(15, months.CHESHVAN, 5769);
+ * hd.render('en'); // '15th of Cheshvan, 5769'
+ * hd.render('he'); // '15 חֶשְׁוָן, 5769'
  */
 export class Locale {
   /**
@@ -102,11 +152,16 @@ export class Locale {
   }
 
   /**
-   * Register locale translations.
+   * Register locale translations, replacing the locale entirely if it
+   * was already registered. Use {@link Locale.addTranslations} to merge
+   * into an existing locale instead.
    * @param locale Locale name (i.e.: `'he'`, `'fr'`)
    * @param data parsed data from a `.po` file.
+   * @throws {TypeError} if `data` is not in the compact `.po` format
    * @example
-   * import poFr from './fr.po';
+   * import {Locale} from '@hebcal/hdate';
+   * // typically `import poFr from './fr.po'` — inlined here for clarity
+   * const poFr = {headers: {}, contexts: {'': {Shabbat: ['Chabbat']}}};
    * Locale.addLocale('fr', poFr);
    * Locale.gettext('Shabbat', 'fr'); // 'Chabbat'
    */
@@ -158,6 +213,16 @@ export class Locale {
    * existing locale.
    * @param locale Locale name (i.e: `'he'`, `'fr'`).
    * @param data parsed data from a `.po` file.
+   * @throws {RangeError} if `locale` has not been registered
+   * @throws {TypeError} if `data` is not in the compact `.po` format
+   * @example
+   * import {Locale} from '@hebcal/hdate';
+   * Locale.addTranslations('ashkenazi', {
+   *   headers: {},
+   *   contexts: {'': {Sukkot: ['Sukkos'], Shavuot: ['Shavuos']}},
+   * });
+   * Locale.gettext('Sukkot', 'ashkenazi'); // 'Sukkos'
+   * Locale.gettext('Tevet', 'ashkenazi');  // 'Teves' (existing translations kept)
    */
   static addTranslations(locale: string, data: LocaleData) {
     const loc = getExistingLocale(locale);
@@ -228,6 +293,18 @@ export class Locale {
    * This is the helper used internally to build the `he-x-NoNikud`
    * locale from `he`; call it when registering a derived "no nikud"
    * variant of a custom Hebrew-script locale.
+   * @param data locale data to copy
+   * @returns a new `LocaleData` with niqqud removed
+   * @see {@link Locale.hebrewStripNikkud}
+   * @example
+   * import {Locale} from '@hebcal/hdate';
+   * const withNikud = {
+   *   headers: {},
+   *   contexts: {'': {Elul: ['אֱלוּל']}},
+   * };
+   * const stripped = Locale.copyLocaleNoNikud(withNikud);
+   * stripped.contexts[''].Elul[0];   // 'אלול'
+   * withNikud.contexts[''].Elul[0];  // 'אֱלוּל' (input unchanged)
    */
   static copyLocaleNoNikud(data: LocaleData): LocaleData {
     const strs = data.contexts[''];

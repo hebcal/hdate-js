@@ -7,3 +7,4 @@ export * from './pad';
 export * from './dateFormat';
 export * from './locale';
 export {HDate, FlexibleTimeUnit} from './hdate';
+export * from './anniversaryHDate';

@@ -118,3 +118,34 @@ test('getBirthdayHD-same', () => {
   expect(anniversary).toBeDefined();
   expect(anniversary).toEqual({dd: 23, mm: 3, yy: 5735});
 });
+
+test('getYahrzeitHD-does-not-modify-original', () => {
+  const niftar = {dd: 15, mm: months.ADAR_II, yy: 5784};
+  getYahrzeitHD(5785, niftar);
+  expect(niftar).toEqual({dd: 15, mm: months.ADAR_II, yy: 5784});
+});
+
+test('getBirthdayHD-does-not-modify-original', () => {
+  const birth = {dd: 15, mm: months.ADAR_II, yy: 5784};
+  const anniversary = getBirthdayHD(5784, birth);
+  expect(anniversary).toEqual(birth);
+  expect(anniversary).not.toBe(birth);
+});
+
+test('getYahrzeitHD-reuse-same-object', () => {
+  // 15 Adar II 5784 (leap year). Reusing the same object across years
+  // must give the same results as a fresh object for each year.
+  const niftar = {dd: 15, mm: months.ADAR_II, yy: 5784};
+  const actual = [5785, 5786, 5787].map(hyear => getYahrzeitHD(hyear, niftar));
+  const expected = [5785, 5786, 5787].map(hyear =>
+    getYahrzeitHD(hyear, {dd: 15, mm: months.ADAR_II, yy: 5784})
+  );
+  expect(actual).toEqual(expected);
+  // 5785 and 5786 are ordinary years, so the anniversary is 15 Adar (month 12);
+  // 5787 is a leap year, so it is 15 Adar II (month 13)
+  expect(actual).toEqual([
+    {dd: 15, mm: 12, yy: 5785},
+    {dd: 15, mm: 12, yy: 5786},
+    {dd: 15, mm: 13, yy: 5787},
+  ]);
+});

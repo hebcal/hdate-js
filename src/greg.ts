@@ -44,8 +44,13 @@ const ABS_2SEP1752 = 639785;
  */
 
 /**
- * Returns true if the Gregorian year is a leap year
+ * Returns true if the Gregorian year is a leap year.
+ *
+ * Uses the proleptic Gregorian rule (divisible by 4, except centuries
+ * that are not divisible by 400) for **all** years, including those
+ * before the Gregorian calendar was adopted in 1582.
  * @param year Gregorian year
+ * @returns `true` if February has 29 days in `year`
  * @example
  * isGregLeapYear(2000); // true
  * isGregLeapYear(2020); // true
@@ -60,6 +65,7 @@ export function isGregLeapYear(year: number): boolean {
  * Number of days in the Gregorian month for given year
  * @param month Gregorian month (1=January, 12=December)
  * @param year Gregorian year
+ * @returns an integer 28-31
  * @example
  * daysInGregMonth(2, 2024); // 29 (February in a leap year)
  * daysInGregMonth(2, 2023); // 28
@@ -71,7 +77,10 @@ export function daysInGregMonth(month: number, year: number): number {
 }
 
 /**
- * Returns true if the object is a Javascript Date
+ * Returns true if the object is a Javascript `Date`.
+ *
+ * Note that this only tests the type: an invalid date such as
+ * `new Date('foo')` is still a `Date` and returns `true`.
  * @example
  * isDate(new Date()); // true
  * isDate('2024-01-01'); // false
@@ -102,8 +111,20 @@ function toFixed(year: number, month: number, day: number): number {
 }
 
 /**
- * Converts Gregorian date to absolute R.D. (Rata Die) days
+ * Converts Gregorian date to absolute R.D. (Rata Die) days.
+ * R.D. 1 is the imaginary date Monday, January 1, 1 (Gregorian).
+ *
+ * Only the local-time year, month and day of `date` are used; hours,
+ * minutes, seconds and milliseconds are ignored.
+ *
+ * Dates are interpreted on the **proleptic** Gregorian calendar, which
+ * applies the Gregorian rules uniformly to every year without the
+ * ten-day discontinuity of the Gregorian Reformation of 1582.
  * @param date Gregorian date
+ * @returns R.D. number of days
+ * @throws {TypeError} if `date` is not a `Date`
+ * @throws {RangeError} if `date` is an Invalid Date
+ * @see {@link abs2greg}
  * @example
  * greg2abs(new Date(2008, 10, 13)); // 733359 (13 November 2008)
  * greg2abs(new Date(2005, 3, 2)); // 732038 (2 April 2005)
@@ -134,7 +155,14 @@ export function greg2abs(date: Date): number {
  * For example, the 15th of Cheshvan 5769 began at sundown on
  * 12 November 2008 and continues through 13 November 2008. This
  * function would return only the date 13 November 2008.
+ *
+ * The returned `Date` is in the local (i.e. host system) time zone with
+ * hours, minutes, seconds and milliseconds all set to zero, and is on the
+ * **proleptic** Gregorian calendar (see {@link greg2abs}).
  * @param abs - R.D. number of days
+ * @returns Gregorian date at local midnight
+ * @throws {TypeError} if `abs` is not a number
+ * @see {@link greg2abs}
  * @example
  * const abs = hebrew2abs(5769, months.CHESHVAN, 15);
  * const date = abs2greg(abs); // 13 November 2008

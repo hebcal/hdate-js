@@ -70,7 +70,22 @@ type Capitalize<S extends string> =
 type TimeUnit =
   typeof UNITS_DAY | typeof UNITS_WEEK | typeof UNITS_MONTH | typeof UNITS_YEAR;
 
-/** Units that can be passed to `add()` and similar methods. */
+/**
+ * Units that can be passed to {@link HDate.add} and {@link HDate.subtract}.
+ *
+ * The four units are `day`, `week`, `month` and `year`. Each may be
+ * written singular or plural, in any capitalization (`'day'`, `'Days'`,
+ * `'YEARS'`). The one-letter shorthands `d`, `w`, `M` and `y` are also
+ * accepted, and those *are* case sensitive: `M` is months, to leave `m`
+ * free for minutes in packages built on top of this one.
+ * @example
+ * import {HDate, FlexibleTimeUnit, months} from '@hebcal/hdate';
+ * const unit: FlexibleTimeUnit = 'weeks';
+ * const hd = new HDate(15, months.CHESHVAN, 5769);
+ * hd.add(1, unit).toString();   // '22 Cheshvan 5769'
+ * hd.add(1, 'w').toString();    // '22 Cheshvan 5769'
+ * hd.add(1, 'M').toString();    // '15 Kislev 5769'
+ */
 export type FlexibleTimeUnit = ToFlexibleUnit<TimeUnit>;
 
 /**
@@ -257,7 +272,7 @@ export class HDate {
    * @returns an integer 0-6
    * @example
    * const hd = new HDate(new Date(2008, 10, 13)); // 15 Cheshvan 5769
-   * hd.getDate(); // 4
+   * hd.getDay(); // 4 (Thursday)
    */
   getDay(): number {
     return mod(this.abs(), 7);
@@ -381,10 +396,15 @@ export class HDate {
 
   /**
    * Returns an `HDate` corresponding to the specified day of week
-   * **before** this Hebrew date
+   * **before** this Hebrew date.
+   *
+   * Strictly before: if this date already falls on `dayOfWeek`, the
+   * previous occurrence a week earlier is returned.
    * @example
-   * new HDate(new Date('Wednesday February 19, 2014')).before(6).greg() // Sat Feb 15 2014
+   * const wed = new HDate(new Date('Wednesday February 19, 2014'));
+   * wed.before(6).greg().toDateString(); // 'Sat Feb 15 2014'
    * @param dayOfWeek day of week: Sunday=0, Saturday=6
+   * @returns a new `HDate`; the original is not modified
    */
   before(dayOfWeek: number): HDate {
     return onOrBefore(dayOfWeek, this, -1);
@@ -394,10 +414,14 @@ export class HDate {
    * Returns an `HDate` corresponding to the specified day of week
    * **on or before** this Hebrew date
    * @example
-   * new HDate(new Date('Wednesday February 19, 2014')).onOrBefore(6).greg() // Sat Feb 15 2014
-   * new HDate(new Date('Saturday February 22, 2014')).onOrBefore(6).greg() // Sat Feb 22 2014
-   * new HDate(new Date('Sunday February 23, 2014')).onOrBefore(6).greg() // Sat Feb 22 2014
+   * const wed = new HDate(new Date('Wednesday February 19, 2014'));
+   * const sat = new HDate(new Date('Saturday February 22, 2014'));
+   * const sun = new HDate(new Date('Sunday February 23, 2014'));
+   * wed.onOrBefore(6).greg().toDateString(); // 'Sat Feb 15 2014'
+   * sat.onOrBefore(6).greg().toDateString(); // 'Sat Feb 22 2014'
+   * sun.onOrBefore(6).greg().toDateString(); // 'Sat Feb 22 2014'
    * @param dayOfWeek day of week: Sunday=0, Saturday=6
+   * @returns a new `HDate`; the original is not modified
    */
   onOrBefore(dayOfWeek: number): HDate {
     return onOrBefore(dayOfWeek, this, 0);
@@ -405,11 +429,17 @@ export class HDate {
 
   /**
    * Returns an `HDate` corresponding to the specified day of week
-   * **nearest** to this Hebrew date
+   * **nearest** to this Hebrew date.
+   *
+   * Ties are broken forward: a date exactly 3 days from `dayOfWeek` in
+   * both directions resolves to the later one.
    * @example
-   * new HDate(new Date('Wednesday February 19, 2014')).nearest(6).greg() // Sat Feb 22 2014
-   * new HDate(new Date('Tuesday February 18, 2014')).nearest(6).greg() // Sat Feb 15 2014
+   * const wed = new HDate(new Date('Wednesday February 19, 2014'));
+   * const tue = new HDate(new Date('Tuesday February 18, 2014'));
+   * wed.nearest(6).greg().toDateString(); // 'Sat Feb 22 2014'
+   * tue.nearest(6).greg().toDateString(); // 'Sat Feb 15 2014'
    * @param dayOfWeek day of week: Sunday=0, Saturday=6
+   * @returns a new `HDate`; the original is not modified
    */
   nearest(dayOfWeek: number): HDate {
     return onOrBefore(dayOfWeek, this, 3);
@@ -419,10 +449,14 @@ export class HDate {
    * Returns an `HDate` corresponding to the specified day of week
    * **on or after** this Hebrew date
    * @example
-   * new HDate(new Date('Wednesday February 19, 2014')).onOrAfter(6).greg() // Sat Feb 22 2014
-   * new HDate(new Date('Saturday February 22, 2014')).onOrAfter(6).greg() // Sat Feb 22 2014
-   * new HDate(new Date('Sunday February 23, 2014')).onOrAfter(6).greg() // Sat Mar 01 2014
+   * const wed = new HDate(new Date('Wednesday February 19, 2014'));
+   * const sat = new HDate(new Date('Saturday February 22, 2014'));
+   * const sun = new HDate(new Date('Sunday February 23, 2014'));
+   * wed.onOrAfter(6).greg().toDateString(); // 'Sat Feb 22 2014'
+   * sat.onOrAfter(6).greg().toDateString(); // 'Sat Feb 22 2014'
+   * sun.onOrAfter(6).greg().toDateString(); // 'Sat Mar 01 2014'
    * @param dayOfWeek day of week: Sunday=0, Saturday=6
+   * @returns a new `HDate`; the original is not modified
    */
   onOrAfter(dayOfWeek: number): HDate {
     return onOrBefore(dayOfWeek, this, 6);
@@ -430,12 +464,19 @@ export class HDate {
 
   /**
    * Returns an `HDate` corresponding to the specified day of week
-   * **after** this Hebrew date
+   * **after** this Hebrew date.
+   *
+   * Strictly after: if this date already falls on `dayOfWeek`, the next
+   * occurrence a week later is returned.
    * @example
-   * new HDate(new Date('Wednesday February 19, 2014')).after(6).greg() // Sat Feb 22 2014
-   * new HDate(new Date('Saturday February 22, 2014')).after(6).greg() // Sat Mar 01 2014
-   * new HDate(new Date('Sunday February 23, 2014')).after(6).greg() // Sat Mar 01 2014
+   * const wed = new HDate(new Date('Wednesday February 19, 2014'));
+   * const sat = new HDate(new Date('Saturday February 22, 2014'));
+   * const sun = new HDate(new Date('Sunday February 23, 2014'));
+   * wed.after(6).greg().toDateString(); // 'Sat Feb 22 2014'
+   * sat.after(6).greg().toDateString(); // 'Sat Mar 01 2014'
+   * sun.after(6).greg().toDateString(); // 'Sat Mar 01 2014'
    * @param dayOfWeek day of week: Sunday=0, Saturday=6
+   * @returns a new `HDate`; the original is not modified
    */
   after(dayOfWeek: number): HDate {
     return onOrBefore(dayOfWeek, this, 7);
@@ -443,9 +484,10 @@ export class HDate {
 
   /**
    * Returns the next Hebrew date
+   * @returns a new `HDate` one day later; the original is not modified
    * @example
    * const hd = new HDate(new Date(2008, 10, 13)); // 15 Cheshvan 5769
-   * hd.next(); // '16 Cheshvan 5769'
+   * hd.next().toString(); // '16 Cheshvan 5769'
    */
   next(): HDate {
     return new HDate(this.abs() + 1);
@@ -453,9 +495,10 @@ export class HDate {
 
   /**
    * Returns the previous Hebrew date
+   * @returns a new `HDate` one day earlier; the original is not modified
    * @example
    * const hd = new HDate(new Date(2008, 10, 13)); // 15 Cheshvan 5769
-   * hd.prev(); // '14 Cheshvan 5769'
+   * hd.prev().toString(); // '14 Cheshvan 5769'
    */
   prev(): HDate {
     return new HDate(this.abs() - 1);
@@ -477,9 +520,13 @@ export class HDate {
    * import {HDate, months} from '@hebcal/hdate';
    *
    * const hd1 = new HDate(15, months.CHESHVAN, 5769);
-   * hd1.add(7, 'd');     // 22 Cheshvan 5769
-   * hd1.add(1, 'weeks'); // 22 Cheshvan 5769
-   * hd1.add(1, 'year');  // 15 Cheshvan 5770
+   * hd1.add(7, 'd').toString();     // '22 Cheshvan 5769'
+   * hd1.add(1, 'weeks').toString(); // '22 Cheshvan 5769'
+   * hd1.add(1, 'year').toString();  // '15 Cheshvan 5770'
+   * @param amount number of units to add (negative values subtract)
+   * @param [units=d] unit of time, defaults to days
+   * @returns a new `HDate`; the original is not modified
+   * @throws {TypeError} if `units` is not a recognized unit of time
    */
   add(amount: number | string, units: FlexibleTimeUnit = 'd'): HDate {
     amount = typeof amount === 'string' ? parseInt(amount, 10) : amount;
@@ -525,8 +572,12 @@ export class HDate {
    * import {HDate, months} from '@hebcal/hdate';
    *
    * const hd1 = new HDate(15, months.CHESHVAN, 5769);
-   * const hd2 = hd1.add(1, 'weeks'); // 7 Kislev 5769
-   * const hd3 = hd1.add(-3, 'M'); // 30 Av 5768
+   * hd1.subtract(1, 'weeks').toString(); // '8 Cheshvan 5769'
+   * hd1.subtract(3, 'M').toString();     // '16 Av 5768'
+   * @param amount number of units to subtract (negative values add)
+   * @param [units=d] unit of time, defaults to days
+   * @returns a new `HDate`; the original is not modified
+   * @throws {TypeError} if `units` is not a recognized unit of time
    */
   subtract(amount: number, units: FlexibleTimeUnit = 'd'): HDate {
     return this.add(amount * -1, units);
@@ -703,7 +754,18 @@ export class HDate {
    * absolute day d. Similarly, applying it to d+3 gives the `dayOfWeek` nearest to
    * absolute date d, applying it to d-1 gives the `dayOfWeek` previous to absolute
    * date d, and applying it to d+7 gives the `dayOfWeek` following absolute date d.
+   *
+   * The instance methods {@link HDate.before}, {@link HDate.onOrBefore},
+   * {@link HDate.nearest}, {@link HDate.onOrAfter} and {@link HDate.after}
+   * wrap this with those offsets already applied.
    * @param dayOfWeek day of week: Sunday=0, Saturday=6
+   * @param absdate R.D. number of days
+   * @returns R.D. number of days
+   * @example
+   * import {HDate} from '@hebcal/hdate';
+   * // 733359 is Thursday 13 November 2008
+   * HDate.dayOnOrBefore(6, 733359); // 733354 (Saturday 8 November 2008)
+   * HDate.dayOnOrBefore(6, 733359 + 6); // 733361 (Saturday 15 November 2008)
    */
   static dayOnOrBefore(dayOfWeek: number, absdate: number): number {
     return absdate - ((absdate - dayOfWeek) % 7);
@@ -732,11 +794,22 @@ export class HDate {
   }
 
   /**
-   * Construct a new instance of `HDate` from a Gematriya-formatted string
+   * Construct a new instance of `HDate` from a Gematriya-formatted string.
+   *
+   * The string must have the form day-month-year, with the month name
+   * written in Hebrew script (nikud optional, an optional bet prefix
+   * allowed). A year below 1000 is assumed to omit the thousands and has
+   * `currentThousands` added to it.
+   * @param str Hebrew date in gematriya, e.g. `'כ״ז בְּתַמּוּז תשפ״ג'`
+   * @param [currentThousands=5000] added to a year below 1000
+   * @returns the parsed Hebrew date
+   * @throws {TypeError} if `str` is not a string
+   * @throws {RangeError} if `str` is not 3 or 4 space-separated parts,
+   *   or the month name is not recognized
    * @example
-   * HDate.fromGematriyaString('כ״ז בְּתַמּוּז תשפ״ג') // 27 Tamuz 5783
-   * HDate.fromGematriyaString('כ׳ סיון תש״ד') // 20 Sivan 5704
-   * HDate.fromGematriyaString('ה׳ אִיָיר תש״ח') // 5 Iyyar 5708
+   * HDate.fromGematriyaString('כ״ז בְּתַמּוּז תשפ״ג').toString(); // '27 Tamuz 5783'
+   * HDate.fromGematriyaString('כ׳ סיון תש״ד').toString(); // '20 Sivan 5704'
+   * HDate.fromGematriyaString('ה׳ אִיָיר תש״ח').toString(); // '5 Iyyar 5708'
    */
   static fromGematriyaString(str: string, currentThousands = 5000): HDate {
     if (typeof str !== 'string') {
