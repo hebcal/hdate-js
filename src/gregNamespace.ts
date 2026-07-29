@@ -5,7 +5,7 @@ import {
   greg2abs,
   isDate,
   isGregLeapYear,
-} from './greg';
+} from './greg.js';
 
 /**
  * Gregorian date helper functions.

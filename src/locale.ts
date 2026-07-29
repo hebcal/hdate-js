@@ -1,6 +1,6 @@
-import {hebrewStripNikkud} from './hebrewStripNikkud';
-import poAshkenazi from './ashkenazi.po';
-import poHe from './he.po';
+import {hebrewStripNikkud} from './hebrewStripNikkud.js';
+import poAshkenazi from './ashkenazi.po.js';
+import poHe from './he.po.js';
 
 /**
  * Metadata from the header block of a `.po` file. Only the two fields

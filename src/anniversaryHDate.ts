@@ -1,5 +1,5 @@
-import {AnniversaryDate, getBirthdayHD, getYahrzeitHD} from './anniversary';
-import {HDate} from './hdate';
+import {AnniversaryDate, getBirthdayHD, getYahrzeitHD} from './anniversary.js';
+import {HDate} from './hdate.js';
 
 /**
  * Calculates yahrzeit, the anniversary of a death, and returns it as an

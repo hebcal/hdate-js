@@ -32,10 +32,10 @@ import {
   months,
   monthsInYear,
   shortKislev,
-} from './hdateBase';
-import {abs2greg, greg2abs, isDate} from './greg';
-import {gematriya, gematriyaStrToNum} from './gematriya';
-import {Locale} from './locale';
+} from './hdateBase.js';
+import {abs2greg, greg2abs, isDate} from './greg.js';
+import {gematriya, gematriyaStrToNum} from './gematriya.js';
+import {Locale} from './locale.js';
 
 function mod(x: number, y: number): number {
   return x - y * Math.floor(x / y);

@@ -1,7 +1,7 @@
 /*
  * More minimal HDate
  */
-import {hebrewStripNikkud} from './hebrewStripNikkud';
+import {hebrewStripNikkud} from './hebrewStripNikkud.js';
 
 const NISAN = 1;
 const IYYAR = 2;
