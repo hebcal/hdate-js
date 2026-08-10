@@ -435,6 +435,19 @@ test('after', () => {
   );
 });
 
+test('dayOnOrBefore negative R.D.', () => {
+  // R.D. numbers before the common era are negative, and JavaScript's `%`
+  // truncates toward zero. dayOnOrBefore must use a floored modulo so it
+  // returns a day on or *before* absdate, not after it.
+  expect(HDate.dayOnOrBefore(6, -641)).toBe(-645);
+  expect(HDate.dayOnOrBefore(6, 0)).toBe(-1);
+  expect(HDate.dayOnOrBefore(0, -1)).toBe(-7);
+  // 21 Nisan 3759 is a Wednesday (R.D. -648); the next Shabbat is 24 Nisan.
+  const pesach7 = new HDate(21, NISAN, 3759);
+  expect(pesach7.abs()).toBe(-648);
+  expect(pesach7.after(6).abs()).toBe(-645); // 24 Nisan 3759
+});
+
 test('isHDate', () => {
   expect(HDate.isHDate('foo')).toBe(false);
   expect(HDate.isHDate(null)).toBe(false);

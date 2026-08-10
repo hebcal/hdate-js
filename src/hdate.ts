@@ -768,7 +768,10 @@ export class HDate {
    * HDate.dayOnOrBefore(6, 733359 + 6); // 733361 (Saturday 15 November 2008)
    */
   static dayOnOrBefore(dayOfWeek: number, absdate: number): number {
-    return absdate - ((absdate - dayOfWeek) % 7);
+    // Use a floored modulo: R.D. numbers are negative before the common
+    // era, and JavaScript's `%` truncates toward zero, which would return
+    // a day *after* absdate for those negative inputs.
+    return absdate - mod(absdate - dayOfWeek, 7);
   }
 
   /**
