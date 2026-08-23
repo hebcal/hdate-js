@@ -608,6 +608,11 @@ test('fromGematriyaString', () => {
   expect(HDate.fromGematriyaString('ה׳ אִיָיר ח׳תשס״ה').toString()).toBe('5 Iyyar 8765');
 });
 
+test('fromGematriyaString final letters', () => {
+  expect(HDate.fromGematriyaString('א׳ שבט תש״ף').toString()).toBe("1 Sh'vat 5780");
+  expect(HDate.fromGematriyaString('א׳ שבט תש״ן').toString()).toBe("1 Sh'vat 5750");
+});
+
 test('fromGematriyaString Adar I', () => {
   expect(HDate.fromGematriyaString(' ה באדר א תשי"ט ').toString()).toBe('5 Adar I 5719');
 });

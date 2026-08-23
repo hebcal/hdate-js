@@ -31,6 +31,20 @@ for (const [key, val] of Object.entries(heb2num)) {
   num2heb[val] = key;
 }
 
+/**
+ * Final (sofit) Hebrew letters mapped to the value of their base form.
+ * Used only when parsing a gematriya string; `gematriya()` never emits
+ * these forms, so they are kept out of `heb2num` to avoid clobbering the
+ * `num2heb` reverse map.
+ */
+const sofit2num: Record<string, number> = {
+  ך: 20,
+  ם: 40,
+  ן: 50,
+  ף: 80,
+  ץ: 90,
+} as const;
+
 function num2digits(num: number): number[] {
   const digits: number[] = [];
   while (num > 0) {
@@ -93,11 +107,14 @@ export function gematriya(num: number | string): string {
 /**
  * Converts a string of Hebrew letters to a numerical value.
  *
- * Only considers the value of Hebrew letters `א` through `ת`.
- * Ignores final Hebrew letters such as `ך` (kaf sofit) or `ם` (mem sofit)
- * and vowels (nekudot).
+ * Considers the value of Hebrew letters `א` through `ת`, and the five final
+ * (sofit) forms `ך`, `ם`, `ן`, `ף`, `ץ`, which count as their base letters
+ * (20, 40, 50, 80, 90). This matches how Hebrew years are written — e.g.
+ * `תש״ף` is 780 — since the last letter of a year falls in final form.
+ * Vowels (nekudot) are ignored.
  * @example
  * gematriyaStrToNum('תשע״ד');   // 774
+ * gematriyaStrToNum('תש״ף');    // 780 (final pe)
  * gematriyaStrToNum('ט״ו');     // 15
  * gematriyaStrToNum('ג׳תשס״א'); // 3761 (thousands prefix)
  */
@@ -113,7 +130,7 @@ export function gematriyaStrToNum(str: string): number {
     str = str.substring(gereshIdx);
   }
   for (const ch of str) {
-    const n: number | undefined = heb2num[ch];
+    const n: number | undefined = heb2num[ch] ?? sofit2num[ch];
     if (typeof n === 'number') {
       num += n;
     }

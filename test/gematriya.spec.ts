@@ -41,6 +41,17 @@ test('gematriyaStrToNum', () => {
   expect(gematriyaStrToNum('תרי״ג')).toBe(613);
 });
 
+test('gematriyaStrToNum-final-letters', () => {
+  expect(gematriyaStrToNum('תש״ך')).toBe(720);
+  expect(gematriyaStrToNum('תש״ם')).toBe(740);
+  expect(gematriyaStrToNum('תש״ן')).toBe(750);
+  expect(gematriyaStrToNum('תש״ף')).toBe(780);
+  expect(gematriyaStrToNum('תש״ץ')).toBe(790);
+  expect(gematriyaStrToNum('תר״ן')).toBe(650);
+  // final and regular forms of the same letter are equivalent
+  expect(gematriyaStrToNum('תש״ף')).toBe(gematriyaStrToNum('תש״פ'));
+});
+
 test('gematriyaStrToNum-throws', () => {
   expect(() => {
     gematriyaStrToNum(null as unknown as string);
