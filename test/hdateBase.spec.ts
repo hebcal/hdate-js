@@ -233,9 +233,16 @@ test('monthFromName', () => {
     TEVET, 'Tevet_טבת',
     AV, ['Av', 'אב', 'אָב'],
     ADAR_I, ['Adar I', 'Adar 1', 'AdarI', 'Adar1',
-      'אדר א', "אֲדָר א", "אֲדָר א׳", 'אדר 1'],
+      'אדר א', "אֲדָר א", "אֲדָר א׳", 'אדר 1',
+      'Adar Alef', 'Adar alef', 'Adar Aleph', 'Adar-Alef', 'AdarAlef',
+      'Adar Rishon', 'adar rishon', 'AdarRishon',
+      'אדר ראשון', "אֲדָר רִאשׁוֹן", 'אדר אלף'],
     ADAR_II, ['Adar II', 'Adar 2', 'AdarII', 'Adar2',
-      'אדר', 'אֲדָר', "אֲדָר ב", "אֲדָר ב׳", 'אדר ב', 'אדר 2'],
+      'אדר', 'אֲדָר', "אֲדָר ב", "אֲדָר ב׳", 'אדר ב', 'אדר 2',
+      'Adar', 'Adar Bet', 'Adar Beit', 'Adar Beis', 'Adar-Bet', 'AdarBet',
+      'Adar Sheni', 'Adar Sheini', 'adar sheni', 'AdarSheni',
+      'אדר שני', "אֲדָר שֵׁנִי", 'אדר בית',
+      'Adar Bogus', 'Adar Foo', 'אדר משהו'],
   ];
 
   for (let i = 0; i < toTest.length; i += 2) {

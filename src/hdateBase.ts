@@ -471,23 +471,94 @@ export function shortKislev(year: number): boolean {
 }
 
 /**
+ * Resolves the "Adar I vs Adar II" ambiguity from the ordinal that trails
+ * an Adar month name.
+ *
+ * By the time this is called the caller has already decided the month is
+ * Adar (the name began with `ad` or `אד`) and has normalized `c`: trimmed,
+ * lower-cased, nikud removed, and any leading bet prefix stripped. This
+ * looks only at whatever follows the `adar`/`אדר` stem, ignoring the
+ * separator (space, hyphen, period) and any gershayim, and answers which
+ * of the two Adars was meant.
+ *
+ * Recognized as **Adar I** (the _first_ Adar): a bare `1`, roman `i`,
+ * Latin `a`, `alef`/`aleph`/`alaph`, `rishon` (any `rish…`), or Hebrew
+ * `א` / `ראשון` (any `ראש…`) / `אלף` (any `אל…`).
+ *
+ * Everything else resolves to **Adar II** (the _second_ Adar). That covers
+ * the explicit second-Adar spellings — `2`, roman `ii`, Latin `b`,
+ * `bet`/`beit`/`beis`, `sheni`/`sheini`, Hebrew `ב` / `שני` — but is also
+ * the deliberate default for the ambiguous cases: a bare `Adar` with no
+ * ordinal at all, or an unrecognized suffix such as `Adar Bogus`. An
+ * unqualified Adar conventionally denotes the second Adar in a leap year,
+ * so defaulting there keeps a silent miss on the more likely month.
+ *
+ * @param c normalized month name, already known to start with `adar`/`אדר`
+ * @returns {@link ADAR_I} (12) or {@link ADAR_II} (13)
+ */
+function adarFromName(c: string): number {
+  // Look only at the ordinal after the "adar"/"אדר" stem, and drop the
+  // separator (space/hyphen/period) plus any gershayim so that
+  // "Adar I", "Adar-I", "AdarI" and "אדר א׳" all reduce to the same token.
+  const suffix = c.replace(/^(adar|אדר)/, '').replace(/[\s.'`\-׳״]/g, '');
+  if (
+    suffix === '1' ||
+    suffix === 'i' ||
+    suffix === 'a' ||
+    suffix === 'א' ||
+    suffix.startsWith('alef') ||
+    suffix.startsWith('aleph') ||
+    suffix.startsWith('alaph') ||
+    suffix.startsWith('rish') ||
+    suffix.startsWith('ראש') /* ראש (rishon) */ ||
+    suffix.startsWith('אל') /* אלף (alef) */
+  ) {
+    return ADAR_I;
+  }
+  // Explicit second-Adar spellings and every ambiguous form default here.
+  return ADAR_II;
+}
+
+/**
  * Converts Hebrew month string name to numeric.
  *
  * Accepts transliterated names (`'Cheshvan'`, `'Sh'vat'`), Hebrew-script
  * names with or without nikud (`'חשון'`, `'תִּשְׁרֵי'`), an optional bet
  * prefix (`'בתמוז'`), and passes numbers through unchanged. Matching is
  * case-insensitive and only needs enough of the name to be unambiguous.
- * `'Adar'` resolves to Adar I; `'Adar II'` (and `'אדר ב׳'`) to Adar II.
+ *
+ * Before matching, the name is trimmed and lower-cased, its nikud is
+ * removed (so `'תִּשְׁרֵי'` matches `'תשרי'`), and a single leading Hebrew
+ * bet — the "in/of" prefix, as in `'בתמוז'` ("in Tamuz") — is dropped.
+ *
+ * ### Adar in a leap year
+ *
+ * Once the name is recognized as Adar, the trailing ordinal decides
+ * between Adar I and Adar II across the many ways it gets written:
+ *
+ * - **Adar I** — `'Adar I'`, `'Adar 1'`, `'Adar Alef'`, `'Adar Rishon'`,
+ *   `'אדר א'`, `'אדר ראשון'`.
+ * - **Adar II** — `'Adar II'`, `'Adar 2'`, `'Adar Bet'`, `'Adar Sheni'`,
+ *   `'אדר ב'`, `'אדר שני'`.
+ *
+ * When the ordinal is missing or unrecognized (a bare `'Adar'`, or
+ * something like `'Adar Bogus'`) the result is **ambiguous and defaults to
+ * Adar II**, following the convention that an unqualified Adar means the
+ * second Adar in a leap year. See {@link adarFromName} for the full set of
+ * accepted spellings.
+ *
  * @param monthName monthName
  * @returns Hebrew month number (1=NISAN, 7=TISHREI)
  * @throws {TypeError} if `monthName` is neither a string nor a number
  * @throws {RangeError} if the name is not recognized, or a numeric month
  *   is outside 1-14
  * @example
- * monthFromName('Cheshvan'); // 8
- * monthFromName('חשון');     // 8
- * monthFromName('Adar II');  // 13
- * monthFromName(7);          // 7 (passthrough)
+ * monthFromName('Cheshvan');    // 8
+ * monthFromName('חשון');        // 8
+ * monthFromName('Adar Rishon'); // 12 (Adar I)
+ * monthFromName('Adar II');     // 13 (Adar II)
+ * monthFromName('Adar');        // 13 (ambiguous, defaults to Adar II)
+ * monthFromName(7);             // 7 (passthrough)
  */
 export function monthFromName(monthName: string | number): number {
   if (typeof monthName === 'number') {
@@ -572,10 +643,7 @@ export function monthFromName(monthName: string | number): number {
         case 'v':
           return AV;
         case 'd':
-          if (/(1|[^i]i|a|א)$/i.test(c)) {
-            return ADAR_I;
-          }
-          return ADAR_II; // else assume sheini
+          return adarFromName(c);
         default:
           break;
       }
@@ -591,10 +659,7 @@ export function monthFromName(monthName: string | number): number {
         case 'ב':
           return AV;
         case 'ד':
-          if (/(1|[^i]i|a|א)$/i.test(c)) {
-            return ADAR_I;
-          }
-          return ADAR_II; // else assume sheini
+          return adarFromName(c);
         case 'י':
           return IYYAR;
         case 'ל':
