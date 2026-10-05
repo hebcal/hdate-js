@@ -46,14 +46,14 @@ export interface LocaleData {
 const noopLocale: LocaleData = {
   headers: {'plural-forms': 'nplurals=2; plural=(n!=1);'},
   contexts: {'': {}},
-} as const;
+};
 
-const alias: Record<string, string> = {
+const alias: Readonly<Record<string, string>> = {
   h: 'he',
   a: 'ashkenazi',
   s: 'en',
   '': 'en',
-} as const;
+};
 
 /** @private */
 const locales = new Map<string, StringArrayMap>();
@@ -224,7 +224,7 @@ export class Locale {
    * Locale.gettext('Sukkot', 'ashkenazi'); // 'Sukkos'
    * Locale.gettext('Tevet', 'ashkenazi');  // 'Teves' (existing translations kept)
    */
-  static addTranslations(locale: string, data: LocaleData) {
+  static addTranslations(locale: string, data: LocaleData): void {
     const loc = getExistingLocale(locale);
     const ctx = data.contexts;
     if (typeof ctx !== 'object' || typeof ctx[''] !== 'object') {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import {
   abs2greg,
   daysInGregMonth,
@@ -26,39 +25,39 @@ import {
  * greg.greg2abs(new Date(2008, 10, 13)); // 733359
  * greg.isLeapYear(2024);                 // true
  */
-export namespace greg {
+export const greg: {
   /**
    * Converts from Rata Die (R.D. number) to Gregorian date.
    * Alias for the top-level {@link abs2greg}.
    */
-  export declare function abs2greg(abs: number): Date;
+  abs2greg(abs: number): Date;
   /**
    * Number of days in the Gregorian month for given year.
    * Alias for the top-level {@link daysInGregMonth}.
    * @param month Gregorian month (1=January, 12=December)
    * @param year Gregorian year
    */
-  export declare function daysInMonth(month: number, year: number): number;
+  daysInMonth(month: number, year: number): number;
   /**
    * Converts Gregorian date to absolute R.D. (Rata Die) days.
    * Alias for the top-level {@link greg2abs}.
    */
-  export declare function greg2abs(date: Date): number;
+  greg2abs(date: Date): number;
   /**
    * Returns true if the object is a Javascript `Date`.
    * Alias for the top-level {@link isDate}.
    */
-  export declare function isDate(obj: unknown): boolean;
+  isDate(obj: unknown): obj is Date;
   /**
    * Returns true if the Gregorian year is a leap year.
    * Alias for the top-level {@link isGregLeapYear}.
    * @param year Gregorian year
    */
-  export declare function isLeapYear(year: number): boolean;
-}
-
-greg.abs2greg = abs2greg;
-greg.daysInMonth = daysInGregMonth;
-greg.greg2abs = greg2abs;
-greg.isDate = isDate;
-greg.isLeapYear = isGregLeapYear;
+  isLeapYear(year: number): boolean;
+} = {
+  abs2greg,
+  daysInMonth: daysInGregMonth,
+  greg2abs,
+  isDate,
+  isLeapYear: isGregLeapYear,
+};

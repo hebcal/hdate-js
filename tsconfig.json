@@ -5,6 +5,8 @@
     "moduleResolution": "nodenext",
     "declaration": true,
     "strict": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
     "rootDir": "src",
     "outDir": "dist/esm",
     "sourceMap": true

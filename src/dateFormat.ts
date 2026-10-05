@@ -1,6 +1,6 @@
 import {pad2, pad4} from './pad.js';
 
-const _formatters = new Map();
+const _formatters = new Map<string, Intl.DateTimeFormat>();
 
 /**
  * @private

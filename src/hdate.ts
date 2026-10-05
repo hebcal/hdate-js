@@ -19,8 +19,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import {
-  MonthName,
-  SimpleHebrewDate,
+  type MonthName,
+  type SimpleHebrewDate,
   abs2hebrew,
   daysInMonth,
   daysInYear,
@@ -180,7 +180,7 @@ export class HDate {
         typeof day === 'number' && !isNaN(day)
           ? day
           : isDate(day)
-            ? greg2abs(day as Date)
+            ? greg2abs(day)
             : isSimpleHebrewDate(day)
               ? day
               : null;
@@ -359,7 +359,7 @@ export class HDate {
     const locale0 = locale || 'en';
     const day = this.getDate();
     const monthName0 = Locale.gettext(this.getMonthName(), locale0);
-    const monthName = monthName0.replaceAll('\'', '’');
+    const monthName = monthName0.replaceAll("'", '’');
     const nth = Locale.ordinal(day, locale0);
     const dayOf = getDayOfTranslation(locale0);
     const dateStr = `${nth}${dayOf} ${monthName}`;
@@ -783,16 +783,17 @@ export class HDate {
    * HDate.isHDate(12345); // false
    * HDate.isHDate('15 Cheshvan 5769'); // false
    */
-  static isHDate(obj0: unknown): boolean {
-    const obj = obj0 as HDate;
+  static isHDate(obj: unknown): obj is HDate {
+    if (typeof obj !== 'object' || obj === null) {
+      return false;
+    }
+    const hd = obj as Partial<HDate>;
     return (
-      obj !== null &&
-      typeof obj === 'object' &&
-      typeof obj.yy === 'number' &&
-      typeof obj.mm === 'number' &&
-      typeof obj.dd === 'number' &&
-      typeof obj.greg === 'function' &&
-      typeof obj.abs === 'function'
+      typeof hd.yy === 'number' &&
+      typeof hd.mm === 'number' &&
+      typeof hd.dd === 'number' &&
+      typeof hd.greg === 'function' &&
+      typeof hd.abs === 'function'
     );
   }
 
@@ -896,12 +897,12 @@ function setDate(hd: HDate, date: number): HDate {
   return hd;
 }
 
-function fix(hd: HDate) {
+function fix(hd: HDate): void {
   fixMonth(hd);
   fixDate(hd);
 }
 
-function fixDate(hd: HDate) {
+function fixDate(hd: HDate): void {
   if (hd.dd < 1) {
     if (hd.mm === months.TISHREI) {
       hd.yy -= 1;
@@ -925,7 +926,7 @@ function fixDate(hd: HDate) {
   fixMonth(hd);
 }
 
-function fixMonth(hd: HDate) {
+function fixMonth(hd: HDate): void {
   if (hd.mm === months.ADAR_II && !hd.isLeapYear()) {
     hd.mm -= 1; // to Adar I
     fix(hd);

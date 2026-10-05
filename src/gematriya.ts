@@ -1,7 +1,7 @@
 const GERESH = '׳';
 const GERSHAYIM = '״';
 
-const heb2num: Record<string, number> = {
+const heb2num: Readonly<Record<string, number>> = {
   א: 1,
   ב: 2,
   ג: 3,
@@ -24,7 +24,7 @@ const heb2num: Record<string, number> = {
   ר: 200,
   ש: 300,
   ת: 400,
-} as const;
+};
 
 const num2heb: Record<number, string> = {};
 for (const [key, val] of Object.entries(heb2num)) {
@@ -37,13 +37,13 @@ for (const [key, val] of Object.entries(heb2num)) {
  * these forms, so they are kept out of `heb2num` to avoid clobbering the
  * `num2heb` reverse map.
  */
-const sofit2num: Record<string, number> = {
+const sofit2num: Readonly<Record<string, number>> = {
   ך: 20,
   ם: 40,
   ן: 50,
   ף: 80,
   ץ: 90,
-} as const;
+};
 
 function num2digits(num: number): number[] {
   const digits: number[] = [];
@@ -78,7 +78,7 @@ function num2digits(num: number): number[] {
  * gematriya(1123) // 'א׳קכ״ג'
  */
 export function gematriya(num: number | string): string {
-  const num1 = parseInt(num as string, 10);
+  const num1 = parseInt(String(num), 10);
   if (!num1 || num1 < 0) {
     throw new TypeError(`invalid number: ${num}`);
   }
@@ -123,14 +123,14 @@ export function gematriyaStrToNum(str: string): number {
     throw new TypeError(`bad gematriya str: ${str}`);
   }
   let num = 0;
-  const gereshIdx: number = str.indexOf(GERESH);
+  const gereshIdx = str.indexOf(GERESH);
   if (gereshIdx !== -1 && gereshIdx !== str.length - 1) {
     const thousands = str.substring(0, gereshIdx);
     num += gematriyaStrToNum(thousands) * 1000;
     str = str.substring(gereshIdx);
   }
   for (const ch of str) {
-    const n: number | undefined = heb2num[ch] ?? sofit2num[ch];
+    const n = heb2num[ch] ?? sofit2num[ch];
     if (typeof n === 'number') {
       num += n;
     }

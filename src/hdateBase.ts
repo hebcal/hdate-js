@@ -77,7 +77,7 @@ const monthNames0 = [
   'Kislev',
   'Tevet',
   "Sh'vat",
-] as const;
+] as const satisfies readonly ('' | MonthName)[];
 
 /*
  * Transliterations of Hebrew month names.
@@ -87,7 +87,7 @@ const monthNames0 = [
 const monthNames = [
   [...monthNames0, 'Adar', NISAN_STR],
   [...monthNames0, 'Adar I', 'Adar II', NISAN_STR],
-] as const;
+] as const satisfies readonly (readonly ('' | MonthName)[])[];
 
 /**
  * Transliterated Hebrew month names, as returned by
@@ -133,7 +133,7 @@ const AVG_HEBYEAR_DAYS = 365.24682220597794;
 /**
  * @private
  */
-function assertNumber(n: unknown, name: string) {
+function assertNumber(n: unknown, name: string): asserts n is number {
   if (typeof n !== 'number' || isNaN(n)) {
     throw new TypeError(`param '${name}' not a number: ${n}`);
   }
@@ -167,7 +167,7 @@ export function hebrew2abs(year: number, month: number, day: number): number {
     throw new RangeError(`hebrew2abs: invalid year ${year}`);
   }
 
-  let tempabs: number = day;
+  let tempabs = day;
 
   if (month < TISHREI) {
     const endMonth = monthsInYear(year);
@@ -386,24 +386,24 @@ export function elapsedDays(year: number): number {
  * @param year Hebrew year
  */
 function elapsedDays0(year: number): number {
-  const prevYear: number = year - 1;
-  const mElapsed: number =
+  const prevYear = year - 1;
+  const mElapsed =
     235 * Math.floor(prevYear / 19) + // Months in complete 19 year lunar (Metonic) cycles so far
     12 * (prevYear % 19) + // Regular months in this cycle
     Math.floor(((prevYear % 19) * 7 + 1) / 19); // Leap months this cycle
 
-  const pElapsed: number = 204 + 793 * (mElapsed % 1080);
+  const pElapsed = 204 + 793 * (mElapsed % 1080);
 
-  const hElapsed: number =
+  const hElapsed =
     5 +
     12 * mElapsed +
     793 * Math.floor(mElapsed / 1080) +
     Math.floor(pElapsed / 1080);
 
-  const parts: number = (pElapsed % 1080) + 1080 * (hElapsed % 24);
+  const parts = (pElapsed % 1080) + 1080 * (hElapsed % 24);
 
-  const day: number = 1 + 29 * mElapsed + Math.floor(hElapsed / 24);
-  let altDay: number = day;
+  const day = 1 + 29 * mElapsed + Math.floor(hElapsed / 24);
+  let altDay = day;
 
   if (
     parts >= 19440 ||

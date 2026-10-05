@@ -6,5 +6,5 @@ export * from './gematriya.js';
 export * from './pad.js';
 export * from './dateFormat.js';
 export * from './locale.js';
-export {HDate, FlexibleTimeUnit} from './hdate.js';
+export {HDate, type FlexibleTimeUnit} from './hdate.js';
 export * from './anniversaryHDate.js';

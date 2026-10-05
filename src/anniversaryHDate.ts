@@ -1,4 +1,8 @@
-import {AnniversaryDate, getBirthdayHD, getYahrzeitHD} from './anniversary.js';
+import {
+  type AnniversaryDate,
+  getBirthdayHD,
+  getYahrzeitHD,
+} from './anniversary.js';
 import {HDate} from './hdate.js';
 
 /**

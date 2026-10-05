@@ -6,7 +6,7 @@ import {
   monthsInYear,
   shortKislev,
   longCheshvan,
-  SimpleHebrewDate,
+  type SimpleHebrewDate,
 } from './hdateBase.js';
 import {abs2greg, greg2abs, isDate} from './greg.js';
 
@@ -22,14 +22,15 @@ const ADAR_II = months.ADAR_II;
  * Returns true if the object is a SimpleHebrewDate
  * @private
  */
-function isSimpleHebrewDate(obj0: unknown): boolean {
-  const obj = obj0 as SimpleHebrewDate;
+function isSimpleHebrewDate(obj: unknown): obj is SimpleHebrewDate {
+  if (typeof obj !== 'object' || obj === null) {
+    return false;
+  }
+  const hd = obj as Partial<SimpleHebrewDate>;
   return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    typeof obj.yy === 'number' &&
-    typeof obj.mm === 'number' &&
-    typeof obj.dd === 'number'
+    typeof hd.yy === 'number' &&
+    typeof hd.mm === 'number' &&
+    typeof hd.dd === 'number'
   );
 }
 
@@ -63,14 +64,11 @@ export type AnniversaryDate = Date | SimpleHebrewDate | number;
  */
 function toSimpleHebrewDate(obj: AnniversaryDate): SimpleHebrewDate {
   if (isSimpleHebrewDate(obj)) {
-    const hd = obj as SimpleHebrewDate;
-    return {yy: hd.yy, mm: hd.mm, dd: hd.dd};
+    return {yy: obj.yy, mm: obj.mm, dd: obj.dd};
   } else if (isDate(obj)) {
-    const abs = greg2abs(obj as Date);
-    return abs2hebrew(abs);
+    return abs2hebrew(greg2abs(obj));
   } else {
-    // typeof obj === 'number'
-    return abs2hebrew(obj as number);
+    return abs2hebrew(obj);
   }
 }
 
@@ -100,7 +98,7 @@ export function getYahrzeit(
 ): Date | undefined {
   const hd = getYahrzeitHD(hyear, date);
   if (!hd) {
-    return hd;
+    return undefined;
   }
   return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
@@ -237,7 +235,7 @@ export function getBirthdayOrAnniversary(
 ): Date | undefined {
   const hd = getBirthdayHD(hyear, date);
   if (!hd) {
-    return hd;
+    return undefined;
   }
   return abs2greg(hebrew2abs(hd.yy, hd.mm, hd.dd));
 }
