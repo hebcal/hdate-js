@@ -7,7 +7,7 @@
     "Eyal Schachter (https://github.com/Scimonster)",
     "Danny Sadinoff (https://github.com/dsadinoff)"
   ],
-  "license": "GPL-2.0",
+  "license": "GPL-2.0-or-later",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hebcal/hdate-js.git"
